@@ -7,7 +7,8 @@ In order to start the electron app, the user should go to the directory of the p
 "$ electron ."
 In future version, the app will be build to prevent this from happening.
 Since the project is still in progress, it is not needed to do this step for now.
- -Rui Melo 30/03/2020
+ 
+-Rui Melo 30/03/2020
 
 
 
