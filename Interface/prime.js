@@ -74,6 +74,32 @@ class Chart {
         this.target = port.lastConnector;
         this.dragType = this.target.dragType;
         break;
+      /*
+      case "port":
+          const port = portLookup[id];
+          //this.inputPort.removeConnector(this);
+          console.log(port.inputPort)
+
+          
+          //supondo que a cardinalidade é 1:
+          console.log(port)
+          console.log(port.connectors.length)
+          if(port.connectors.length < 1){
+            port.createConnector();
+            this.target = port.lastConnector;
+            this.dragType = this.target.dragType;
+          
+          }else{
+          
+            console.log("maximo de cardinalidade alcancado")
+            console.log(port.lastConnector)
+            port.lastConnector.remove()
+          }
+          break;
+
+      */
+
+
 
       case "connector":
         this.target = connectorLock[id];
