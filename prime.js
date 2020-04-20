@@ -7,7 +7,7 @@ class Chart {
   constructor() {
 
     this.dragElement = this.element = diagramElement;
-    console.log("moduleElements: "+moduleElements);
+    //console.log("moduleElements: "+moduleElements);
     moduleElements.forEach((element, i) => {
       const module = new NodeModule(element, 400 + i * 250, 50);
       moduleLock[module.id] = module;
@@ -19,7 +19,7 @@ class Chart {
 
     this.dragTarget = this.dragTarget.bind(this);
     this.prepareTarget = this.prepareTarget.bind(this);
-    console.log("prep");
+    //console.log("prep");
     this.stopDragging = this.stopDragging.bind(this);
 
     this.draggable = new Draggable(dragProxy, {
@@ -57,7 +57,6 @@ class Chart {
     const dragType = split[1];
     
     
-
     switch (dragType) {
       case "diagram":
         this.target = this;
@@ -70,10 +69,24 @@ class Chart {
       case "port":
         //TODO ver se port tem connector.. se tiver podemos eliminar por aqui
         const port = portLock[id];
-        port.createConnector();
-        this.target = port.lastConnector;
-        this.dragType = this.target.dragType;
+        console.log(port)
+        console.log(port.connectors.length)
+        if(port.connectors.length < 1){
+          port.createConnector();
+          this.target = port.lastConnector;
+          this.dragType = this.target.dragType;
+        
+        }else{
+          if(port.lastConnector){
+            console.log("maximo de cardinalidade alcancado")
+            console.log(port.lastConnector)
+            port.lastConnector.remove()
+          }
+        
+        }
+       
         break;
+     
 
       case "connector":
         this.target = connectorLock[id];
@@ -82,13 +95,23 @@ class Chart {
   }
 
   dragTarget() {
+    //console.log("target: "+this.target)
+    //console.log("dragtype: "+this.target.dragType)
 
-    TweenLite.set(this.target.dragElement, {
-      x: `+=${this.draggable.deltaX}`,
-      y: `+=${this.draggable.deltaY}` });
+    if(this.target.dragType=="connector" && this.target.inputPort===null && this.target.outputPort===null){
+      //console.log("in"+this.target.inputPort)
+      //console.log("out"+this.target.outputPort)
+      //console.log("hello there")
+    }else{
+      TweenLite.set(this.target.dragElement, {
+        x: `+=${this.draggable.deltaX}`,
+        y: `+=${this.draggable.deltaY}` });
 
 
-    this.target.onDrag && this.target.onDrag();
+      this.target.onDrag && this.target.onDrag();
+    }
+
+     
   }}
 
 class NodeModule {
@@ -292,51 +315,53 @@ class Connector {
   }
 
   placeHandle() {
+    //if(this.staticPort != null){
+          const skipmodule = this.staticPort.parentNode.element;
 
-    const skipmodule = this.staticPort.parentNode.element;
+      let hitPort;
 
-    let hitPort;
+      for (let module of modules) {
 
-    for (let module of modules) {
+        if (module.element === skipmodule) {
+          continue;
+        }
 
-      if (module.element === skipmodule) {
-        continue;
-      }
+        if (Draggable.hitTest(this.dragElement, module.element)) {
 
-      if (Draggable.hitTest(this.dragElement, module.element)) {
+          const ports = this.isInput ? module.outputs : module.inputs;
 
-        const ports = this.isInput ? module.outputs : module.inputs;
+          for (let port of ports) {
 
-        for (let port of ports) {
+            if (Draggable.hitTest(this.dragElement, port.portElement)) {
+              hitPort = port;
+              break;
+            }
+          }
 
-          if (Draggable.hitTest(this.dragElement, port.portElement)) {
-            hitPort = port;
+          if (hitPort) {
             break;
           }
         }
+      }
 
-        if (hitPort) {
-          break;
+      if (hitPort) {
+
+        if (this.isInput) {
+          this.outputPort = hitPort;
+        } else {
+          this.inputPort = hitPort;
         }
-      }
-    }
 
-    if (hitPort) {
+        this.dragElement.setAttribute("data-drag", `${hitPort.id}:port`);
 
-      if (this.isInput) {
-        this.outputPort = hitPort;
+        hitPort.addConnector(this);
+        this.updateHandle(hitPort);
+
       } else {
-        this.inputPort = hitPort;
+        this.remove();
       }
+   //   }
 
-      this.dragElement.setAttribute("data-drag", `${hitPort.id}:port`);
-
-      hitPort.addConnector(this);
-      this.updateHandle(hitPort);
-
-    } else {
-      this.remove();
-    }
   }
 
   remove() {
@@ -363,23 +388,30 @@ class Connector {
     this.staticElement = null;
 
     connectorLayer.removeChild(this.element);
+
     connectorList.push(this);
+
   }
 
   onDrag() {
-    this.updatePath();
+
+    if(this.staticPort != null){
+      this.updatePath();
+    }
   }
 
   onDragEnd() {
-    this.placeHandle();
+    if(this.staticPort != null){
+      this.placeHandle();
+    }
   }}
 
 
 let nextUid = 0;
 const svg = document.querySelector("#svg");
 const diagramElement = document.querySelector("#diagram");
-console.log(svg);
-console.log(diagramElement);
+//console.log(svg);
+//console.log(diagramElement);
 
 const moduleLock = {};
 const portLock = {};
@@ -391,17 +423,17 @@ const connectorList = [];
 
 const dragProxy = document.querySelector("#drag-proxy"); //?
 const moduleElements = Array.from(document.querySelectorAll(".node-container"));
-console.log(dragProxy);
-console.log(moduleElements);
+//console.log(dragProxy);
+//console.log(moduleElements);
 
 
 const frag = document.createDocumentFragment();
 frag.appendChild(document.querySelector(".connector"));
-console.log(frag);
+//console.log(frag);
 
 const connectorElement = frag.querySelector(".connector");
 const connectorLayer = document.querySelector("#connections-layer");
-console.log(connectorElement);
-console.log(connectorLayer);
+//console.log(connectorElement);
+//console.log(connectorLayer);
 
 const chart = new Chart();
