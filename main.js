@@ -1,14 +1,11 @@
-"use strict";
-
-require("electron-reload")(__dirname);
-
 // Modules to control application life and create native browser window
 
 const {app, BrowserWindow} = require('electron')
-const path = require('path');
-const { electron } = require('process');
+const path = require('path')
 
-// require ('electron-reload') (__dirname);
+ //reload
+"use strict";
+require("electron-reload")(__dirname);
 
 
 
@@ -18,27 +15,26 @@ function createWindow () {
     width: 1920,
     height: 1080,
     webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
-      nodeIntegration: true
+      preload: path.join(__dirname, 'preload.js')
     },
-  });
+  })
 
-  const childWindow = new  BrowserWindow ({ width: 1600, height: 800, parent: mainWindow, modal: true, show : false});
+  const childWindow = new  BrowserWindow ({ width: 1600, height: 800, parent: mainWindow, modal: true, show : false})
   
 
 
   // and load the index.html of the app.
-  mainWindow.loadFile("index.html");
-  childWindow.loadFile("welcome.html");
+  mainWindow.loadFile('index.html')
+  childWindow.loadFile('welcome.html')
 
-  childWindow.once("ready-to-show", () =>  {
-  childWindow.show();
-  });
+  childWindow.once('ready-to-show', () =>  {
+  childWindow.show()
+  })
 
-
-// Open the DevTools.
-mainWindow.webContents.openDevTools();
+  // Open the DevTools.
+  mainWindow.webContents.openDevTools()
 }
+
 
 
 
