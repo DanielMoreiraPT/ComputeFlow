@@ -683,10 +683,4 @@ document.getElementById('save_project').onclick=() => {
         await writeJsonFile('foo.json', obj);
     })();
     
-    
-    
 };
-
-
-
-
