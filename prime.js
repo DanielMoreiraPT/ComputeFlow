@@ -144,7 +144,7 @@ class Connector {
                 hitPort = port;
                 break;
               }else{
-                alert("Port types are different -.-");
+                alert("Port types are different ( ͡° ͜ʖ ͡°)");
               }
               break;
             }
