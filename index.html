@@ -37,6 +37,7 @@
 
       });
     </script>
+    
   <!---->
     <div class="wrapper">
       <!-- Sidebar -->
@@ -73,8 +74,9 @@
               <li>
                   <a>Load Project</a>
               </li>
-              <li>
-                  <a>Save Project</a>
+              <li >
+                  <a id="save_project">Save Project</a>
+
               </li>
           </ul>
       </nav>
@@ -101,7 +103,8 @@
                 
          
         </div>
-    </div>
+      </div>
+
       
   </div> 
 <script>
@@ -114,7 +117,7 @@ function load_prime()
    }
 load_prime();
 var ModulesCreators = document.getElementsByClassName("moduleID");
-console.log(ModulesCreators);
+//console.log(ModulesCreators);
 
 //var globais para atribuir onclick functions e ids a futuros modulos
 var scope = {};
@@ -130,102 +133,23 @@ for (let j = 0; j < ModulesCreators.length; j++) {
       divNova.setAttribute("class", "node-container");
 
 
-      var n_modules_from_that_type = document.querySelectorAll('*[id^="%s"]',scope['counter'+j]).length;
-      //console.log("Modulos desse tipo:" + n_modules_from_that_type);
+      let n_modules_from_that_type = document.querySelectorAll('*[id^="%s"]',scope['counter'+j]).length;
+      console.log("Modulos desse tipo:" + n_modules_from_that_type);
       n_modules_per_id[scope['counter'+j]]++;
 
-      divNova.id = scope['counter'+j]+"_"+n_modules_per_id[scope['counter'+j]];      
-      divNova.innerHTML = '<rect class="node-background" width="204" height="128" x="0" y="0" rx="6" ry="6" /><g class="node-header"><rect class="header-round-rect" width="200" height="40" x="2" y="2" rx="4" ry="4" /><rect class="header-rect" width="200" height="36" x="2" y="6" /><text class="header-title" x="102" y="30">'+"Module "+divNova.id.split("module")[1]+'</text></g><g class="node-content"><rect class="content-round-rect" width="200" height="82" x="2" y="44" rx="4" ry="4" /><rect class="content-rect" width="200" height="77" x="2" y="44" /><g class="inputs"><g class="input-field" transform="translate(0, 50)"><g class="port"><circle class="port-outer" cx="15" cy="10" r="7.5" /><circle class="port-inner" cx="15" cy="10" r="5" /><circle class="port-scrim" cx="15" cy="10" r="7.5" /></g><text class="port-label" x="28" y="14">Input 1</text></g><g class="input-field" transform="translate(0, 75)"><g class="port"><circle class="port-outer" cx="15" cy="10" r="7.5" /><circle class="port-inner" cx="15" cy="10" r="5" /><circle class="port-scrim" cx="15" cy="10" r="7.5" /></g><text class="port-label" x="28" y="14">Input 2</text></g><g class="input-field" transform="translate(0, 100)"><g class="port"><circle class="port-outer" cx="15" cy="10" r="7.5" /><circle class="port-inner" cx="15" cy="10" r="5" /><circle class="port-scrim" cx="15" cy="10" r="7.5" /></g><text class="port-label" x="28" y="14">Input 3</text></g></g><g class="outputs"><g class="output-field" transform="translate(0, 50)"><g class="port" data-clickable="false"><circle class="port-outer" cx="189" cy="10" r="7.5" /><circle class="port-inner" cx="189" cy="10" r="5" /><circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" /></g><text class="port-label" x="176" y="14">Output 1</text></g><g class="output-field" transform="translate(0, 75)"><g class="port" data-clickable="false"><circle class="port-outer" cx="189" cy="10" r="7.5" /><circle class="port-inner" cx="189" cy="10" r="5" /><circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" /></g><text class="port-label" x="176" y="14">Output 2</text></g><g class="output-field" transform="translate(0, 100)"><g class="port" data-clickable="false"><circle class="port-outer" cx="189" cy="10" r="7.5" /><circle class="port-inner" cx="189" cy="10" r="5" /><circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" /></g><text class="port-label" x="176" y="14">Output 3</text></g></g></g>';
-      
-      /* Codigo base para cada modulo
-      <g class="node-container">    
-                  <rect class="node-background" width="204" height="128" x="0" y="0" rx="6" ry="6" />
-          
-                  <g class="node-header">
-                    <rect class="header-round-rect" width="200" height="40" x="2" y="2" rx="4" ry="4" />
-                    <rect class="header-rect" width="200" height="36" x="2" y="6" />
-                    <text class="header-title" x="102" y="30">Process 3</text>
-                  </g>
-          
-                  <g class="node-content">
-          
-                    <rect class="content-round-rect" width="200" height="82" x="2" y="44" rx="4" ry="4" />
-                    <rect class="content-rect" width="200" height="77" x="2" y="44" />
-          
-                    <g class="inputs">
-          
-                      <g class="input-field" transform="translate(0, 50)">
-                        <g class="port">
-                          <circle class="port-outer" cx="15" cy="10" r="7.5" />
-                          <circle class="port-inner" cx="15" cy="10" r="5" />
-                          <circle class="port-scrim" cx="15" cy="10" r="7.5" />
-                        </g>
-                        <text class="port-label" x="28" y="14">Input 7</text>
-                      </g>
-                      
-                      <g class="input-field" transform="translate(0, 75)">
-                        <g class="port">
-                          <circle class="port-outer" cx="15" cy="10" r="7.5" />
-                          <circle class="port-inner" cx="15" cy="10" r="5" />
-                          <circle class="port-scrim" cx="15" cy="10" r="7.5" />
-                        </g>
-                        <text class="port-label" x="28" y="14">Input 8</text>
-                      </g>
-                      
-                      <g class="input-field" transform="translate(0, 100)">
-                        <g class="port">
-                          <circle class="port-outer" cx="15" cy="10" r="7.5" />
-                          <circle class="port-inner" cx="15" cy="10" r="5" />
-                          <circle class="port-scrim" cx="15" cy="10" r="7.5" />
-                        </g>
-                        <text class="port-label" x="28" y="14">Input 9</text>
-                      </g>
-                      
-                    </g>
-          
-                    <g class="outputs">
-          
-                      <g class="output-field" transform="translate(0, 50)">
-                        <g class="port" data-clickable="false">
-                          <circle class="port-outer" cx="189" cy="10" r="7.5" />
-                          <circle class="port-inner" cx="189" cy="10" r="5" />
-                          <circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" />
-                        </g>
-                        <text class="port-label" x="176" y="14">Output 7</text>
-                      </g>
-                      
-                      <g class="output-field" transform="translate(0, 75)">
-                        <g class="port" data-clickable="false">
-                          <circle class="port-outer" cx="189" cy="10" r="7.5" />
-                          <circle class="port-inner" cx="189" cy="10" r="5" />
-                          <circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" />
-                        </g>
-                        <text class="port-label" x="176" y="14">Output 8</text>
-                      </g>
-                      
-                      <g class="output-field" transform="translate(0, 100)">
-                        <g class="port" data-clickable="false">
-                          <circle class="port-outer" cx="189" cy="10" r="7.5" />
-                          <circle class="port-inner" cx="189" cy="10" r="5" />
-                          <circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" />
-                        </g>
-                        <text class="port-label" x="176" y="14">Output 9</text>
-                      </g>            
-                    </g>
-          
-                  </g>
-                </g> 
-                
-      */
+      divNova.id = scope['counter'+j]+" #"+n_modules_per_id[scope['counter'+j]];      
+      console.log(divNova.id);
+      divNova.innerHTML = '<rect class="node-background" width="204" height="128" x="0" y="0" rx="6" ry="6" /><g class="node-header"><rect class="header-round-rect" width="200" height="40" x="2" y="2" rx="4" ry="4" /><rect class="header-rect" width="200" height="36" x="2" y="6" /><text class="header-title" x="102" y="30">'+"Module "+divNova.id.split("module")[1]+'</text></g><g class="node-content"><rect class="content-round-rect" width="200" height="82" x="2" y="44" rx="4" ry="4" /><rect class="content-rect" width="200" height="77" x="2" y="44" /><g class="inputs"><g class="input-field" transform="translate(0, 50)"><g class="port"><circle class="port-outer" cx="15" cy="10" r="7.5" /><circle class="port-inner" cx="15" cy="10" r="5" /><circle class="port-scrim" cx="15" cy="10" r="7.5" /></g><text class="port-label" x="28" y="14">String</text></g><g class="input-field" transform="translate(0, 75)"><g class="port"><circle class="port-outer" cx="15" cy="10" r="7.5" /><circle class="port-inner" cx="15" cy="10" r="5" /><circle class="port-scrim" cx="15" cy="10" r="7.5" /></g><text class="port-label" x="28" y="14">Input 2</text></g><g class="input-field" transform="translate(0, 100)"><g class="port"><circle class="port-outer" cx="15" cy="10" r="7.5" /><circle class="port-inner" cx="15" cy="10" r="5" /><circle class="port-scrim" cx="15" cy="10" r="7.5" /></g><text class="port-label" x="28" y="14">Input 3</text></g></g><g class="outputs"><g class="output-field" transform="translate(0, 50)"><g class="port" data-clickable="false"><circle class="port-outer" cx="189" cy="10" r="7.5" /><circle class="port-inner" cx="189" cy="10" r="5" /><circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" /></g><text class="port-label" x="176" y="14">String</text></g><g class="output-field" transform="translate(0, 75)"><g class="port" data-clickable="false"><circle class="port-outer" cx="189" cy="10" r="7.5" /><circle class="port-inner" cx="189" cy="10" r="5" /><circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" /></g><text class="port-label" x="176" y="14">Output 2</text></g><g class="output-field" transform="translate(0, 100)"><g class="port" data-clickable="false"><circle class="port-outer" cx="189" cy="10" r="7.5" /><circle class="port-inner" cx="189" cy="10" r="5" /><circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" /></g><text class="port-label" x="176" y="14">Output 3</text></g></g></g>';
+
+
       document.getElementById("node-layer").appendChild(divNova);
       //adicinar elemento ao diagrama
       //TODO criar modulos em posicoes nao previamente ocupadas
-      const module = new NodeModule(divNova, 400 + 350, 50);
+      const module = new NodeModule(divNova, 400 + 300, 300);
       moduleLock[module.id] = module;
       modules.push(module);
     });
 }
-
 
 
 
@@ -234,3 +158,4 @@ for (let j = 0; j < ModulesCreators.length; j++) {
 </body>
 
 </html>
+
