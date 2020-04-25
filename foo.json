@@ -1,0 +1,146 @@
+{
+	"title": "New Project Name",
+	"Modules": [
+		{
+			"Name": "Modulo 1",
+			"Coord": {
+				"CoordX": "671",
+				"CoordY": "616"
+			},
+			"FunctionID": "",
+			"IO": {
+				"Inputs": [
+					{
+						"PortID": "0",
+						"PortType": "String"
+					},
+					{
+						"PortID": "1",
+						"PortType": "Integer"
+					},
+					{
+						"PortID": "2",
+						"PortType": "Integer"
+					},
+					{
+						"PortID": "3",
+						"PortType": "String"
+					},
+					{
+						"PortID": "4",
+						"PortType": "Double"
+					}
+				],
+				"Outputs": [
+					{
+						"PortID": "0",
+						"PortType": "String"
+					},
+					{
+						"PortID": "1",
+						"PortType": "Integer"
+					}
+				]
+			},
+			"Connections": {
+				"Inputs": [
+					{
+						"ModuleID": "2",
+						"ModulePort": "0",
+						"InputPort": "0"
+					},
+					{
+						"ModuleID": "1",
+						"ModulePort": "1",
+						"InputPort": "1"
+					},
+					{
+						"ModuleID": "1",
+						"ModulePort": "0",
+						"InputPort": "4"
+					}
+				]
+			}
+		},
+		{
+			"Name": "Modulo 2",
+			"Coord": {
+				"CoordX": "1015",
+				"CoordY": "486"
+			},
+			"FunctionID": "",
+			"IO": {
+				"Inputs": [
+					{
+						"PortID": "0",
+						"PortType": "String"
+					},
+					{
+						"PortID": "1",
+						"PortType": "Double"
+					}
+				],
+				"Outputs": [
+					{
+						"PortID": "0",
+						"PortType": "Double"
+					},
+					{
+						"PortID": "1",
+						"PortType": "Integer"
+					}
+				]
+			},
+			"Connections": {
+				"Inputs": [
+					{
+						"ModuleID": "0",
+						"ModulePort": "0",
+						"InputPort": "0"
+					}
+				]
+			}
+		},
+		{
+			"Name": "",
+			"Coord": {
+				"CoordX": "675",
+				"CoordY": "266"
+			},
+			"FunctionID": "",
+			"IO": {
+				"Inputs": [
+					{
+						"PortID": "0",
+						"PortType": "String"
+					},
+					{
+						"PortID": "1",
+						"PortType": "Input 2"
+					},
+					{
+						"PortID": "2",
+						"PortType": "Input 3"
+					}
+				],
+				"Outputs": [
+					{
+						"PortID": "0",
+						"PortType": "String"
+					},
+					{
+						"PortID": "1",
+						"PortType": "Output 2"
+					},
+					{
+						"PortID": "2",
+						"PortType": "Output 3"
+					}
+				]
+			},
+			"Connections": {
+				"Inputs": []
+			}
+		}
+	]
+}

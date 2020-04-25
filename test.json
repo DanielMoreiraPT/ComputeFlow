@@ -1,0 +1,101 @@
+{
+	"title": "title", 
+	"Modules":[
+  		{
+            "Name":"Modulo 1",
+          "Id":"0",
+          "Coord":{
+              "CoordX":"510",
+              "CoordY":"720"
+          },
+          "FunctionID":"12",
+          "IO":{
+              "Inputs":[
+                  {
+                      "PortID":"0",
+                      "PortType": "String"
+                  },
+                  {
+                      "PortID":"1",
+                      "PortType": "Integer"
+                  },
+                  {
+                      "PortID":"2",
+                      "PortType": "Integer"
+                  },
+                  {
+                      "PortID":"3",
+                      "PortType": "String"
+                  },
+                  {
+                      "PortID":"4",
+                      "PortType": "Double"
+                  }
+              ],
+              "Outputs":[		
+                  {
+                      "PortID":"0",
+                      "PortType": "String"
+                  },
+                  {
+                      "PortID":"1",
+                      "PortType": "Integer"
+                  }
+              ]
+
+            },
+          "Connections":{
+                "Inputs":[
+                    {
+                    "InputPort":"1",	
+                    "ModuleID":"1",
+                    "ModulePort":"1"	
+                }
+                ]
+            
+            }
+            
+        },{
+        "Name":"Modulo 2",
+          "Id":"1",
+          "Coord":{
+              "CoordX":"900",
+              "CoordY":"531"
+          },
+          "FunctionID":"12 -> we need to have a seperated file which is also sent with the info from each function",
+          "IO":{
+              "Inputs":[
+                  {
+                      "PortID":"0",
+                      "PortType": "String"
+                  },
+                  {
+                      "PortID":"1",
+                      "PortType": "Double"
+                  }
+              ],
+              "Outputs":[		
+                  {
+                      "PortID":"0",
+                      "PortType": "Double"
+                  },
+                  {
+                      "PortID":"1",
+                      "PortType": "Integer"
+                  }
+              ]
+
+            },
+          "Connections":{
+            "Inputs":[
+                {
+                "InputPort":"0",		
+                "ModuleID":"0",
+                "ModulePort":"0"		
+                 }
+            ]}
+            
+        }
+  		
+  ]  
+}

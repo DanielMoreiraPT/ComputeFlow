@@ -2,8 +2,6 @@ SVGElement.prototype.getTransformToElement = SVGElement.prototype.getTransformTo
   return toElement.getScreenCTM().inverse().multiply(this.getScreenCTM());
 };
 
-
-
 let nextUid = 0;
 const svg = document.querySelector("#svg");
 const diagramElement = document.querySelector("#diagram");
@@ -47,7 +45,7 @@ class Connector {
   }
 
   init(port) {
-
+    //console.log("Tipo: "+port.portType)
     connectorLayer.appendChild(this.element);
 
     this.isInput = port.isInput;
@@ -123,8 +121,7 @@ class Connector {
   }
 
   placeHandle() {
-    //if(this.staticPort !== null){
-          const skipmodule = this.staticPort.parentNode.element;
+      const skipmodule = this.staticPort.parentNode.element;
 
       let hitPort;
 
@@ -141,7 +138,12 @@ class Connector {
           for (let port of ports) {
 
             if (Draggable.hitTest(this.dragElement, port.portElement)) {
-              hitPort = port;
+              
+              if(port.portType === this.staticPort.portType){
+
+                hitPort = port;
+                break;
+              }
               break;
             }
           }
@@ -168,7 +170,6 @@ class Connector {
       } else {
         this.remove();
       }
-   //   }
 
   }
 
@@ -213,11 +214,13 @@ class Connector {
       this.placeHandle();
     }
   }}
-
 class NodePort {
 
   constructor(parentNode, element, isInput) {
 
+    this.portType=element.querySelector(".port-label").textContent;
+    
+    
     this.id = `port_${nextUid++}`;
     this.dragType = "port";
 
@@ -287,7 +290,8 @@ class NodeModule {
 
     this.id = `module_${nextUid++}`;
     this.dragType = "module";
-
+    this.name = "";
+    this.functionId = "";
     element.setAttribute("data-drag", `${this.id}:module`);
 
     this.element = element;
@@ -434,21 +438,253 @@ class Chart {
 
      
   }}
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const chart = new Chart();
+
+//JSON Part
+function readTextFile(file, callback) {
+  var rawFile = new XMLHttpRequest();
+  rawFile.overrideMimeType("application/json");
+  rawFile.open("GET", file, true);
+  rawFile.onreadystatechange = function() {
+      if (rawFile.readyState === 4 && rawFile.status == "200") {
+          callback(rawFile.responseText);
+      }
+  }
+  rawFile.send(null);
+}
+
+function createConnections(data){
+    
+  let counterModulos;
+  for(counterModulos=0;counterModulos<data.Modules.length; counterModulos++){
+  
+    //criar ligacões entre modulos a partir do JSON
+    let h;
+    //se o moduo tem ligacoes que saiam dos seus inputs
+    if(data.Modules[counterModulos].Connections.Inputs){
+      for(h=0;h<data.Modules[counterModulos].Connections.Inputs.length; h++){
+        console.log(data.Modules[counterModulos].Connections.Inputs);
+        let ownInputPort = data.Modules[counterModulos].Connections.Inputs[h].InputPort;
+        let outputModule = data.Modules[counterModulos].Connections.Inputs[h].ModuleID;
+        let outputModulePort = data.Modules[counterModulos].Connections.Inputs[h].ModulePort;
+        console.log("Own Input Port: " + ownInputPort);
+        console.log("Module connected to this port " + outputModule);
+        console.log("Port on that modules used: "+outputModulePort);
+       
+       
+        let connector = new Connector();
+        let InputPort = modules[counterModulos].inputs[ownInputPort];
+        connector.init(InputPort);
+
+        InputPort.lastConnector = connector;
+        InputPort.connectors.push(connector);
+        connector.updateHandle(InputPort);
+        //place handle()
+        let OutputPort = modules[outputModule].outputs[outputModulePort];
+        console.log(OutputPort);
+        
+        OutputPort.addConnector(connector);
+        
+        connector.outputPort = OutputPort;
+        connector.updateHandle(OutputPort);
+
+        console.log("Connector: ");
+        console.log(connector);
+
+
+      }
+    }
+
+
+  }                                                                                                                                                    
+};
+
+
+readTextFile("foo.json", function(text){
+  const data = JSON.parse(text);
+  let counterModulos;
+  for(counterModulos=0;counterModulos<data.Modules.length; counterModulos++){
+
+    let n_inputs ;
+    let n_outputs ;
+    let maximo;
+
+    //console.log(data.Modules[counterModulos].IO.Outputs);
+    n_inputs = data.Modules[counterModulos].IO.Inputs.length;
+    n_outputs = data.Modules[counterModulos].IO.Outputs.length;
+    
+    maximo = n_inputs >= n_outputs ?  n_inputs : n_outputs;
+    let height = (maximo*14)+((maximo+1)*10);
+    let novoModuloHTML ="";
+    novoModuloHTML+='<g class="node-container"><rect class="node-background" width="204" height="128" x="0" y="0" rx="6" ry="6" /><g class="node-header"><rect class="header-round-rect" width="200" height="40" x="2" y="2" rx="4" ry="4" /><rect class="header-rect" width="200" height="36" x="2" y="6" /><text class="header-title" x="102" y="30">'+data.Modules[counterModulos].Name+'</text></g><g class="node-content"><rect class="content-round-rect" width="200" height="'+height+'" x="2" y="44" rx="4" ry="4" /><rect class="content-rect" width="200" height="77" x="2" y="44" /><g class="inputs">';
+  
+  
+    let i;
+    for(i=0;i<n_inputs; i++){
+      //TODO ver ids para portos
+      let portType = data.Modules[counterModulos].IO.Inputs[i].PortType;
+      let transformValue = 50+(25*i);
+      let novoInput = '<g class="input-field" transform="translate(0,'+transformValue+')"><g class="port"><circle class="port-outer" cx="15" cy="10" r="7.5" /><circle class="port-inner" cx="15" cy="10" r="5" /><circle class="port-scrim" cx="15" cy="10" r="7.5" /></g><text class="port-label" x="28" y="14">'+portType+'</text></g>';
+      novoModuloHTML+=novoInput;
+      //console.log(novoInput);
+    }
+    novoModuloHTML+="</g>";
+    novoModuloHTML+='<g class="outputs">';
+    
+    let j;
+    for(j=0;j<n_outputs; j++){
+      //TODO ver ids para portos
+      let portType = data.Modules[counterModulos].IO.Outputs[j].PortType;
+      let transformValue = 50+(25*j);
+      let novoOutput = '<g class="output-field" transform="translate(0,' +transformValue+')"><g class="port" data-clickable="false"><circle class="port-outer" cx="189" cy="10" r="7.5" /><circle class="port-inner" cx="189" cy="10" r="5" /><circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" /></g><text class="port-label" x="176" y="14">'+portType+'</text></g>';
+      novoModuloHTML+=novoOutput;
+      //console.log(novoOutput);
+    }
+  
+    novoModuloHTML+="</g> </g></g>";
+  
+    var divNova = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    divNova.setAttribute("class", "node-container");
+  
+  
+    divNova.id = "ola";
+    divNova.innerHTML = novoModuloHTML;
+   
+  
+    let coordx=data.Modules[counterModulos].Coord.CoordX;
+    let coordy=data.Modules[counterModulos].Coord.CoordY;
+    document.getElementById("node-layer").appendChild(divNova);
+    const module = new NodeModule(divNova,coordx, coordy);
+    module.name = data.Modules[counterModulos].Name;
+    moduleLock[module.id] = module;
+    modules.push(module);
+
+
+
+
+  }
+  createConnections(data);
+
+
+
+});
+
+
+const app = require("electron").remote;
+var dialog = app.dialog;
+var fs = require("fs");
+
+document.getElementById('save_project').onclick=() => {    
+    //trying to get info from svg so later we can send through json
+    //write a json file
+    const writeJsonFile = require('write-json-file');
+
+
+    var obj = {
+      "title":"New Project Name",
+      "Modules":[
+
+      ]
+
+    }
+    let i;
+    if(modules.length){
+      for(i=0;i<modules.length;i++){
+      let module_obj = {
+        "Name":modules[i].name,
+        "Coord":{
+            "CoordX":modules[i].element.transform.baseVal[0].matrix.e.toString(),
+            "CoordY":modules[i].element.transform.baseVal[0].matrix.f.toString()
+        },
+        "FunctionID":modules[i].functionId,
+        "IO":{
+          "Inputs":[
+
+          ],
+          "Outputs":[
+
+          ]
+        },
+        "Connections":{
+          "Inputs":[
+          ]
+        }
+      }
+      let j;
+      for( j=0; j<modules[i].inputs.length; j++){
+        let inputPortObj = {
+          "PortID":j.toString(),
+          "PortType":modules[i].inputs[j].portType
+        }
+
+        module_obj["IO"]["Inputs"].push(inputPortObj);
+
+        
+        
+        let g;
+        //alterar se a cardinalidade for para ser alterada
+
+        if(modules[i].inputs[j].connectors.length>0){
+          let ModuleIdOnModule=modules[i].inputs[j].connectors[0].outputPort.parentNode.id;
+          let ModuleId;
+          let ModulePort;
+
+          //modulo -> corresponde ao modulo a qual a conexao vai ser feita
+          //determinar o Id do modulo (corresponde à posicao do modulo no array)
+          let temp;
+          for(temp=0;temp<modules.length; temp++){
+            if(modules[temp].id==ModuleIdOnModule){
+              ModuleId=temp;
+            }
+          }
+          
+          //determinar o Id da porta do modulo (corresponde à posicao da porta no array)
+          let temp2;
+          for(temp2=0;temp2<modules[ModuleId].outputs.length; temp2++){
+            if(modules[ModuleId].outputs[temp2].id==modules[i].inputs[j].connectors[0].outputPort.id){
+              ModulePort= temp2;
+            }
+          }
+
+          let connectionObj = {
+                  "ModuleID":ModuleId.toString(),
+                  "ModulePort":ModulePort.toString(),
+                  "InputPort":j.toString()		
+            }
+          module_obj["Connections"]["Inputs"].push(connectionObj);
+        }
+
+
+      }
+
+      let h;
+      for(h=0; h<modules[i].outputs.length; h++){
+        let outputPortObj = {
+          "PortID":h.toString(),
+          "PortType":modules[i].outputs[h].portType
+        }
+        module_obj["IO"]["Outputs"].push(outputPortObj);
+      }
+
+      obj["Modules"].push(module_obj);
+    }
+
+    console.log(obj);
+    
+    //var json = JSON.stringify(obj);
+    //console.log(json);
+    
+    }
+    
+    (async () => {
+        await writeJsonFile('foo.json', obj);
+    })();
+    
+    
+    
+};
+
+
+
+
