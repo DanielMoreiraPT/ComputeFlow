@@ -143,6 +143,8 @@ class Connector {
 
                 hitPort = port;
                 break;
+              }else{
+                alert("Port types are different -.-");
               }
               break;
             }
