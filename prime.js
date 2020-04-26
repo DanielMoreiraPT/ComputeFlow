@@ -232,15 +232,24 @@ class Connector {
 class NodePort {
 
   constructor(parentNode, element, isInput) {
+    let fullname =element.querySelector(".port-label").textContent;
+    var fullnamesplited = splitString(fullname, ' ');
+    this.portType=fullnamesplited[0];
+    this.VarName=fullnamesplited[1];
 
-    this.portType=element.querySelector(".port-label").textContent;
-    
-    
+    //console.log(this.portType)
+    //console.log(this.VarName)
+
+    //size of the name so we can ajust modules sizes
+    this.nameSize = fullname.length;
+
     this.id = `port_${nextUid++}`;
     this.dragType = "port";
 
     this.parentNode = parentNode;
     this.isInput = isInput;
+
+
 
     this.element = element;
     this.portElement = element.querySelector(".port");
@@ -308,6 +317,8 @@ class NodeModule {
     this.name = "";
     this.functionId = "";
     element.setAttribute("data-drag", `${this.id}:module`);
+
+
 
     this.element = element;
     this.dragElement = element;
@@ -587,8 +598,7 @@ function createConnections(data){
   }                                                                                                                                                    
 };
 
-
-readTextFile("foo.json", function(text){
+readTextFile("test.json", function(text){
   const data = JSON.parse(text);
   let counterModulos;
   for(counterModulos=0;counterModulos<data.Modules.length; counterModulos++){
@@ -603,16 +613,50 @@ readTextFile("foo.json", function(text){
     
     maximo = n_inputs >= n_outputs ?  n_inputs : n_outputs;
     let height = (maximo*14)+((maximo+1)*10);
+    
+    
+
+    //know the width of the module
+    let maxInputSize = 0;
+    let maxOutputSize = 0;
+
+
+    let ii;
+    for(ii=0; ii<data.Modules[counterModulos].IO.Inputs.length;ii++){
+      let portType = data.Modules[counterModulos].IO.Inputs[ii].PortType;
+      let VarName = data.Modules[counterModulos].IO.Inputs[ii].VarName;
+      let totalsize = parseInt(portType.length)+parseInt(VarName.length);
+
+      if(maxInputSize<totalsize){
+        maxInputSize=totalsize;
+      }
+    }
+    let iii;
+    for(iii=0; iii<data.Modules[counterModulos].IO.Outputs.length;iii++){
+      let portType = data.Modules[counterModulos].IO.Outputs[iii].PortType;
+      let VarName = data.Modules[counterModulos].IO.Outputs[iii].VarName;
+      let totalsize = parseInt(portType.length)+parseInt(VarName.length);
+      
+
+      if(maxOutputSize<totalsize){
+        maxOutputSize=totalsize;
+      }
+    }
+    console.log("MAX: "+maxInputSize);
+    console.log("MAX: "+maxOutputSize);
+    let moduleWidth = 50+parseInt(maxInputSize)*5+50+parseInt(maxOutputSize)*5+50;
+    console.log(moduleWidth);
     let novoModuloHTML ="";
-    novoModuloHTML+='<g class="node-container"><rect class="node-background" width="204" height="128" x="0" y="0" rx="6" ry="6" /><g class="node-header"><rect class="header-round-rect" width="200" height="40" x="2" y="2" rx="4" ry="4" /><rect class="header-rect" width="200" height="36" x="2" y="6" /><text class="header-title" x="102" y="30">'+data.Modules[counterModulos].Name+'</text></g><g class="node-content"><rect class="content-round-rect" width="200" height="'+height+'" x="2" y="44" rx="4" ry="4" /><rect class="content-rect" width="200" height="77" x="2" y="44" /><g class="inputs">';
+    novoModuloHTML+='<g class="node-container"><rect class="node-background" width="'+moduleWidth+'" height="128" x="0" y="0" rx="6" ry="6" /><g class="node-header"><rect class="header-round-rect" width="'+moduleWidth+'" height="40" x="2" y="2" rx="4" ry="4" /><rect class="header-rect" width="'+moduleWidth+'" height="36" x="2" y="6" /><text class="header-title" x="'+(moduleWidth*2)/5+'" y="30">'+data.Modules[counterModulos].Name+'</text></g><g class="node-content"><rect class="content-round-rect" width="'+moduleWidth+'" height="'+height+'" x="2" y="44" rx="4" ry="4" /><rect class="content-rect" width="'+moduleWidth+'" height="77" x="2" y="44" /><g class="inputs">';
   
   
     let i;
     for(i=0;i<n_inputs; i++){
       //TODO ver ids para portos
       let portType = data.Modules[counterModulos].IO.Inputs[i].PortType;
+      let VarName = data.Modules[counterModulos].IO.Inputs[i].VarName;
       let transformValue = 50+(25*i);
-      let novoInput = '<g class="input-field" transform="translate(0,'+transformValue+')"><g class="port"><circle class="port-outer" cx="15" cy="10" r="7.5" /><circle class="port-inner" cx="15" cy="10" r="5" /><circle class="port-scrim" cx="15" cy="10" r="7.5" /></g><text class="port-label" x="28" y="14">'+portType+'</text></g>';
+      let novoInput = '<g class="input-field" transform="translate(0,'+transformValue+')"><g class="port"><circle class="port-outer" cx="15" cy="10" r="7.5" /><circle class="port-inner" cx="15" cy="10" r="5" /><circle class="port-scrim" cx="15" cy="10" r="7.5" /></g><text class="port-label" x="28" y="14">'+portType+" "+VarName+'</text></g>';
       novoModuloHTML+=novoInput;
       //console.log(novoInput);
     }
@@ -623,8 +667,12 @@ readTextFile("foo.json", function(text){
     for(j=0;j<n_outputs; j++){
       //TODO ver ids para portos
       let portType = data.Modules[counterModulos].IO.Outputs[j].PortType;
+      let VarName = data.Modules[counterModulos].IO.Outputs[j].VarName;
       let transformValue = 50+(25*j);
-      let novoOutput = '<g class="output-field" transform="translate(0,' +transformValue+')"><g class="port" data-clickable="false"><circle class="port-outer" cx="189" cy="10" r="7.5" /><circle class="port-inner" cx="189" cy="10" r="5" /><circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" /></g><text class="port-label" x="176" y="14">'+portType+'</text></g>';
+      let outer = moduleWidth-11;
+      let inner = moduleWidth-26;
+      console.log(outer);
+      let novoOutput = '<g class="output-field" transform="translate(0,' +transformValue+')"><g class="port" data-clickable="false"><circle class="port-outer" cx="'+outer+'" cy="10" r="7.5" /><circle class="port-inner" cx="'+outer+'" cy="10" r="5" /><circle class="port-scrim" cx="'+outer+'" cy="10" r="7.5" data-clickable="false" /></g><text class="port-label" x="'+inner+'" y="14">'+portType+" "+VarName+'</text></g>';
       novoModuloHTML+=novoOutput;
       //console.log(novoOutput);
     }
@@ -656,7 +704,6 @@ readTextFile("foo.json", function(text){
 
 
 });
-
 
 const app = require("electron").remote;
 var dialog = app.dialog;
