@@ -30,6 +30,14 @@ const connectorElement = frag.querySelector(".connector");
 const connectorLayer = document.querySelector("#connections-layer");
 //console.log(connectorElement);
 //console.log(connectorLayer);
+
+
+function splitString(stringToSplit, separator) {
+  let arrayOfStrings = stringToSplit.split(separator);
+  return arrayOfStrings;
+}
+
+
 class Connector {
 
   constructor() {
@@ -38,6 +46,11 @@ class Connector {
     this.dragType = "connector";
     this.isSelected = false;
     this.element = connectorElement.cloneNode(true);
+    var divNova = document.createElement("a"); 
+    this.element.appendChild(divNova);
+    //console.log(this.element);
+
+
     this.path = this.element.querySelector(".connector-path");
     this.pathOutline = this.element.querySelector(".connector-path-outline");
     this.inputHandle = this.element.querySelector(".input-handle");
@@ -334,13 +347,7 @@ class Chart {
   constructor() {
 
     this.dragElement = this.element = diagramElement;
-    //console.log("moduleElements: "+moduleElements);
-    moduleElements.forEach((element, i) => {
-      const module = new NodeModule(element, 400 + i * 250, 50);
-      moduleLock[module.id] = module;
-      modules.push(module);
-    });
-
+    
     this.target = null;
     this.dragType = null;
 
@@ -359,65 +366,145 @@ class Chart {
   }
 
   stopDragging() {
-    
     this.target.onDragEnd && this.target.onDragEnd();
   }
 
-
-  
   prepareTarget(event) {
-    //console.log("prepareTarget activated");
     let element = event.target;
     let drag;
+    //avaliar se se tira ligacao(carregar na ligacao)
+    if(element.tagName=="path"){
+      element.id="olaaa";
+      let d = document.getElementById("olaaa").getAttribute("d");
+      console.log(element);
+      let resultado = d.split(" ");
+      //Coordx Coordy of the input handle
+      //M123 456
+      let inputCoordxtemp = resultado[0];
+      let inputCoordx = inputCoordxtemp.substr(1);
+      let inputCoordy = resultado[1];
+      console.log("Input Coords: "+inputCoordx + ":" + inputCoordy);
+      element.id="ola";
 
-    while (!(drag = element.getAttribute("data-drag")) && element !== svg) {
-      if (window.CP.shouldStopExecution(0)){
-        break;
-      } 
-      element = element.parentNode;
-    }
-    window.CP.exitedLoop(0);
-    
-    drag = drag || "diagram:diagram";
-    const split = drag.split(":");
-    const id = split[0];
-    const dragType = split[1];
-    
-    
-    switch (dragType) {
-      case "diagram":
-        this.target = this;
-        break;
+      let outputCoordx = resultado[7];
+      let outputCoordy = resultado[8];
+      console.log("Output Coords: "+outputCoordx + ":" + outputCoordy);
 
-      case "module":
-        this.target = moduleLock[id];
-        break;
-
-      case "port":
-        //TODO ver se port tem connector.. se tiver podemos eliminar por aqui
-        const port = portLock[id];
-        //console.log(port);
-        //console.log(port.connectors.length);
-        if(port.connectors.length < 1){
-          port.createConnector();
-          this.target = port.lastConnector;
-          this.dragType = this.target.dragType;
+      let i;
+      for(i=0; i<modules.length; i++){
+        //Get Coordinates of modules
+        let ModuleMatrix = modules[i].element.getAttribute("transform");
+        //console.log(ModuleMatrix);
+        let temp = ModuleMatrix.substr(15);
+        var ola = splitString(temp, ',');
+        let Coordx = ola[0];
+        let Coordy = splitString(ola[1], ')')[0];
+        //width of the module--> default for now
+        let width = 200; //? confirm
+        //height of the module--> 50+(25*max modules on one side)
+        let height;
+        let max = 75;
         
-        }else{
-          if(port.lastConnector){
-            //console.log("maximo de cardinalidade alcancado");
-            //console.log(port.lastConnector);
-            port.lastConnector.remove();
+        if(modules[i].inputs.length > modules[i].outputs.length){
+            max = modules[i].inputs.length;
+          }else{
+            max = modules[i].outputs.length;
           }
         
-        }
-       
-        break;
-     
+        height = 50+(25*max)
+        //coord opposite of the module (opposite corner from COordx and Coordy)
+        let oppositeCoordx = parseInt(Coordx)+parseInt(width);
+        let oppositeCoordy = parseInt(Coordy)+parseInt(height);
 
-      case "connector":
-        this.target = connectorLock[id];
-        break;}
+        console.log("Width: "+ width + ", Height: " + height );
+        console.log("Module "+i+" coords: " + Coordx + " : " + Coordy); 
+        console.log("Module "+i+" finalcoords: " + oppositeCoordx + " : " + oppositeCoordy);
+        let portNumber = -1;
+        if((inputCoordx >= Coordx & inputCoordx <= oppositeCoordx)&(inputCoordy>= Coordy & inputCoordy <= oppositeCoordy)){
+          let j
+          //search for the coords of the input port untill we have a match.. we cant do it any other way since its a path tag
+          let portHeight = parseInt(Coordy)+60;  //60->module header size
+          for(j=0; j<modules[i].inputs.length; j++){
+            //does the height from the input handler matches the port?
+            if(portHeight == inputCoordy){
+              console.log("port height: "+portHeight);
+              console.log("Match on port "+j);
+              portNumber=j;
+              break;
+            }else{
+              portHeight+=25;
+            }
+          }
+        }
+        //se foi atribuida alguma porta
+        if(portNumber > -1){
+          //como a cardinalidade de cada porta, pode variar temos de procurar qual e a conexao nessa porta
+          let h;
+          for(h=0;h<modules[i].inputs[portNumber].connectors.length;h++){
+            if(modules[i].inputs[portNumber].connectors[h].outputPort.global["x"]==outputCoordx & modules[i].inputs[portNumber].connectors[h].outputPort.global["y"]==outputCoordy ){
+              console.log("e a ligacao: "+h);
+              modules[i].inputs[portNumber].connectors[h].remove();
+              //alert("eliminou a ligacao");
+            }else{
+              console.error("Erro: porta nao encontrada no modulo suposto");
+            }
+            break;
+          }
+        }
+
+
+      }
+    }else{
+
+      while (!(drag = element.getAttribute("data-drag")) && element !== svg) {
+        if (window.CP.shouldStopExecution(0)){
+          break;
+        } 
+        element = element.parentNode;
+      }
+      window.CP.exitedLoop(0);
+      
+      drag = drag || "diagram:diagram";
+      const split = drag.split(":");  
+      const id = split[0];
+      const dragType = split[1];
+      
+      
+      switch (dragType) {
+        case "diagram":
+          this.target = this;
+          break;
+  
+        case "module":
+          this.target = moduleLock[id];
+          break;
+  
+        case "port":
+          const port = portLock[id];
+          if(port.connectors.length < 1){
+            port.createConnector();
+            this.target = port.lastConnector;
+            this.dragType = this.target.dragType;
+          
+          }else{
+            if(port.lastConnector){
+              //console.log("maximo de cardinalidade alcancado");
+              //console.log(port.lastConnector);
+              port.lastConnector.remove();
+            }
+          
+          }
+          break;
+        case "connector":
+          console.log("sup");
+          this.target = connectorLock[id];
+          break;
+        case "connector-path":
+          console.log("sup");
+          break;}
+  
+    }
+
 
   }
 
@@ -466,13 +553,13 @@ function createConnections(data){
     //se o moduo tem ligacoes que saiam dos seus inputs
     if(data.Modules[counterModulos].Connections.Inputs){
       for(h=0;h<data.Modules[counterModulos].Connections.Inputs.length; h++){
-        console.log(data.Modules[counterModulos].Connections.Inputs);
+        //console.log(data.Modules[counterModulos].Connections.Inputs);
         let ownInputPort = data.Modules[counterModulos].Connections.Inputs[h].InputPort;
         let outputModule = data.Modules[counterModulos].Connections.Inputs[h].ModuleID;
         let outputModulePort = data.Modules[counterModulos].Connections.Inputs[h].ModulePort;
-        console.log("Own Input Port: " + ownInputPort);
-        console.log("Module connected to this port " + outputModule);
-        console.log("Port on that modules used: "+outputModulePort);
+        //console.log("Own Input Port: " + ownInputPort);
+        //console.log("Module connected to this port " + outputModule);
+        //console.log("Port on that modules used: "+outputModulePort);
        
        
         let connector = new Connector();
@@ -484,15 +571,15 @@ function createConnections(data){
         connector.updateHandle(InputPort);
         //place handle()
         let OutputPort = modules[outputModule].outputs[outputModulePort];
-        console.log(OutputPort);
+        //console.log(OutputPort);
         
         OutputPort.addConnector(connector);
         
         connector.outputPort = OutputPort;
         connector.updateHandle(OutputPort);
 
-        console.log("Connector: ");
-        console.log(connector);
+        //console.log("Connector: ");
+        //console.log(connector);
 
 
       }
@@ -672,7 +759,6 @@ document.getElementById('save_project').onclick=() => {
       obj["Modules"].push(module_obj);
     }
 
-    console.log(obj);
     
     //var json = JSON.stringify(obj);
     //console.log(json);
@@ -686,7 +772,3 @@ document.getElementById('save_project').onclick=() => {
     
     
 };
-
-
-
-
