@@ -10,6 +10,7 @@
     font-family: Arial, sans-serif;
   }
   
+
   .node-container {
     cursor: move;
   }
@@ -62,12 +63,20 @@
   }
   
   .connector-handle {
+    fill: rgb(43, 107, 18);
+  }
+  .connector-handle:hover{
     fill: rgb(67, 232, 2);
   }
   
   .connector-path {
     stroke: rgb(2, 178, 232);
     stroke-width: 4;
+    fill: none;
+  }
+  .connector-path:hover {
+    stroke: rgb(153, 3, 48);
+    stroke-width: 6;
     fill: none;
   }
   
@@ -116,7 +125,7 @@ position: relative;
     margin-left: 0;
 }
 }
-@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+/*@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";*/
 body {
     font-family: 'Poppins', sans-serif;
     background: #fafafa;
@@ -173,7 +182,7 @@ a, a:hover, a:focus {
     background: #6d7fcc;
 }
 ul ul a {
-    font-size: 0.9em !important;
-    padding-left: 30px !important;
+    font-size: 0.9em;
+    padding-left: 30px ;
     background: #6d7fcc;
 }
