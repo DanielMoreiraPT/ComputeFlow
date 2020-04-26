@@ -12,8 +12,8 @@ julia>
 ```
 """
 module ToUpercase
-    using JSON
-    export ToUpercase_channel
+using JSON
+export ToUpercase_channel
 #    include("FileReader.jl")
 
 
