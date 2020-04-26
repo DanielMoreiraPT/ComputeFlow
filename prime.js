@@ -371,24 +371,24 @@ class Chart {
 
   prepareTarget(event) {
     let element = event.target;
+    console.log(element);
     let drag;
     //avaliar se se tira ligacao(carregar na ligacao)
     if(element.tagName=="path"){
       element.id="olaaa";
       let d = document.getElementById("olaaa").getAttribute("d");
-      console.log(element);
       let resultado = d.split(" ");
       //Coordx Coordy of the input handle
       //M123 456
       let inputCoordxtemp = resultado[0];
       let inputCoordx = inputCoordxtemp.substr(1);
       let inputCoordy = resultado[1];
-      console.log("Input Coords: "+inputCoordx + ":" + inputCoordy);
+      //console.log("Input Coords: "+inputCoordx + ":" + inputCoordy);
       element.id="ola";
 
       let outputCoordx = resultado[7];
       let outputCoordy = resultado[8];
-      console.log("Output Coords: "+outputCoordx + ":" + outputCoordy);
+      //console.log("Output Coords: "+outputCoordx + ":" + outputCoordy);
 
       let i;
       for(i=0; i<modules.length; i++){
@@ -416,9 +416,9 @@ class Chart {
         let oppositeCoordx = parseInt(Coordx)+parseInt(width);
         let oppositeCoordy = parseInt(Coordy)+parseInt(height);
 
-        console.log("Width: "+ width + ", Height: " + height );
-        console.log("Module "+i+" coords: " + Coordx + " : " + Coordy); 
-        console.log("Module "+i+" finalcoords: " + oppositeCoordx + " : " + oppositeCoordy);
+        //console.log("Width: "+ width + ", Height: " + height );
+        //console.log("Module "+i+" coords: " + Coordx + " : " + Coordy); 
+        //console.log("Module "+i+" finalcoords: " + oppositeCoordx + " : " + oppositeCoordy);
         let portNumber = -1;
         if((inputCoordx >= Coordx & inputCoordx <= oppositeCoordx)&(inputCoordy>= Coordy & inputCoordy <= oppositeCoordy)){
           let j
@@ -427,8 +427,8 @@ class Chart {
           for(j=0; j<modules[i].inputs.length; j++){
             //does the height from the input handler matches the port?
             if(portHeight == inputCoordy){
-              console.log("port height: "+portHeight);
-              console.log("Match on port "+j);
+              //console.log("port height: "+portHeight);
+              //console.log("Match on port "+j);
               portNumber=j;
               break;
             }else{
@@ -442,11 +442,11 @@ class Chart {
           let h;
           for(h=0;h<modules[i].inputs[portNumber].connectors.length;h++){
             if(modules[i].inputs[portNumber].connectors[h].outputPort.global["x"]==outputCoordx & modules[i].inputs[portNumber].connectors[h].outputPort.global["y"]==outputCoordy ){
-              console.log("e a ligacao: "+h);
+              //console.log("e a ligacao: "+h);
               modules[i].inputs[portNumber].connectors[h].remove();
               //alert("eliminou a ligacao");
             }else{
-              console.error("Erro: porta nao encontrada no modulo suposto");
+              //console.error("Erro: porta nao encontrada no modulo suposto");
             }
             break;
           }
@@ -469,7 +469,7 @@ class Chart {
       const id = split[0];
       const dragType = split[1];
       
-      
+      console.log(dragType);
       switch (dragType) {
         case "diagram":
           this.target = this;
@@ -481,18 +481,16 @@ class Chart {
   
         case "port":
           const port = portLock[id];
-          if(port.connectors.length < 1){
+          //TODO ver cardinalidade com o professor
+          if(port.connectors.length < 2){
             port.createConnector();
             this.target = port.lastConnector;
             this.dragType = this.target.dragType;
           
           }else{
-            if(port.lastConnector){
-              //console.log("maximo de cardinalidade alcancado");
-              //console.log(port.lastConnector);
-              port.lastConnector.remove();
-            }
-          
+            //alert("Max cardinality reached");
+            console.log("Max cardinality reached");
+            break;
           }
           break;
         case "connector":
