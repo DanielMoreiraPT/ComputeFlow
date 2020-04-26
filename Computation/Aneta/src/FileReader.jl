@@ -13,6 +13,7 @@ julia>
 """
 module FileReader
     using JSON
+    #include("ToUpercase2.jl")
 
     ################################################
 #   UNMUTABLE part of module schema.
@@ -69,12 +70,16 @@ module FileReader
     function set_options()
         name = "$(func_info.id)_options.json"
         options = JSON.parse(read(name,String))
+
         file_name = get(options,"file_name",missing)
         Options(file_name)
     end
-    println(func_info)
+    println("filr+++" , func_info)
 
     options = set_options()
+    text = read(options.file_name, String)
+    #println(text)
+    #include("ToUpercase.jl")
+    put!(ToUpercase.ToUpercase_channel,text)
 
-    put!(ToUpercase.ToUpercase_chanel,read(options.file_name, String))
 end

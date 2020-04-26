@@ -1,11 +1,9 @@
 """
 # module ToUpercase
-- Name = ToUpercase
-- Version = "v1.0.0"
-- Id = hash("ToUpercase" * "v1.0.0")
+
 - Julia version: 
 - Author: anunia
-- Date: 2020-04-21
+- Date: 2020-04-26
 
 # Examples
 
@@ -15,8 +13,11 @@ julia>
 """
 module ToUpercase
     using JSON
+    export ToUpercase_channel
+#    include("FileReader.jl")
 
-################################################
+
+###############################################
 #   UNMUTABLE part of module schema.
     struct Function_info
         name::String
@@ -56,7 +57,6 @@ module ToUpercase
         IOinfo(input_array, output_array) = new(input_array, output_array)
     end
 
-    ToUpercase_chanel = Channel(1)
 ############################################
 #   MUTABLE part of module schema.
 
@@ -123,24 +123,33 @@ module ToUpercase
         result
     end
     function get_text()
-        take!(FileReader.FileReader_chanel)
+        println("========> get text")
+        txt = take!(ToUpercase_channel)
+        println(txt)
+        return txt
     end
 ################# PROGRAM #################
+    ToUpercase_channel = Channel(1)
 
     println(func_info)
     options = set_options()
-
+    println("1")
     text = get_text()
+    println("==>", text)
+    result = ""
 
     if options.all_text
-        all_text(text)
+        result = all_text(text)
     else
         if options.just_first_letters
-            just_first_letters(text)
+            result = just_first_letters(text)
         elseif options.from_the_begging
-            from_the_begging(text,options.fb_amount_of_char)
+            result = from_the_begging(text,options.fb_amount_of_char)
         elseif options.from_the_end
-            from_the_end(text, fe_amount_of_char)
+            result = from_the_end(text, fe_amount_of_char)
         end
     end
+    #write("txt_result.txt",result)
+    println("====",result)
+    close(ToUpercase_channel)
 end
