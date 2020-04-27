@@ -2,13 +2,16 @@
 
 _The goal of this portion is to run the graphs created in the interface._
 
+## How to use
+- Use Juno http://docs.junolab.org/latest/man/installation/
+- Set the Github Folder as the Project folder and it should work
 
 #### Members
  - Daniel Moreira (danielbarbosa@ua.pt)
  - Aneta Pawelec (pawelec.aneta98@gmail.com)
 
 #### Orientators
-- José Maria Fernandes (jfernan@ua.pt) 
+- José Maria Fernandes (jfernan@ua.pt)
 - Sérgio Miguel Santos (sergio.santos@ua.pt)
 
 #### Supervisors
