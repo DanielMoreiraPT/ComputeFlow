@@ -1,9 +1,11 @@
 """
-# module ToUpercase
+    Func_ToUpercase()
 
 - Julia version:
 - Author: anunia
-- Date: 2020-04-26
+- Date: 2020-04-27
+
+# Arguments
 
 # Examples
 
@@ -11,12 +13,7 @@
 julia>
 ```
 """
-#using JSON
-export ToUpercase_channel
-#
-module ToUpercase
-using JSON
-export ToUpercase_channel
+    #\export ToUpercase_channel
 #    include("FileReader.jl")
 
 
@@ -63,8 +60,6 @@ export ToUpercase_channel
 ############################################
 #   MUTABLE part of module schema.
 
-    func_info = Function_info("ToUpercase", "v.1.0.0",hash("ToUpercase"*"v.1.0.0"))
-    ioinfo = nothing
 
     struct Options
         all_text::Bool
@@ -79,10 +74,7 @@ export ToUpercase_channel
 
 
     function set_options()
-        name = "/home/anunia/Documents/ComputeFlow/Computation/Aneta/16551191982327271023_options.json"
-
-
-        #name = "$(func_info.id)_options.json"
+        name = "$(func_info.id)_options.json"
         options = JSON.parse(read(name,String))
 
         all_text = get(options,"all_text",missing)
@@ -105,86 +97,68 @@ export ToUpercase_channel
                 result *= word
             end
         end
-        return result
+        result
     end
     function from_the_begging(text, amount)
-        result = ""
-        if length(text) <= amount
-            println("---------------",length(text))
+        if length(text) >= amount
             all_text(text)
         else
-            i=1
-            for c in text
-                d=(uppercase("$c"))
-                println(i,d)
-                if amount > i
-                    result = result * d
-                else
-                    result = result * "$c"
-                end
-                i = i + 1
+            for i = 1:amount
+                text[i] += "A" - "a"
             end
         end
-        println("--->",result)
-        return result
     end
     function from_the_end(text, amount)
         textlength = length(text)
-        result = ""
-        if textlength <= amount
+        if textlength >= amount
             all_text(text)
         else
-            i=1
-            for c in text
-                d=(uppercase("$c"))
-                println(i,d)
-                if textlength - amount < i
-                    result = result * d
-                else
-                    result = result * "$c"
-                end
-                i = i + 1
+
+            for i = 1:amount
+                text[textlength - i] += "A" - "a"
             end
         end
-        return result
+        result
     end
-    function get_text(ToUpercase_channel)
-        println("========> get text\n")
-        #println("fetch----->",fetch(ToUpercase_channel))
-
+    function get_text()
+        println("========> get text")
         txt = take!(ToUpercase_channel)
-        #println(txt)
+        println(txt)
         return txt
     end
 ################# PROGRAM #################
-function ToUpercase_f(ToUpercase_channel)
+using JSON
+ToUpercase_channel = Channel(1)
 
-    println(func_info)
-    options = set_options()
-    println("OPTIONS-------> ", options)
-    text = get_text(ToUpercase_channel)
-    #println("==>", text)
-    result = ""
+get_channel() = ToUpercase_channel
+export ToUpercase_channel, get_channel
 
-    if options.all_text
-        println("==> all_text")
-        text = all_text(text)
-    else
-        if options.just_first_letters
-            println("==> just_first_letters")
-            text = just_first_letters(text)
+    function Func_ToUpercase()
+
+        func_info = Function_info("ToUpercase", "v.1.0.0",hash("ToUpercase"*"v.1.0.0"))
+        ioinfo = nothing
+
+
+
+        println(func_info)
+        options = set_options()
+        println("1")
+        text = get_text()
+        println("==>", text)
+        result = ""
+
+        if options.all_text
+            result = all_text(text)
+        else
+            if options.just_first_letters
+                result = just_first_letters(text)
+            elseif options.from_the_begging
+                result = from_the_begging(text,options.fb_amount_of_char)
+            elseif options.from_the_end
+                result = from_the_end(text, fe_amount_of_char)
+            end
         end
-        if options.from_the_begging
-            println("==> from_the_begging",options.fb_amount_of_char)
-            text = from_the_begging(text,options.fb_amount_of_char)
-        end
-        if options.from_the_end
-            println("==> from_the_end",options.fe_amount_of_char)
-            text = from_the_end(text, options.fe_amount_of_char)
-        end
+        #write("txt_result.txt",result)
+        println("====",result)
+        close(ToUpercase_channel)
     end
-    write("txt_result2.txt",text)
-    println("====",text)
-    #close(ToUpercase_channel)
-end
-end

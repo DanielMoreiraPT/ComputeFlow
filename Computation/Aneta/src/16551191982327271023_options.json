@@ -1,5 +1,5 @@
 {
-  "all_text" : true,
+  "all_text" : false,
   "just_first_letters" : false,
   "from_the_begging" : true,
   "fb_amount_of_char" : 10,
