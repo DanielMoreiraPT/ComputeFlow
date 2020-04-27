@@ -1,9 +1,11 @@
 """
-# module FileReader
+    Func_FileReader()
 
 - Julia version:
 - Author: anunia
-- Date: 2020-04-25
+- Date: 2020-04-27
+
+# Arguments
 
 # Examples
 
@@ -12,11 +14,9 @@ julia>
 ```
 """
 
-module FileReader()
+
     #include("ToUpercase2.jl")
     #using ToUpercase
-    import JSON
-
 
     ################################################
 #   UNMUTABLE part of module schema.
@@ -57,39 +57,38 @@ module FileReader()
         outputs::Array{Port_info, 1}
         IOinfo(input_array, output_array) = new(input_array, output_array)
     end
-    struct Options
+
+    struct Options_FileReader
         file_name::String
-        Options(file_name) = new(file_name)
+        Options_FileReader(file_name) = new(file_name)
     end
+
     function set_options()
         #/home/anunia/Documents/ComputeFlow/Computation/Aneta/6480418423639474263_options.json
         name = "/home/anunia/Documents/ComputeFlow/Computation/Aneta/$(func_info.id)_options.json"
         options = JSON.parse(read(name,String))
 
         file_name = get(options,"file_name",missing)
-        Options("/home/anunia/Documents/ComputeFlow/Computation/Aneta/"*file_name)
+        Options_FileReader("/home/anunia/Documents/ComputeFlow/Computation/Aneta/"*file_name)
     end
+############################################
+#   MUTABLE part of module schema.
+#include("ToUpercase.jl")
+
+function Func_FileReader()
+
+    FileReader_chanel = Channel(1)
 
     func_info = Function_info("FileReader", "v.1.0.0",hash("FileReader"*"v.1.0.0"))
     ioinfo = nothing
 
-    #FileReader_chanel = Channel(1)
-############################################
-#   MUTABLE part of module schema.
-    function FileReader_f(ToUpercase_channel)
 
+    println("filr+++" , func_info)
 
+    options = set_options()
+    text = read(options.file_name, String)
+    println(text)
+    #include("ToUpercase.jl")
+    put!(Func_ToUpercase.get_channel(),text)
 
-
-        println("filr+++" )#, func_info)
-
-        options = set_options()
-        text = read(options.file_name, String)
-        println(text)
-        include("ToUpercase.jl")
-        put!(ToUpercase_channel,text)
-        # println("fetch----->",fetch(ToUpercase.ToUpercase_channel))
-
-
-    end
 end
