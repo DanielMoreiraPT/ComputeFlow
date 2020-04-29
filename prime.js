@@ -384,6 +384,8 @@ class Chart {
     let element = event.target;
     console.log(element);
     let drag;
+
+
     //avaliar se se tira ligacao(carregar na ligacao)
     if(element.tagName=="path"){
       element.id="olaaa";
@@ -465,7 +467,8 @@ class Chart {
 
 
       }
-    }else{
+    }
+    else{
 
       while (!(drag = element.getAttribute("data-drag")) && element !== svg) {
         if (window.CP.shouldStopExecution(0)){
@@ -497,19 +500,15 @@ class Chart {
             port.createConnector();
             this.target = port.lastConnector;
             this.dragType = this.target.dragType;
-          
+            break;
           }else{
             //alert("Max cardinality reached");
             console.log("Max cardinality reached");
             break;
           }
-          break;
         case "connector":
           console.log("sup");
           this.target = connectorLock[id];
-          break;
-        case "connector-path":
-          console.log("sup");
           break;}
   
     }
@@ -518,13 +517,11 @@ class Chart {
   }
 
   dragTarget() {
-    //console.log("target: "+this.target)
-    //console.log("dragtype: "+this.target.dragType)
-
-    if(this.target.dragType==="connector" && this.target.inputPort===null && this.target.outputPort===null){
-      //console.log("in"+this.target.inputPort)
-      //console.log("out"+this.target.outputPort)
-      //console.log("hello there")
+    console.log(this.target)
+    if(this.target ==="undefined"){
+      return;
+    }else if(this.target.dragType==="connector" && this.target.inputPort===null && this.target.outputPort===null){
+      return;
     }else{
       TweenLite.set(this.target.dragElement, {
         x: `+=${this.draggable.deltaX}`,
@@ -598,7 +595,7 @@ function createConnections(data){
   }                                                                                                                                                    
 };
 
-readTextFile("test.json", function(text){
+readTextFile("foo.json", function(text){
   const data = JSON.parse(text);
   let counterModulos;
   for(counterModulos=0;counterModulos<data.Modules.length; counterModulos++){
@@ -642,12 +639,9 @@ readTextFile("test.json", function(text){
         maxOutputSize=totalsize;
       }
     }
-    console.log("MAX: "+maxInputSize);
-    console.log("MAX: "+maxOutputSize);
     let moduleWidth = 50+parseInt(maxInputSize)*5+50+parseInt(maxOutputSize)*5+50;
-    console.log(moduleWidth);
     let novoModuloHTML ="";
-    novoModuloHTML+='<g class="node-container"><rect class="node-background" width="'+moduleWidth+'" height="128" x="0" y="0" rx="6" ry="6" /><g class="node-header"><rect class="header-round-rect" width="'+moduleWidth+'" height="40" x="2" y="2" rx="4" ry="4" /><rect class="header-rect" width="'+moduleWidth+'" height="36" x="2" y="6" /><text class="header-title" x="'+(moduleWidth*2)/5+'" y="30">'+data.Modules[counterModulos].Name+'</text></g><g class="node-content"><rect class="content-round-rect" width="'+moduleWidth+'" height="'+height+'" x="2" y="44" rx="4" ry="4" /><rect class="content-rect" width="'+moduleWidth+'" height="77" x="2" y="44" /><g class="inputs">';
+    novoModuloHTML+='<g class="node-container"><rect class="node-background" width="'+moduleWidth+'" height="128" x="0" y="0" rx="6" ry="6" /><g class="node-header"><rect class="header-round-rect" width="'+moduleWidth+'" height="40" x="2" y="2" rx="4" ry="4" /><rect class="header-rect" width="'+moduleWidth+'" height="36" x="2" y="6" /><text class="header-title" x="'+(moduleWidth*3)/7+'" y="30">'+data.Modules[counterModulos].Name+'</text></g><g class="node-content"><rect class="content-round-rect" width="'+moduleWidth+'" height="'+height+'" x="2" y="44" rx="4" ry="4" /><rect class="content-rect" width="'+moduleWidth+'" height="77" x="2" y="44" /><g class="inputs">';
   
   
     let i;
@@ -671,13 +665,12 @@ readTextFile("test.json", function(text){
       let transformValue = 50+(25*j);
       let outer = moduleWidth-11;
       let inner = moduleWidth-26;
-      console.log(outer);
       let novoOutput = '<g class="output-field" transform="translate(0,' +transformValue+')"><g class="port" data-clickable="false"><circle class="port-outer" cx="'+outer+'" cy="10" r="7.5" /><circle class="port-inner" cx="'+outer+'" cy="10" r="5" /><circle class="port-scrim" cx="'+outer+'" cy="10" r="7.5" data-clickable="false" /></g><text class="port-label" x="'+inner+'" y="14">'+portType+" "+VarName+'</text></g>';
       novoModuloHTML+=novoOutput;
       //console.log(novoOutput);
     }
   
-    novoModuloHTML+="</g> </g></g>";
+    novoModuloHTML+="</g></g></g>";
   
     var divNova = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     divNova.setAttribute("class", "node-container");
@@ -692,6 +685,7 @@ readTextFile("test.json", function(text){
     document.getElementById("node-layer").appendChild(divNova);
     const module = new NodeModule(divNova,coordx, coordy);
     module.name = data.Modules[counterModulos].Name;
+    module.functionId = data.Modules[counterModulos].Id;
     moduleLock[module.id] = module;
     modules.push(module);
 
@@ -727,6 +721,7 @@ document.getElementById('save_project').onclick=() => {
       for(i=0;i<modules.length;i++){
       let module_obj = {
         "Name":modules[i].name,
+        "Id":i.toString(),
         "Coord":{
             "CoordX":modules[i].element.transform.baseVal[0].matrix.e.toString(),
             "CoordY":modules[i].element.transform.baseVal[0].matrix.f.toString()
@@ -749,7 +744,8 @@ document.getElementById('save_project').onclick=() => {
       for( j=0; j<modules[i].inputs.length; j++){
         let inputPortObj = {
           "PortID":j.toString(),
-          "PortType":modules[i].inputs[j].portType
+          "PortType":modules[i].inputs[j].portType,
+          "VarName":modules[i].inputs[j].VarName
         }
 
         module_obj["IO"]["Inputs"].push(inputPortObj);
@@ -796,7 +792,8 @@ document.getElementById('save_project').onclick=() => {
       for(h=0; h<modules[i].outputs.length; h++){
         let outputPortObj = {
           "PortID":h.toString(),
-          "PortType":modules[i].outputs[h].portType
+          "PortType":modules[i].outputs[h].portType,
+          "VarName":modules[i].outputs[h].VarName
         }
         module_obj["IO"]["Outputs"].push(outputPortObj);
       }
