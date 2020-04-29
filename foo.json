@@ -2,43 +2,51 @@
 	"title": "New Project Name",
 	"Modules": [
 		{
-			"Name": "Modulo 1",
+			"Name": "Employee",
+			"Id": "0",
 			"Coord": {
-				"CoordX": "675",
-				"CoordY": "680"
+				"CoordX": "510",
+				"CoordY": "720"
 			},
-			"FunctionID": "",
+			"FunctionID": "0",
 			"IO": {
 				"Inputs": [
 					{
 						"PortID": "0",
-						"PortType": "String"
+						"PortType": "String",
+						"VarName": "name"
 					},
 					{
 						"PortID": "1",
-						"PortType": "Integer"
+						"PortType": "Integer",
+						"VarName": "age"
 					},
 					{
 						"PortID": "2",
-						"PortType": "Integer"
+						"PortType": "Integer",
+						"VarName": "wage"
 					},
 					{
 						"PortID": "3",
-						"PortType": "String"
+						"PortType": "String",
+						"VarName": "position"
 					},
 					{
 						"PortID": "4",
-						"PortType": "Double"
+						"PortType": "Double",
+						"VarName": "extraHours"
 					}
 				],
 				"Outputs": [
 					{
 						"PortID": "0",
-						"PortType": "String"
+						"PortType": "String",
+						"VarName": "info"
 					},
 					{
 						"PortID": "1",
-						"PortType": "Integer"
+						"PortType": "Integer",
+						"VarName": "totalPayment"
 					}
 				]
 			},
@@ -50,44 +58,34 @@
 						"InputPort": "0"
 					},
 					{
-						"ModuleID": "1",
-						"ModulePort": "1",
-						"InputPort": "1"
-					},
-					{
-						"ModuleID": "1",
+						"ModuleID": "3",
 						"ModulePort": "0",
-						"InputPort": "4"
+						"InputPort": "3"
 					}
 				]
 			}
 		},
 		{
-			"Name": "Modulo 2",
+			"Name": "UpperCase",
+			"Id": "1",
 			"Coord": {
-				"CoordX": "1015",
-				"CoordY": "486"
+				"CoordX": "900",
+				"CoordY": "531"
 			},
-			"FunctionID": "",
+			"FunctionID": "1",
 			"IO": {
 				"Inputs": [
 					{
 						"PortID": "0",
-						"PortType": "String"
-					},
-					{
-						"PortID": "1",
-						"PortType": "Double"
+						"PortType": "String",
+						"VarName": "string"
 					}
 				],
 				"Outputs": [
 					{
 						"PortID": "0",
-						"PortType": "Double"
-					},
-					{
-						"PortID": "1",
-						"PortType": "Integer"
+						"PortType": "String",
+						"VarName": "result"
 					}
 				]
 			},
@@ -102,91 +100,81 @@
 			}
 		},
 		{
-			"Name": "",
+			"Name": "StringTemplate",
+			"Id": "2",
 			"Coord": {
-				"CoordX": "663",
-				"CoordY": "46"
+				"CoordX": "464",
+				"CoordY": "269"
 			},
-			"FunctionID": "",
+			"FunctionID": "2",
 			"IO": {
-				"Inputs": [
-					{
-						"PortID": "0",
-						"PortType": "String"
-					},
-					{
-						"PortID": "1",
-						"PortType": "Input 2"
-					},
-					{
-						"PortID": "2",
-						"PortType": "Input 3"
-					}
-				],
+				"Inputs": [],
 				"Outputs": [
 					{
 						"PortID": "0",
-						"PortType": "String"
-					},
-					{
-						"PortID": "1",
-						"PortType": "Output 2"
-					},
-					{
-						"PortID": "2",
-						"PortType": "Output 3"
-					}
-				]
-			},
-			"Connections": {
-				"Inputs": [
-					{
-						"ModuleID": "3",
-						"ModulePort": "0",
-						"InputPort": "0"
-					}
-				]
-			}
-		},
-		{
-			"Name": "",
-			"Coord": {
-				"CoordX": "882",
-				"CoordY": "314"
-			},
-			"FunctionID": "",
-			"IO": {
-				"Inputs": [
-					{
-						"PortID": "0",
-						"PortType": "String"
-					},
-					{
-						"PortID": "1",
-						"PortType": "Input 2"
-					},
-					{
-						"PortID": "2",
-						"PortType": "Input 3"
-					}
-				],
-				"Outputs": [
-					{
-						"PortID": "0",
-						"PortType": "String"
-					},
-					{
-						"PortID": "1",
-						"PortType": "Output 2"
-					},
-					{
-						"PortID": "2",
-						"PortType": "Output 3"
+						"PortType": "String",
+						"VarName": "value"
 					}
 				]
 			},
 			"Connections": {
 				"Inputs": []
+			}
+		},
+		{
+			"Name": "StringTemplate",
+			"Id": "3",
+			"Coord": {
+				"CoordX": "252",
+				"CoordY": "869"
+			},
+			"FunctionID": "3",
+			"IO": {
+				"Inputs": [],
+				"Outputs": [
+					{
+						"PortID": "0",
+						"PortType": "String",
+						"VarName": "value"
+					}
+				]
+			},
+			"Connections": {
+				"Inputs": []
+			}
+		},
+		{
+			"Name": "LowerCase",
+			"Id": "4",
+			"Coord": {
+				"CoordX": "924",
+				"CoordY": "119"
+			},
+			"FunctionID": "4",
+			"IO": {
+				"Inputs": [
+					{
+						"PortID": "0",
+						"PortType": "String",
+						"VarName": "value"
+					}
+				],
+				"Outputs": [
+					{
+						"PortID": "0",
+						"PortType": "String",
+						"VarName": "result"
+					}
+				]
+			},
+			"Connections": {
+				"Inputs": [
+					{
+						"ModuleID": "1",
+						"ModulePort": "0",
+						"InputPort": "0"
+					}
+				]
 			}
 		}
 	]
