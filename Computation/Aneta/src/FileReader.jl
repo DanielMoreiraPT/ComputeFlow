@@ -78,18 +78,11 @@ module FileReader()
 #   MUTABLE part of module schema.
     function FileReader_f(ToUpercase_channel)
 
-
-
-
-        println("filr+++" )#, func_info)
-
         options = set_options()
         text = read(options.file_name, String)
         println(text)
         include("ToUpercase.jl")
         put!(ToUpercase_channel,text)
-        # println("fetch----->",fetch(ToUpercase.ToUpercase_channel))
-
 
     end
 end

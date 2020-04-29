@@ -12,11 +12,11 @@ julia>
 ```
 """
 #using JSON
-export ToUpercase_channel
+#export ToUpercase_channel
 #
 module ToUpercase
-using JSON
-export ToUpercase_channel
+    using JSON
+    #export ToUpercase_channel
 #    include("FileReader.jl")
 
 
@@ -110,13 +110,11 @@ export ToUpercase_channel
     function from_the_begging(text, amount)
         result = ""
         if length(text) <= amount
-            println("---------------",length(text))
-            all_text(text)
+            result = all_text(text)
         else
             i=1
             for c in text
                 d=(uppercase("$c"))
-                println(i,d)
                 if amount > i
                     result = result * d
                 else
@@ -132,12 +130,11 @@ export ToUpercase_channel
         textlength = length(text)
         result = ""
         if textlength <= amount
-            all_text(text)
+            result = all_text(text)
         else
             i=1
             for c in text
                 d=(uppercase("$c"))
-                println(i,d)
                 if textlength - amount < i
                     result = result * d
                 else

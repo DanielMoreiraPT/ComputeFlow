@@ -12,21 +12,24 @@ julia>
 ```
 """
 module JsonReader
-using JSON
-include("Module_data.jl")
+    using JSON
+    include("Module_data.jl")
 #using Module_data
+#"/home/anunia/Documents/ComputeFlow/Computation/Aneta/test.json"
+    function upload_modules(name)
+        modules = []
 
+        open(name,"r") do jfile
+            dataDict = JSON.parse(read(jfile,String))
+            println(dataDict)
 
-open("/home/anunia/Documents/ComputeFlow/Computation/Aneta/test.json","r") do jfile
-    dataDict = JSON.parse(read(jfile,String))
-    println(dataDict)
+            for mod in get(dataDict,"Modules",missing)
+                push!(modules, Module_data.creat_module(mod))
+            end
+        end
 
-    modules = []
-    for mod in get(dataDict,"Modules",missing)
-        push!(modules, Module_data.creat_module(mod))
+        modules
     end
-    modules
-end
 end
     ### testing
     #println(get(get(dataDict,"Modules",missing)[1],"IO", missing))
