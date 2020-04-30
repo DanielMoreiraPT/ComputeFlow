@@ -9,6 +9,11 @@
     height: 100%;
     font-family: Arial, sans-serif;
   }
+
+  #bin {
+  	cursor: move;
+  	fill: darkblue;
+  }
   
 
   .node-container {

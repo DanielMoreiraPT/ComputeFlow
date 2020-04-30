@@ -370,6 +370,16 @@ class Chart {
 
   stopDragging() {
     this.target.onDragEnd && this.target.onDragEnd();
+    // const chart = document.querySelector(".chart");
+    // const bin = document.querySelector("#bin");
+
+    // if (Draggable.hitTest(".node-container", "#bin")){
+    //    alert("hit!!");
+
+    //   console.log("target"+this.target.dragElement);
+    //   TweenLite.to(this.target.dragElement,1, {opacity:0});
+      
+    // }
   }
 
   prepareTarget(event) {
@@ -508,8 +518,16 @@ class Chart {
 
   }
 
+    //function used in dragTarget() to detect a colision
+  checkHit() { 
+    if (Draggable.hitTest(".chart", "#bin")){ // gsap colision function, to check if the module is near the bin container
+       return true;
+    }
+  }
+
+
   dragTarget() {
-    console.log(this.target)
+    //console.log(this.target)
     if(this.target ==="undefined"){
       return;
     }else if(this.target.dragType==="connector" && this.target.inputPort===null && this.target.outputPort===null){
@@ -523,6 +541,46 @@ class Chart {
       this.target.onDrag && this.target.onDrag();
     }
 
+    if (this.checkHit()){ // colision function, to check if the node is near the bin
+      
+      alert("Module removed !!");
+      //console.log("target"+this.target.dragElement);
+      TweenLite.to(this.target.dragElement,1, {opacity:0}); //fade the deleted node(1sec to fade away)
+        
+
+      //alert('trigerred rmHTML ');
+         var node = this.target;
+         //console.log(node);
+         var NodeID = node.id;
+         var elmnt = this.target.element;
+         elmnt.id = NodeID;
+         //console.log("Module_id---------->"+NodeID);
+         var SVGcontainer = document.getElementById(NodeID); 
+        
+         console.log(SVGcontainer);
+         
+    
+         SVGcontainer.remove();
+         
+         //remove module data structures here ( clear all deleted module's data ) 
+
+        for(let i=0;i<modules.length; i++){
+          if(NodeID === modules[i].id){
+            modules.splice(i, 1)
+          }
+        }
+    
+
+      //test
+      /*   
+        console.log("modules" + modules.length);
+        if (modules.length){
+          alert("id module--" + modules[0].id);
+          console.log(modules[0]);
+        }
+      */ 
+
+      }
      
   }}
 
@@ -576,7 +634,7 @@ function createConnections(data){
   }                                                                                                                                                    
 };
 
-readTextFile("foo.json", function(text){
+readTextFile("test.json", function(text){
 const data = JSON.parse(text);
 document.getElementById("ProjectName").innerHTML = data.title;
 
@@ -869,7 +927,7 @@ readTextFile("ModulesTemplate.json", function(text){
   
 
 
-  createTemplatesOptions();
+  //createTemplatesOptions();
   });
 
 function createEspecificTemplate(templateType,id){
@@ -936,7 +994,7 @@ function createEspecificTemplate(templateType,id){
           divNova.setAttribute("class", "node-container");
         
         
-          divNova.id = "ola";
+          
           divNova.innerHTML = novoModuloHTML;
 
           let modules_list_position = modules.length;      
