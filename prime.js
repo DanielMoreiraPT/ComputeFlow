@@ -657,9 +657,6 @@ for(counterModulos=0;counterModulos<data.Modules.length; counterModulos++){
 
   var divNova = document.createElementNS('http://www.w3.org/2000/svg', 'g');
   divNova.setAttribute("class", "node-container");
-
-
-  divNova.id = "ola";
   divNova.innerHTML = novoModuloHTML;
   
 
