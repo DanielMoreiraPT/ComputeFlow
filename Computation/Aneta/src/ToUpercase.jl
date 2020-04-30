@@ -156,9 +156,11 @@ module ToUpercase
 ################# PROGRAM #################
 function ToUpercase_f(ToUpercase_channel)
 
-    println(func_info)
+    # println(func_info)
     options = set_options()
-    println("OPTIONS-------> ", options)
+    println("OPTIONS----------------to-uppercase-------> ", options)
+    #wait(ToUpercase_channel)
+    release()
     text = get_text(ToUpercase_channel)
     #println("==>", text)
     result = ""

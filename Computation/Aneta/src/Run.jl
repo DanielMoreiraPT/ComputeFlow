@@ -29,11 +29,11 @@ module Run
         channels = []
         # push!(modules_inputs, channels)
         if length(m.io.inputs) > 0
-            string = "$(m.functionid)_f"
-            func= getfield(eval(Symbol(m.functionid)),Symbol(string))
+            string = "$(m.functionid).$(m.functionid)_f("
+
             for io in m.io.inputs
                 channel = Channel(1)
-                # string = string * "ToUpercase_channel"
+                string = string * "ToUpercase_channel"
                 push!(channels,channel)
                 #println(summary(modules_inputs[m.id][]))
                 # string = "$(m.functionid).$(m.functionid)_f($(channel))"
@@ -44,13 +44,12 @@ module Run
                 # println("pass")
                 # println(summary(tasks[1]))
             end
-            # string = string * ")"
+            string = string * ")"
             println(string)
             # func =
-            exp = Symbol(string)
-             println(exp)
-            push!(tasks,Task(func(ToUpercase_channel)))
-            println("heeeeeeeeeeeeeeeelo")
+            # println("pass====> ", summary(func))
+            task = @task Meta.parse(string)
+            push!(tasks,task)
         end
         modules_dict = Dict("id" => m.id, "functionid" => m.functionid, "channels" => channels)
         push!(modules_inputs, modules_dict)
@@ -65,20 +64,18 @@ module Run
 
                 module_connected = modules_inputs[connection.module_id]
                 module_connected_name = get(module_connected, "functionid", missing)
-                string = "$(module_connected_name)_f"
-                func= getfield(eval(Symbol(m.functionid)),Symbol(string))
-
+                string = "$(module_connected_name).$(module_connected_name)_f(ToUpercase_channel)"
                 println(string)
-                # func = Meta.parse(string)
+                task = @task Meta.parse(string)
                 println("pass")
-                push!(tasks, Task(func(ToUpercase_channel)))
+                push!(tasks,task)
                 println("pass")
-                println(summary(tasks[2]))
+                println(summary(tasks[1]))
             end
         end
     end
     for task in tasks
-        println(summary(task))
+        # println(summary(task))
 
         schedule(task)
     end
@@ -90,9 +87,10 @@ module Run
     #
     # include("ToUpercase.jl")
     # global ToUpercase_channel = Channel(1)
-    # task2 = Task(FileReader.FileReader_f(ToUpercase_channel))
-    #
-    # task1 = Task(ToUpercase.ToUpercase_f(ToUpercase_channel))
+    task1 = Task(ToUpercase.ToUpercase_f(ToUpercase_channel))
+
+    task2 = Task(FileReader.FileReader_f(ToUpercase_channel))
+
     # schedule(task1)
     # schedule(task2)
 

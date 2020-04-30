@@ -65,12 +65,12 @@ module Module_data
         connections = get_connections(get(data, "Connections",missing))
 
         module_info = Module_info(id, coords, functionid, io, connections)
-        println("=====>", module_info)
-        println("=====>", module_info.id)
-        println("=====>", module_info.coords)
-        println("=====>", module_info.functionid)
-        println("=====>", module_info.io)
-        println("=====>", module_info.connections)
+        # println("=====>", module_info)
+        # println("=====>", module_info.id)
+        # println("=====>", module_info.coords)
+        # println("=====>", module_info.functionid)
+        # println("=====>", module_info.io)
+        # println("=====>", module_info.connections)
         return module_info
     end
 
