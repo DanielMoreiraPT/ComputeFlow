@@ -520,7 +520,7 @@ class Chart {
 
     //function used in dragTarget() to detect a colision
   checkHit() { 
-    var overlapTreshold = "50%";
+    var overlapTreshold = "70%";
     if (Draggable.hitTest(".chart", "#bin",overlapTreshold)){ // gsap colision function, to check if the module is near the bin container
        return true;
     }
@@ -557,9 +557,10 @@ class Chart {
         
         // search for connectors in output ports and consequently remove them
         for (let PortNumber=0; PortNumber < modules[i].outputs.length; PortNumber++){
-          //console.log(PortNumber);
+          console.log(PortNumber);
           for(let h=0;h<modules[i].outputs[PortNumber].connectors.length;h++){
-            //console.log(h);
+            console.log(h);
+            console.log(modules[i].outputs[PortNumber].connectors[h]);
             modules[i].outputs[PortNumber].connectors[h].remove()
           }
         }
@@ -569,7 +570,7 @@ class Chart {
           //console.log(PortNumber);
           for(let h=0;h<modules[i].inputs[PortNumber].connectors.length;h++){
             //console.log(h);
-            modules[i].inputs[PortNumber].connectors[h].remove()
+            modules[i].inputs[PortNumber].connectors[h].remove();
           }
         }
         
@@ -578,7 +579,7 @@ class Chart {
         var NodeID = getTargetID(this.target);
         if(NodeID === modules[i].id){
           //console.log(modules[i]);
-          modules.splice(i, 1)
+          //modules.splice(i, 1)
         }
 
 
@@ -673,7 +674,7 @@ function createConnections(data){
   }                                                                                                                                                    
 };
 
-readTextFile("test.json", function(text){
+readTextFile("foo.json", function(text){
 const data = JSON.parse(text);
 document.getElementById("ProjectName").innerHTML = data.title;
 
@@ -897,6 +898,7 @@ var scope_for_functions = {};
 var scope_for_vars = {};
 var ListVarTemplates = [];
 var ListFunctionTemplates = [];
+
 class VarTemplate {
   constructor(name, TypeId) {
     this.name=name;
@@ -1044,6 +1046,7 @@ function createEspecificTemplate(templateType,id){
           modulee.name = ListVarTemplates[i].name;
           moduleLock[modulee.id] = modulee;
           modules.push(modulee);
+        
         }
       }
     }else if(templateType=="function"){
