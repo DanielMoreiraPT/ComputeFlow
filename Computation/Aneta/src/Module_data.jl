@@ -1,7 +1,7 @@
 """
 # module Module_data
 
-- Julia version: 
+- Julia version:
 - Author: anunia
 - Date: 2020-04-21
 
@@ -71,7 +71,7 @@ module Module_data
         println("=====>", module_info.functionid)
         println("=====>", module_info.io)
         println("=====>", module_info.connections)
-
+        return module_info
     end
 
     function get_connections(dict)

@@ -1,0 +1,68 @@
+{
+  "title": "ToUppercase_test",
+  "Modules":[
+    {
+      "Id": 1,
+      "Coord":{
+        "CoordX":"X",
+        "CoordY":"Y"
+      },
+      "FunctionID": "ToUpercase",
+      "IO":{
+        "Inputs":[
+          {
+            "PortID": "1",
+            "PortType": "String"
+          }
+        ],
+        "Outputs":[ ]
+
+      },
+      "Connections":{
+        "Inputs":[
+          {
+            "ModuleID": 2,
+            "ModulePort": 1,
+            "InputPort": 1
+          }
+        ],
+        "Outputs" : [ ]
+
+      }
+
+    },
+    {
+      "Id": 2,
+      "Coord":{
+        "CoordX":"X",
+        "CoordY":"Y"
+      },
+      "FunctionID": "FileReader",
+      "IO":{
+        "Inputs":[],
+
+        "Outputs":[
+          {
+            "PortID": "1",
+            "PortType": "String"
+          }
+        ]
+
+      },
+      "Connections":{
+        "Inputs":[
+          {
+            "ModuleID": 1,
+            "ModulePort": 1,
+            "InputPort": 1
+          }
+        ],
+        "Outputs" : [
+
+        ]
+
+      }
+
+    }
+  ]
+}
