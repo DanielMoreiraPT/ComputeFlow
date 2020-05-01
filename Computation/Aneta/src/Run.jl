@@ -12,7 +12,7 @@ julia>
 ```
 """
 module Run
-
+    import Base.Threads.@spawn
     include("JsonReader.jl")
     modules = JsonReader.upload_modules("Computation/Aneta/ToUppercase_test.json")
     #import Base.Threads.@everywhere
@@ -48,7 +48,7 @@ module Run
             println(string)
             # func =
             # println("pass====> ", summary(func))
-            task = @task Meta.parse(string)
+            task = @spawn Meta.parse(string)
             push!(tasks,task)
         end
         modules_dict = Dict("id" => m.id, "functionid" => m.functionid, "channels" => channels)
@@ -66,20 +66,22 @@ module Run
                 module_connected_name = get(module_connected, "functionid", missing)
                 string = "$(module_connected_name).$(module_connected_name)_f(ToUpercase_channel)"
                 println(string)
-                task = @task Meta.parse(string)
+                task = @spawn Meta.parse(string)
                 println("pass")
                 push!(tasks,task)
                 println("pass")
-                println(summary(tasks[1]))
+                println(summary(tasks))
             end
         end
     end
-    for task in tasks
-        # println(summary(task))
+    function run_tasks()
+        for task in tasks
+            println(summary(task))
 
-        schedule(task)
+            schedule(task,1)
+        end
     end
-
+    Task(run_tasks)
     println("Im running")
     # show(summary(ToUpercase.ToUpercase_f))
 ######################################3
