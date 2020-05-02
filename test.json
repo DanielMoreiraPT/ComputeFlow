@@ -2,7 +2,7 @@
 	"title": "title", 
 	"Modules":[
   		{
-            "Name":"Modulo 1",
+            "Name":"Employee",
           "Id":"0",
           "Coord":{
               "CoordX":"510",
@@ -11,77 +11,74 @@
           "FunctionID":"12",
           "IO":{
               "Inputs":[
-                  {
+                  {     
                       "PortID":"0",
-                      "PortType": "String"
+                      "PortType": "String",
+                      "VarName": "name"
                   },
                   {
                       "PortID":"1",
-                      "PortType": "Integer"
+                      "PortType": "Integer",
+                      "VarName": "age"
                   },
                   {
                       "PortID":"2",
-                      "PortType": "Integer"
+                      "PortType": "Integer",
+                      "VarName": "wage"
                   },
                   {
                       "PortID":"3",
-                      "PortType": "String"
+                      "PortType": "String",
+                      "VarName": "position"
                   },
                   {
                       "PortID":"4",
-                      "PortType": "Double"
+                      "PortType": "Double",
+                      "VarName": "extraHours"
                   }
               ],
               "Outputs":[		
                   {
                       "PortID":"0",
-                      "PortType": "String"
+                      "PortType": "String",
+                      "VarName": "info"
                   },
                   {
                       "PortID":"1",
-                      "PortType": "Integer"
+                      "PortType": "Integer",
+                      "VarName": "totalPayment"
                   }
               ]
 
             },
           "Connections":{
                 "Inputs":[
-                    {
-                    "InputPort":"1",	
-                    "ModuleID":"1",
-                    "ModulePort":"1"	
-                }
+                    
                 ]
             
             }
             
         },{
-        "Name":"Modulo 2",
+        "Name":"UpperCase",
           "Id":"1",
           "Coord":{
               "CoordX":"900",
               "CoordY":"531"
           },
-          "FunctionID":"12 -> we need to have a seperated file which is also sent with the info from each function",
+          "FunctionID":"4",
           "IO":{
               "Inputs":[
                   {
                       "PortID":"0",
-                      "PortType": "String"
-                  },
-                  {
-                      "PortID":"1",
-                      "PortType": "Double"
+                      "PortType":"String",
+                      "VarName":"string"
                   }
               ],
               "Outputs":[		
                   {
                       "PortID":"0",
-                      "PortType": "Double"
-                  },
-                  {
-                      "PortID":"1",
-                      "PortType": "Integer"
+                      "PortType": "String",
+                      "VarName":"result"
                   }
               ]
 

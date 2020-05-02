@@ -4,17 +4,18 @@
 </style>
 
 <head>
-  <title>ComputeFlow Web App</title>
+  <title>ComputeFlow App</title>
   <!-- side navbar-->
 
     <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <!-- Font Awesome JS -->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"></script>
   <!---------------------->
   <link rel="stylesheet" type="text/css" href="assets/css/main.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.2/TweenMax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.2/TweenMax.min.js" ></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.2/utils/Draggable.min.js"></script>
   <script src="lib.js"></script>
   <link rel="preload" href="prime.js" as="script">
@@ -23,22 +24,12 @@
 
   <!-- side navbar-->
     <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <!-- Popper.JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-    <script>
-    $(document).ready(function () {
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 
-      $('#sidebarCollapse').on('click', function () {
-          $('#sidebar').toggleClass('active');
-      });
-
-      });
-    </script>
-    
-  <!---->
     <div class="wrapper">
       <!-- Sidebar -->
       <nav id="sidebar" style="position:fixed;position:absolute; z-index:9999; min-width: 320px;">
@@ -52,22 +43,15 @@
   
           <ul class="list-unstyled components">
               <!--TODO alterar nome dinamicamente-->
-              <p>Project Name</p>
+              <p id="ProjectName">Project Name</p>
               <li class="active">
-                  <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Modules</a>
+                  <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Add Modules</a>
                   <ul class="collapse list-unstyled" id="homeSubmenu">
-                    <!-- TODO meter para todos.. e temporario-->  
-                    <li class="moduleID" id = 'moduleID1'>
-                          <a>Module 1</a>
-                      </li>
-                      <li class="moduleID" id = 'moduleID2'>
-                          <a>Module 2</a>
-                      </li>
-                      <li class="moduleID" id = 'moduleID3'>
-                          <a>Module 3</a>
-                      </li>
+                    <!-- Modules Templates appear here-->  
                   </ul>
               </li>
+              
+            </li>
               <li>
                   <a>Create New Module</a>
               </li>
@@ -76,85 +60,41 @@
               </li>
               <li >
                   <a id="save_project">Save Project</a>
-
               </li>
           </ul>
       </nav>
       <div id="content">
         <div>
-          <svg id="svg">         
-            <g id="diagram" data-drag="diagram:diagram" data-drag-type="diagram">     
+          <svg id="svg">      
+              <g id="bin" transform="translate(800,0)" viewBox="0 0 1000 1000">
+                <path class="bin scale" d="M17.114,3.923h-4.589V2.427c0-0.252-0.207-0.459-0.46-0.459H7.935c-0.252,0-0.459,0.207-0.459,0.459v1.496h-4.59c-0.252,0-0.459,0.205-0.459,0.459c0,0.252,0.207,0.459,0.459,0.459h1.51v12.732c0,0.252,0.207,0.459,0.459,0.459h10.29c0.254,0,0.459-0.207,0.459-0.459V4.841h1.511c0.252,0,0.459-0.207,0.459-0.459C17.573,4.127,17.366,3.923,17.114,3.923M8.394,2.886h3.214v0.918H8.394V2.886z M14.686,17.114H5.314V4.841h9.372V17.114z M12.525,7.306v7.344c0,0.252-0.207,0.459-0.46,0.459s-0.458-0.207-0.458-0.459V7.306c0-0.254,0.205-0.459,0.458-0.459S12.525,7.051,12.525,7.306M8.394,7.306v7.344c0,0.252-0.207,0.459-0.459,0.459s-0.459-0.207-0.459-0.459V7.306c0-0.254,0.207-0.459,0.459-0.459S8.394,7.051,8.394,7.306"></path>
+              </g>
+
+
+            <g class="chart" id="diagram" data-drag="diagram:diagram" data-drag-type="diagram">     
               <g id="node-layer">
                 <!-- Modulos vao ser acrescentados aqui -->   
               </g>
-          
-              <g id="connections-layer"></g>
-          
+              <g id="connections-layer" style="cursor: pointer;"></g>
               <g class="connector">
                 <path class="connector-path-outline" />
                 <path class="connector-path" />
                 <circle class="connector-handle input-handle" cx="0" cy="0" r="4" />
                 <circle class="connector-handle output-handle" cx="0" cy="0" r="4" />
               </g>
-  
             </g>
           </svg>              
               <circle id="drag-proxy" cx="0" cy="0" r="1" fill="none" />  
-                
-         
         </div>
       </div>
 
       
   </div> 
-<script>
-function load_prime()
-   {
-      var body= document.getElementsByTagName('body')[0];
-      var script= document.createElement('script');
-      script.src= 'prime.js';
-      body.appendChild(script);
-   }
-load_prime();
-var ModulesCreators = document.getElementsByClassName("moduleID");
-//console.log(ModulesCreators);
-
-//var globais para atribuir onclick functions e ids a futuros modulos
-var scope = {};
-var n_modules_per_id = {};
-for (let i = 0; i < ModulesCreators.length; i++) {
-  scope['counter' + i] = ModulesCreators[i].id;
-  n_modules_per_id[scope['counter'+i]]=0;
-}
-for (let j = 0; j < ModulesCreators.length; j++) {
-    ModulesCreators[j].addEventListener("click", function() {
-      //console.log("I'm module "+scope['counter'+j]);
-      var divNova = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-      divNova.setAttribute("class", "node-container");
-
-
-      let n_modules_from_that_type = document.querySelectorAll('*[id^="%s"]',scope['counter'+j]).length;
-      console.log("Modulos desse tipo:" + n_modules_from_that_type);
-      n_modules_per_id[scope['counter'+j]]++;
-
-      divNova.id = scope['counter'+j]+" #"+n_modules_per_id[scope['counter'+j]];      
-      console.log(divNova.id);
-      divNova.innerHTML = '<rect class="node-background" width="204" height="128" x="0" y="0" rx="6" ry="6" /><g class="node-header"><rect class="header-round-rect" width="200" height="40" x="2" y="2" rx="4" ry="4" /><rect class="header-rect" width="200" height="36" x="2" y="6" /><text class="header-title" x="102" y="30">'+"Module "+divNova.id.split("module")[1]+'</text></g><g class="node-content"><rect class="content-round-rect" width="200" height="82" x="2" y="44" rx="4" ry="4" /><rect class="content-rect" width="200" height="77" x="2" y="44" /><g class="inputs"><g class="input-field" transform="translate(0, 50)"><g class="port"><circle class="port-outer" cx="15" cy="10" r="7.5" /><circle class="port-inner" cx="15" cy="10" r="5" /><circle class="port-scrim" cx="15" cy="10" r="7.5" /></g><text class="port-label" x="28" y="14">String</text></g><g class="input-field" transform="translate(0, 75)"><g class="port"><circle class="port-outer" cx="15" cy="10" r="7.5" /><circle class="port-inner" cx="15" cy="10" r="5" /><circle class="port-scrim" cx="15" cy="10" r="7.5" /></g><text class="port-label" x="28" y="14">Input 2</text></g><g class="input-field" transform="translate(0, 100)"><g class="port"><circle class="port-outer" cx="15" cy="10" r="7.5" /><circle class="port-inner" cx="15" cy="10" r="5" /><circle class="port-scrim" cx="15" cy="10" r="7.5" /></g><text class="port-label" x="28" y="14">Input 3</text></g></g><g class="outputs"><g class="output-field" transform="translate(0, 50)"><g class="port" data-clickable="false"><circle class="port-outer" cx="189" cy="10" r="7.5" /><circle class="port-inner" cx="189" cy="10" r="5" /><circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" /></g><text class="port-label" x="176" y="14">String</text></g><g class="output-field" transform="translate(0, 75)"><g class="port" data-clickable="false"><circle class="port-outer" cx="189" cy="10" r="7.5" /><circle class="port-inner" cx="189" cy="10" r="5" /><circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" /></g><text class="port-label" x="176" y="14">Output 2</text></g><g class="output-field" transform="translate(0, 100)"><g class="port" data-clickable="false"><circle class="port-outer" cx="189" cy="10" r="7.5" /><circle class="port-inner" cx="189" cy="10" r="5" /><circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" /></g><text class="port-label" x="176" y="14">Output 3</text></g></g></g>';
-
-
-      document.getElementById("node-layer").appendChild(divNova);
-      //adicinar elemento ao diagrama
-      //TODO criar modulos em posicoes nao previamente ocupadas
-      const module = new NodeModule(divNova, 400 + 300, 300);
-      moduleLock[module.id] = module;
-      modules.push(module);
-    });
-}
-
-
-
-</script>
-
+  
+  
+<script src="sidebar.js"></script>
+<script src="jsonRelated.js"></script>
+<script src="prime.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,58 @@
+{
+	"Templates":{
+        "Variables": [
+            {
+            "Name":"StringTemplate",
+            "Id":"0",
+            "Coord":{
+                "CoordX":"600",
+                "CoordY":"600"
+            },
+            "IO":{
+                "Outputs":[		
+                        {
+                            "PortID":"0",
+                            "PortType": "String",
+                            "VarName": "value"
+                        }
+                    ]
+                },
+            "Connections":{
+                "Inputs":[
+                ]
+            }
+            
+                
+            }
+        ],
+        "Functions":[
+            {
+            "Name":"LowerCase",
+            "FunctionID":"4",
+            "IO":{
+                "Inputs":[
+                    {
+                        "PortID":"0",
+                        "PortType":"String",
+                        "VarName":"value"
+                    }
+                ],
+                "Outputs":[		
+                    {
+                        "PortID":"0",
+                        "PortType": "String",
+                        "VarName": "result"
+                    }
+                    ]
+                },
+            "Connections":{
+                "Inputs":[
+                    
+                ]
+            
+            }
+            }
+        ]
+    }
+        
+}
