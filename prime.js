@@ -372,16 +372,86 @@ class Chart {
   stopDragging() {
     if(this.target===null){return;}
     this.target.onDragEnd && this.target.onDragEnd();
-    // const chart = document.querySelector(".chart");
-    // const bin = document.querySelector("#bin");
-
-    // if (Draggable.hitTest(".node-container", "#bin")){
-    //    alert("hit!!");
-
-    //   console.log("target"+this.target.dragElement);
-    //   TweenLite.to(this.target.dragElement,1, {opacity:0});
+    
+    if(this.checkHit()){ // colision function, to check if the node is near the bin
       
-    // }
+      var dragType = this.target.dragType;
+      console.log(dragType);
+
+      if (dragType=="module"){
+       
+       //remove module data structures here ( clear all deleted module's data ) 
+
+       for(let i=0;i<modules.length; i++){
+         
+         //console.log(modules[i].outputs[i].length);
+           
+         
+         //remove the soon to be deleted node from 'modules' data structure
+         var NodeID = getTargetID(this.target);
+         if(NodeID === modules[i].id){
+           //console.log(modules[i]);
+           // search for connectors in output ports and consequently remove them
+           for (let PortNumber=0; PortNumber < modules[i].outputs.length; PortNumber++){
+           //console.log(PortNumber);
+             for(let h=0;h<modules[i].outputs[PortNumber].connectors.length;h++){
+               //console.log(h);
+               //console.log(modules[i].outputs[PortNumber].connectors[h]);
+               modules[i].outputs[PortNumber].connectors[h].remove()
+             }
+           }
+
+         // search for connectors in input ports and consequently remove them
+           for (let PortNumber=0; PortNumber < modules[i].inputs.length; PortNumber++){
+             //console.log(PortNumber);
+             for(let h=0;h<modules[i].inputs[PortNumber].connectors.length;h++){
+               //console.log(h);
+               modules[i].inputs[PortNumber].connectors[h].remove();
+             }
+           }
+
+           modules.splice(i, 1)
+         }
+       }
+
+       // test to know if the node was really deleted
+       // console.log("modules" + modules.length);
+       // console.log(modules[i]);
+       
+     }
+
+     /*fade the deleted node(0.6sec to fade away)*/    
+     TweenLite.to(this.target.dragElement,0.6, {opacity:0,scale:0, svgOrigin:"675px 143px"}); 
+      //console.log("target"+this.target.dragElement);
+       
+
+     //alert('trigerred rmHTML ');
+        var node = this.target;
+        //console.log(node);
+        var NodeID = getTargetID(node);
+        var elmnt = this.target.element;
+        elmnt.id = NodeID;
+        //console.log("Module_id---------->"+NodeID);
+        var SVGcontainer = document.getElementById(NodeID); 
+       
+        console.log(SVGcontainer);
+        
+   
+        SVGcontainer.remove();
+        
+       
+     alert("Module removed !!");
+
+
+     function getTargetID(node) {
+       //console.log(node);
+       var NodeID = node.id;
+       return NodeID;
+     }
+
+    
+
+     }
   }
 
   prepareTarget(event) {
@@ -549,86 +619,6 @@ class Chart {
       this.target.onDrag && this.target.onDrag();
     }
 
-    if (this.checkHit()){ // colision function, to check if the node is near the bin
-      
-       var dragType = this.target.dragType;
-       console.log(dragType);
-
-       if (dragType=="module"){
-        
-        //remove module data structures here ( clear all deleted module's data ) 
-
-        for(let i=0;i<modules.length; i++){
-          
-          //console.log(modules[i].outputs[i].length);
-            
-          
-          //remove the soon to be deleted node from 'modules' data structure
-          var NodeID = getTargetID(this.target);
-          if(NodeID === modules[i].id){
-            //console.log(modules[i]);
-            // search for connectors in output ports and consequently remove them
-            for (let PortNumber=0; PortNumber < modules[i].outputs.length; PortNumber++){
-            //console.log(PortNumber);
-              for(let h=0;h<modules[i].outputs[PortNumber].connectors.length;h++){
-                //console.log(h);
-                //console.log(modules[i].outputs[PortNumber].connectors[h]);
-                modules[i].outputs[PortNumber].connectors[h].remove()
-              }
-            }
-
-          // search for connectors in input ports and consequently remove them
-            for (let PortNumber=0; PortNumber < modules[i].inputs.length; PortNumber++){
-              //console.log(PortNumber);
-              for(let h=0;h<modules[i].inputs[PortNumber].connectors.length;h++){
-                //console.log(h);
-                modules[i].inputs[PortNumber].connectors[h].remove();
-              }
-            }
-
-            modules.splice(i, 1)
-          }
-        }
-
-        // test to know if the node was really deleted
-        // console.log("modules" + modules.length);
-        // console.log(modules[i]);
-        
-      }
-
-      /*fade the deleted node(0.6sec to fade away)*/    
-      TweenLite.to(this.target.dragElement,0.6, {opacity:0,scale:0, svgOrigin:"675px 143px"}); 
-       //console.log("target"+this.target.dragElement);
-        
-
-      //alert('trigerred rmHTML ');
-         var node = this.target;
-         //console.log(node);
-         var NodeID = getTargetID(node);
-         var elmnt = this.target.element;
-         elmnt.id = NodeID;
-         //console.log("Module_id---------->"+NodeID);
-         var SVGcontainer = document.getElementById(NodeID); 
-        
-         console.log(SVGcontainer);
-         
-    
-         SVGcontainer.remove();
-         
-        
-      alert("Module removed !!");
-
-
-      function getTargetID(node) {
-        //console.log(node);
-        var NodeID = node.id;
-        return NodeID;
-      }
-
-     
-
-      }
-     
   }}
 
 const chart = new Chart();
