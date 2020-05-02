@@ -344,7 +344,8 @@ class NodeModule {
     for (let output of this.outputs) {
       output.update();
     }
-  }}   
+  }} 
+    
 class Chart {
 
   constructor() {
@@ -365,10 +366,11 @@ class Chart {
       onDrag: this.dragTarget,
       onDragEnd: this.stopDragging,
       onPress: this.prepareTarget });
-
+ 
   }
 
   stopDragging() {
+    if(this.target===null){return;}
     this.target.onDragEnd && this.target.onDragEnd();
     // const chart = document.querySelector(".chart");
     // const bin = document.querySelector("#bin");
@@ -528,12 +530,13 @@ class Chart {
 
 
   dragTarget() {
-    //console.log(this.target)
-    //console.log(modules[0]);
+
     //console.log(modules[0].outputs[0].connectors[0]);
     //modules[0].outputs[0].connectors[0].remove();
-
+    //console.log(this.target);
     if(this.target ==="undefined"){
+      return;
+    }else if(this.target === null){
       return;
     }else if(this.target.dragType==="connector" && this.target.inputPort===null && this.target.outputPort===null){
       return;
@@ -548,39 +551,44 @@ class Chart {
 
     if (this.checkHit()){ // colision function, to check if the node is near the bin
       
-       
-      //remove module data structures here ( clear all deleted module's data ) 
+       var dragType = this.target.dragType;
+       console.log(dragType);
 
-       for(let i=0;i<modules.length; i++){
+       if (dragType=="module"){
         
-        //console.log(modules[i].outputs[i].length);
-           
-        
-        //remove the soon to be deleted node from 'modules' data structure
-        var NodeID = getTargetID(this.target);
-        if(NodeID === modules[i].id){
-          //console.log(modules[i]);
-          // search for connectors in output ports and consequently remove them
-          for (let PortNumber=0; PortNumber < modules[i].outputs.length; PortNumber++){
-          //console.log(PortNumber);
-            for(let h=0;h<modules[i].outputs[PortNumber].connectors.length;h++){
-              //console.log(h);
-              //console.log(modules[i].outputs[PortNumber].connectors[h]);
-              modules[i].outputs[PortNumber].connectors[h].remove()
-            }
-          }
+        //remove module data structures here ( clear all deleted module's data ) 
 
-        // search for connectors in input ports and consequently remove them
-          for (let PortNumber=0; PortNumber < modules[i].inputs.length; PortNumber++){
+        for(let i=0;i<modules.length; i++){
+          
+          //console.log(modules[i].outputs[i].length);
+            
+          
+          //remove the soon to be deleted node from 'modules' data structure
+          var NodeID = getTargetID(this.target);
+          if(NodeID === modules[i].id){
+            //console.log(modules[i]);
+            // search for connectors in output ports and consequently remove them
+            for (let PortNumber=0; PortNumber < modules[i].outputs.length; PortNumber++){
             //console.log(PortNumber);
-            for(let h=0;h<modules[i].inputs[PortNumber].connectors.length;h++){
-              //console.log(h);
-              modules[i].inputs[PortNumber].connectors[h].remove();
+              for(let h=0;h<modules[i].outputs[PortNumber].connectors.length;h++){
+                //console.log(h);
+                //console.log(modules[i].outputs[PortNumber].connectors[h]);
+                modules[i].outputs[PortNumber].connectors[h].remove()
+              }
             }
-          }
-          modules.splice(i, 1)
-        }
 
+          // search for connectors in input ports and consequently remove them
+            for (let PortNumber=0; PortNumber < modules[i].inputs.length; PortNumber++){
+              //console.log(PortNumber);
+              for(let h=0;h<modules[i].inputs[PortNumber].connectors.length;h++){
+                //console.log(h);
+                modules[i].inputs[PortNumber].connectors[h].remove();
+              }
+            }
+
+            modules.splice(i, 1)
+          }
+        }
 
         // test to know if the node was really deleted
         // console.log("modules" + modules.length);
