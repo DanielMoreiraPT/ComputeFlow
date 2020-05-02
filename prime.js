@@ -373,10 +373,10 @@ class Chart {
     if(this.target===null){return;}
     this.target.onDragEnd && this.target.onDragEnd();
     
-    if(this.checkHit()){ // colision function, to check if the node is near the bin
+    if (this.checkHit()){ // colision function, to check if the node is near the bin
       
       var dragType = this.target.dragType;
-      console.log(dragType);
+      //console.log(dragType);
 
       if (dragType=="module"){
        
@@ -413,45 +413,50 @@ class Chart {
            modules.splice(i, 1)
          }
        }
+     
 
        // test to know if the node was really deleted
        // console.log("modules" + modules.length);
        // console.log(modules[i]);
        
+
+       /*fade the deleted node(0.6sec to fade away)*/    
+       TweenLite.to(this.target.dragElement,0.6, {opacity:0,scale:0, svgOrigin:"675px 143px"}); 
+       //console.log("target"+this.target.dragElement);
+         
+
+       //alert('trigerred rmHTML ');
+         var node = this.target;
+         //console.log(node);
+         var NodeID = getTargetID(node);
+         var elmnt = this.target.element;
+         elmnt.id = NodeID;
+         //console.log("Module_id---------->"+NodeID);
+         var SVGcontainer = document.getElementById(NodeID); 
+         
+         console.log(SVGcontainer);
+         
+     
+         SVGcontainer.remove();
+         
+         
+       alert("Module removed !!");
+
+
+       function getTargetID(node) {
+         //console.log(node);
+         var NodeID = node.id;
+         return NodeID;
+       }
      }
-
-     /*fade the deleted node(0.6sec to fade away)*/    
-     TweenLite.to(this.target.dragElement,0.6, {opacity:0,scale:0, svgOrigin:"675px 143px"}); 
-      //console.log("target"+this.target.dragElement);
-       
-
-     //alert('trigerred rmHTML ');
-        var node = this.target;
-        //console.log(node);
-        var NodeID = getTargetID(node);
-        var elmnt = this.target.element;
-        elmnt.id = NodeID;
-        //console.log("Module_id---------->"+NodeID);
-        var SVGcontainer = document.getElementById(NodeID); 
-       
-        console.log(SVGcontainer);
-        
-   
-        SVGcontainer.remove();
-        
-       
-     alert("Module removed !!");
-
-
-     function getTargetID(node) {
-       //console.log(node);
-       var NodeID = node.id;
-       return NodeID;
+     
+     else{
+       PassThrough;
      }
-
     
 
      }
+   
   }
 
   prepareTarget(event) {
