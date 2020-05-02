@@ -554,32 +554,31 @@ class Chart {
        for(let i=0;i<modules.length; i++){
         
         //console.log(modules[i].outputs[i].length);
-        
-        // search for connectors in output ports and consequently remove them
-        for (let PortNumber=0; PortNumber < modules[i].outputs.length; PortNumber++){
-          console.log(PortNumber);
-          for(let h=0;h<modules[i].outputs[PortNumber].connectors.length;h++){
-            console.log(h);
-            console.log(modules[i].outputs[PortNumber].connectors[h]);
-            modules[i].outputs[PortNumber].connectors[h].remove()
-          }
-        }
-
-        // search for connectors in input ports and consequently remove them
-        for (let PortNumber=0; PortNumber < modules[i].inputs.length; PortNumber++){
-          //console.log(PortNumber);
-          for(let h=0;h<modules[i].inputs[PortNumber].connectors.length;h++){
-            //console.log(h);
-            modules[i].inputs[PortNumber].connectors[h].remove();
-          }
-        }
-        
+           
         
         //remove the soon to be deleted node from 'modules' data structure
         var NodeID = getTargetID(this.target);
         if(NodeID === modules[i].id){
           //console.log(modules[i]);
-          //modules.splice(i, 1)
+          // search for connectors in output ports and consequently remove them
+          for (let PortNumber=0; PortNumber < modules[i].outputs.length; PortNumber++){
+          //console.log(PortNumber);
+            for(let h=0;h<modules[i].outputs[PortNumber].connectors.length;h++){
+              //console.log(h);
+              //console.log(modules[i].outputs[PortNumber].connectors[h]);
+              modules[i].outputs[PortNumber].connectors[h].remove()
+            }
+          }
+
+        // search for connectors in input ports and consequently remove them
+          for (let PortNumber=0; PortNumber < modules[i].inputs.length; PortNumber++){
+            //console.log(PortNumber);
+            for(let h=0;h<modules[i].inputs[PortNumber].connectors.length;h++){
+              //console.log(h);
+              modules[i].inputs[PortNumber].connectors[h].remove();
+            }
+          }
+          modules.splice(i, 1)
         }
 
 
