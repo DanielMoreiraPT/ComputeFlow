@@ -145,22 +145,22 @@ module ToUpercase
         end
         return result
     end
-    function get_text(ToUpercase_channel)
-        println("========> get text\n")
-        println("fetch----->",fetch(ToUpercase_channel))
+    function get_text()
+        println("====5====> get text\n")
+        # println("fetch----->",fetch(ToUpercase_channel))
 
         txt = take!(ToUpercase_channel)
         #println(txt)
         return txt
     end
 ################# PROGRAM #################
-function ToUpercase_f(ToUpercase_channel)
+function ToUpercase_fg()
 
     # println(func_info)
     options = set_options()
     println("OPTIONS----------------to-uppercase-------> ", options)
     #wait(ToUpercase_channel)
-    text = get_text(ToUpercase_channel)
+    text = get_text()
     #println("==>", text)
     result = ""
 
@@ -182,7 +182,12 @@ function ToUpercase_f(ToUpercase_channel)
         end
     end
     write("txt_result2.txt",text)
-    println("====",text)
+    println("===========>",text)
     #close(ToUpercase_channel)
-end
+    end
+    global ToUpercase_channel
+    function ToUpercase_f(ToUpercase_channel)
+        ToUpercase_channel = ToUpercase_channel
+
+    end
 end
