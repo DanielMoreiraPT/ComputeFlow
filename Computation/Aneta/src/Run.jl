@@ -89,35 +89,65 @@ module Run
             # out = []
             # push!(out,)
             inputs_info_dict[m.id] = inputs
-            println("---------------\n",inputs)
+            # println("---------------\n",inputs)
             outputs = modules_output_info[m.id]["output_channels"]
-            println(outputs)
-            data = ("inputs" => inputs, "outputs" => outputs)
-            println("""$(m.functionid).$(m.functionid)_f(data)""")
-            string = """$(m.functionid).$(m.functionid)_f(data)"""
-
-            println(string,"\n---------------")
-            # func = Meta.parse(string)
-            # println(func)
-            # task = @async Task(eval(Meta.parse(string)))
-            push!(tasks,@async Task(eval(Meta.parse(string))))
+            # println(outputs)
+            # string = """$(m.functionid).$(m.functionid)_f(inputs, outputs)"""
+            # data = ("inputs" => inputs, "outputs" => outputs)
+            # println("""$(m.functionid).$(m.functionid)_f($inputs, $outputs)""")
+            # println(string,"\n---------------")
+            # # func = Meta.parse(string)
+            # # println(func)
+            # # task = @async Task(eval(Meta.parse(string)))
+            # push!(tasks,@async Task(eval(Meta.parse(string))))
         # end
     end
-    @async Task(wait(1000))
+    i = 1
+    task = Any
+    while i <= length(modules)
+        m = modules[i]
+        outputs = modules_output_info[m.id]["output_channels"]
+        inputs = inputs_info_dict[m.id]
+        string = """$(m.functionid).$(m.functionid)_f(inputs, outputs)"""
+        data = ("inputs" => inputs, "outputs" => outputs)
+        println("""$(m.functionid).$(m.functionid)_f($inputs, $outputs)""")
+        println(string,"\n---------------")
+        # func = Meta.parse(string)
+        # println(func)
+        global task = Threads.@async Task(eval(Meta.parse(string)))
+        push!(tasks,@task (eval(Meta.parse(string))))
+        global i = i + 1
+    end
+    for task in tasks
+        schedule( task)
+    end
+        # m = modules[1]
+        # outputs = modules_output_info[m.id]["output_channels"]
+        # inputs = inputs_info_dict[m.id]
+        # string = """$(m.functionid).$(m.functionid)_f(inputs, outputs)"""
+        # data = ("inputs" => inputs, "outputs" => outputs)
+        # println("""$(m.functionid).$(m.functionid)_f($inputs, $outputs)""")
+        # println(string,"\n---------------")
+        # # func = Meta.parse(string)
+        # # println(func)
+        # # task = @async Task(eval(Meta.parse(string)))
+        # push!(tasks,@async Task(eval(Meta.parse(string))))
+
+    # @async Task(wait(1000))
     channel = Channel(1)
     inputs = Dict()
     inputs[1] = channel
     outputs = Dict()
-    data = ("inputs" => inputs, "outputs" => outputs)
 
-    string = """ToUpercase.ToUpercase_f(data)"""
-    println(string)
-    println(inputs,"\n", outputs)
-
-    task1 = @async Task(eval(Meta.parse(string)))
+    # string = """ToUpercase.ToUpercase_f(inputs, outputs)"""
+    # println(string)
+    # println(inputs,"\n", outputs)
+    #
+    # task1 = @async Task(eval(Meta.parse(string)))
     # # end
 
-
+    # while true
+    # end
 
     # include("FileReader.jl")
     #
