@@ -434,7 +434,7 @@ class Chart {
          //console.log("Module_id---------->"+NodeID);
          var SVGcontainer = document.getElementById(NodeID); 
          
-         console.log(SVGcontainer);
+         //console.log(SVGcontainer);
          
      
          SVGcontainer.remove();
@@ -628,7 +628,7 @@ class Chart {
 const chart = new Chart();
 
 
-
+//function to create connections between modules when loading project's file
 function createConnections(data){
     
   let counterModulos;
@@ -776,6 +776,7 @@ createConnections(data);
 });
 
 
+//save project
 const app = require("electron").remote;
 var dialog = app.dialog;
 var fs = require("fs");
@@ -1118,9 +1119,13 @@ function createEspecificTemplate(templateType,id){
         novoModuloHTML+="</g></g></g>";
         var divNova = document.createElementNS('http://www.w3.org/2000/svg', 'g');
         divNova.setAttribute("class", "node-container");
-        divNova.id = "ola";
         divNova.innerHTML = novoModuloHTML;
         let modules_list_position = modules.length;      
+
+        //TODO arranjar maneira de perceber onde é o centro do ecra
+
+
+
         let coordx=600;
         let coordy=600;
         document.getElementById("node-layer").appendChild(divNova);
