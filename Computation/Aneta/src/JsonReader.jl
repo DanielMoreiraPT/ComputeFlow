@@ -21,7 +21,7 @@ module JsonReader
 
         open(name,"r") do jfile
             dataDict = JSON.parse(read(jfile,String))
-            println(dataDict)
+            # println(dataDict)
 
             for mod in get(dataDict,"Modules",missing)
                 push!(modules, Module_data.creat_module(mod))

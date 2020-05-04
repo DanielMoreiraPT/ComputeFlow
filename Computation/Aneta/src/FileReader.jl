@@ -82,8 +82,10 @@ module FileReader()
         text = read(options.file_name, String)
         println("-------\n",text)
         # include("ToUpercase.jl")
-        put!(outputs["1"],text)
-        fetch(outputs["1"])
+        println(inputs,"\n", outputs)
+
+        put!(outputs[1],text)
+        fetch(outputs[1])
 
     end
 end

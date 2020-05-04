@@ -154,13 +154,14 @@ module ToUpercase
         return txt
     end
 ################# PROGRAM #################
-function ToUpercase_f(inputs, outputs)
+function ToUpercase_f(inputs_d = nothing, outputs_d = nothing)
 
     # println(func_info)
     options = set_options()
     println("OPTIONS----------------to-uppercase-------> ", options)
     #wait(ToUpercase_channel)
-    text = get_text(inputs["1"])
+    # println(inputs,"\n", outputs)
+    text = get_text(inputs_d[1])
     #println("==>", text)
     result = ""
 

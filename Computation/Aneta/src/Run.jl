@@ -59,15 +59,15 @@ module Run
     println(modules_output_info)
     for m in modules
         # if length(m.connections.inputs)>0
-            string = "$(m.functionid).$(m.functionid)_f("
+            # string = ""
             inputs = Dict()
             for connection in m.connections.inputs
                 module_in = connection.module_id
                 module_port = connection.module_port
                 input_port = connection.input_port
                 # channels = get(module_in,"channels", missing)
-                println("--->",connection.module_port)
-                println("--->",modules_output_info[module_in]["output_channels"])
+                # println("--->",connection.module_port)
+                # println("--->",modules_output_info[module_in]["output_channels"])
 
                 inputs[input_port] = modules_output_info[module_in]["output_channels"]["$module_port"]
                 # if length(channels)>0
@@ -84,11 +84,19 @@ module Run
                 #     println(summary(tasks))
                 # end
             end
-            string = string * "$inputs, $(modules_output_info[m.id]["output_channels"]))"
+            inp = []
+            push!(inp,inputs)
+            out = []
+            push!(out,modules_output_info[m.id]["output_channels"])
+            string = "$(m.functionid).$(m.functionid)_f($inp, $out"
             println(string)
+            func = Meta.parse(string)
             task = @async Task(eval(Meta.parse(string)))
+            push!(tasks,@async Task(func))
         # end
     end
+    string = "ToUpercase.ToUpercase_f(Channel{Any}(sz_max:1,sz_curr:0), Dict{Any,Any}())"
+    task1 = @async Task(eval(Meta.parse(string)))
     # schedule(tasks[2])
 
     # for task in tasks
