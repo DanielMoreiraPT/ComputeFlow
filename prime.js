@@ -6,9 +6,9 @@ let nextUid = 0;
 const svg = document.querySelector("#svg");
 const diagramElement = document.querySelector("#diagram");
 
-const moduleLock = {};
-const portLock = {};
-const connectorLock = {};
+const GroupOfModules = {};
+const GroupOfPorts = {};
+const GroupOfConnectors = {};
 
 const ports = [];
 const modules = [];
@@ -24,6 +24,7 @@ frag.appendChild(document.querySelector(".connector"));
 const connectorElement = frag.querySelector(".connector");
 const connectorLayer = document.querySelector("#connections-layer");
 
+//function just to split a string
 function splitString(stringToSplit, separator) {
   let arrayOfStrings = stringToSplit.split(separator);
   return arrayOfStrings;
@@ -224,13 +225,10 @@ class Connector {
 class NodePort {
 
   constructor(parentNode, element, isInput) {
-    let fullname =element.querySelector(".port-label").textContent;
+    let fullname = element.querySelector(".port-label").textContent;
     var fullnamesplited = splitString(fullname, ' ');
     this.portType=fullnamesplited[0];
     this.VarName=fullnamesplited[1];
-
-    //console.log(this.portType)
-    //console.log(this.VarName)
 
     //size of the name so we can ajust modules sizes
     this.nameSize = fullname.length;
@@ -268,7 +266,7 @@ class NodePort {
 
     if (connectorList.length) {
       connector = connectorList.pop();
-      connectorLock[connector.id] = connector;
+      GroupOfConnectors[connector.id] = connector;
     } else {
       connector = new Connector();
     }
@@ -322,14 +320,14 @@ class NodeModule {
 
     this.inputs = inputElements.map((element) => {
       const port = new NodePort(this, element, true);
-      portLock[port.id] = port;
+      GroupOfPorts[port.id] = port;
       ports.push(port);
       return port;
     });
 
     this.outputs = outputElements.map((element) => {
       const port = new NodePort(this, element, false);
-      portLock[port.id] = port;
+      GroupOfPorts[port.id] = port;
       ports.push(port);
       return port;
     });
@@ -434,7 +432,7 @@ class Chart {
          //console.log("Module_id---------->"+NodeID);
          var SVGcontainer = document.getElementById(NodeID); 
          
-         console.log(SVGcontainer);
+         //console.log(SVGcontainer);
          
      
          SVGcontainer.remove();
@@ -461,7 +459,7 @@ class Chart {
 
   prepareTarget(event) {
     let element = event.target;
-    console.log(element);
+    //console.log(element);
     let drag;
 
 
@@ -561,20 +559,18 @@ class Chart {
       const split = drag.split(":");  
       const id = split[0];
       const dragType = split[1];
-
       
-      console.log(dragType);
       switch (dragType) {
         case "diagram":
           this.target = this;
           break;
   
         case "module":
-          this.target = moduleLock[id];
+          this.target = GroupOfModules[id];
           break;
   
         case "port":
-          const port = portLock[id];
+          const port = GroupOfPorts[id];
           //TODO ver cardinalidade com o professor
           if(port.connectors.length < 2){
             port.createConnector();
@@ -588,7 +584,7 @@ class Chart {
           }
         case "connector":
           console.log("sup");
-          this.target = connectorLock[id];
+          this.target = GroupOfConnectors[id];
           break;}
   
     }
@@ -610,10 +606,6 @@ class Chart {
     //console.log(modules[0].outputs[0].connectors[0]);
     //modules[0].outputs[0].connectors[0].remove();
     //console.log(this.target);
-    //console.log(this.target.element);
-    //console.log(this.target.element.getBBox());
-   
-    
     if(this.target ==="undefined"){
       return;
     }else if(this.target === null){
@@ -634,7 +626,7 @@ class Chart {
 const chart = new Chart();
 
 
-
+//function to create connections between modules when loading project's file
 function createConnections(data){
     
   let counterModulos;
@@ -680,6 +672,7 @@ function createConnections(data){
 
   }                                                                                                                                                    
 };
+
 document.getElementById('load_project').onclick=() => {  
   readTextFile("foo.json", function(text){
   const data = JSON.parse(text);
@@ -771,7 +764,7 @@ document.getElementById('load_project').onclick=() => {
     const module = new NodeModule(divNova,coordx, coordy);
     module.name = data.Modules[counterModulos].Name;
     module.functionId = data.Modules[counterModulos].Id;
-    moduleLock[module.id] = module;
+    GroupOfModules[module.id] = module;
     modules.push(module);
 
 
@@ -782,6 +775,7 @@ document.getElementById('load_project').onclick=() => {
   });
 }
 
+//save project
 const app = require("electron").remote;
 var dialog = app.dialog;
 var fs = require("fs");
@@ -1045,23 +1039,13 @@ function createEspecificTemplate(templateType,id){
           
           divNova.innerHTML = novoModuloHTML;
 
-          let modules_list_position = modules.length; 
-          var drag_proxy = document.getElementById("drag-proxy");
-          var coord = drag_proxy.style.transform;
-          //console.log(coord);
-          //console.log(coord.substring(12,23));
-          var Coordx=coord.substring(12,16);
-          var Coordy=coord.substring(18,16);
-          //console.log(Coordx);
+          let modules_list_position = modules.length;      
           let coordx=600;
           let coordy=600;
-          //let coordx = parseInt(Coordx);
-          //let coordy = parseInt(Coordy);
-
           document.getElementById("node-layer").appendChild(divNova);
-          const modulee = new NodeModule(divNova,coordx-20, coordy);
+          const modulee = new NodeModule(divNova,coordx, coordy);
           modulee.name = ListVarTemplates[i].name;
-          moduleLock[modulee.id] = modulee;
+          GroupOfModules[modulee.id] = modulee;
           modules.push(modulee);
         
         }
@@ -1134,15 +1118,19 @@ function createEspecificTemplate(templateType,id){
         novoModuloHTML+="</g></g></g>";
         var divNova = document.createElementNS('http://www.w3.org/2000/svg', 'g');
         divNova.setAttribute("class", "node-container");
-        divNova.id = "ola";
         divNova.innerHTML = novoModuloHTML;
         let modules_list_position = modules.length;      
+
+        //TODO arranjar maneira de perceber onde é o centro do ecra
+
+
+
         let coordx=600;
         let coordy=600;
         document.getElementById("node-layer").appendChild(divNova);
         const modulee = new NodeModule(divNova,coordx, coordy);
         modulee.name = ListFunctionTemplates[i].name;
-        moduleLock[modulee.id] = modulee;
+        GroupOfModules[modulee.id] = modulee;
         modules.push(modulee);
       }
     } 
@@ -1190,8 +1178,91 @@ function createTemplatesOptions(){
   
   for (j = 0; j < FunctionCreators.length; j++) {
     FunctionCreators[j].addEventListener("click", function() {
+      console.log(this.id)
       createEspecificTemplate("function", this.id);
     })
 
   }
 }
+
+
+/* Codigo base para cada modulo
+      <g class="node-container">    
+                  <rect class="node-background" width="204" height="128" x="0" y="0" rx="6" ry="6" />
+          
+                  <g class="node-header">
+                    <rect class="header-round-rect" width="200" height="40" x="2" y="2" rx="4" ry="4" />
+                    <rect class="header-rect" width="200" height="36" x="2" y="6" />
+                    <text class="header-title" x="102" y="30">Process 3</text>
+                  </g>
+          
+                  <g class="node-content">
+          
+                    <rect class="content-round-rect" width="200" height="82" x="2" y="44" rx="4" ry="4" />
+                    <rect class="content-rect" width="200" height="77" x="2" y="44" />
+          
+                    <g class="inputs">
+          
+                      <g class="input-field" transform="translate(0, 50)">
+                        <g class="port">
+                          <circle class="port-outer" cx="15" cy="10" r="7.5" />
+                          <circle class="port-inner" cx="15" cy="10" r="5" />
+                          <circle class="port-scrim" cx="15" cy="10" r="7.5" />
+                        </g>
+                        <text class="port-label" x="28" y="14">Input 7</text>
+                      </g>
+                      
+                      <g class="input-field" transform="translate(0, 75)">
+                        <g class="port">
+                          <circle class="port-outer" cx="15" cy="10" r="7.5" />
+                          <circle class="port-inner" cx="15" cy="10" r="5" />
+                          <circle class="port-scrim" cx="15" cy="10" r="7.5" />
+                        </g>
+                        <text class="port-label" x="28" y="14">Input 8</text>
+                      </g>
+                      
+                      <g class="input-field" transform="translate(0, 100)">
+                        <g class="port">
+                          <circle class="port-outer" cx="15" cy="10" r="7.5" />
+                          <circle class="port-inner" cx="15" cy="10" r="5" />
+                          <circle class="port-scrim" cx="15" cy="10" r="7.5" />
+                        </g>
+                        <text class="port-label" x="28" y="14">Input 9</text>
+                      </g>
+                      
+                    </g>
+          
+                    <g class="outputs">
+          
+                      <g class="output-field" transform="translate(0, 50)">
+                        <g class="port" data-clickable="false">
+                          <circle class="port-outer" cx="189" cy="10" r="7.5" />
+                          <circle class="port-inner" cx="189" cy="10" r="5" />
+                          <circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" />
+                        </g>
+                        <text class="port-label" x="176" y="14">Output 7</text>
+                      </g>
+                      
+                      <g class="output-field" transform="translate(0, 75)">
+                        <g class="port" data-clickable="false">
+                          <circle class="port-outer" cx="189" cy="10" r="7.5" />
+                          <circle class="port-inner" cx="189" cy="10" r="5" />
+                          <circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" />
+                        </g>
+                        <text class="port-label" x="176" y="14">Output 8</text>
+                      </g>
+                      
+                      <g class="output-field" transform="translate(0, 100)">
+                        <g class="port" data-clickable="false">
+                          <circle class="port-outer" cx="189" cy="10" r="7.5" />
+                          <circle class="port-inner" cx="189" cy="10" r="5" />
+                          <circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" />
+                        </g>
+                        <text class="port-label" x="176" y="14">Output 9</text>
+                      </g>            
+                    </g>
+          
+                  </g>
+                </g> 
+                
+      */
