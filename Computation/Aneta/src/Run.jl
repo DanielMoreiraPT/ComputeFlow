@@ -69,7 +69,7 @@ module Run
                 # println("--->",connection.module_port)
                 # println("--->",modules_output_info[module_in]["output_channels"])
 
-                inputs[input_port] = modules_output_info[module_in]["output_channels"]["$module_port"]
+                inputs[input_port] = modules_output_info[module_in]["output_channels"][module_port]
                 # if length(channels)>0
                 #     channel = channels[connection.module_port]
                 #
@@ -84,19 +84,33 @@ module Run
                 #     println(summary(tasks))
                 # end
             end
-            inp = []
-            push!(inp,inputs)
-            out = []
-            push!(out,modules_output_info[m.id]["output_channels"])
-            string = "$(m.functionid).$(m.functionid)_f($inp, $out"
-            println(string)
-            func = Meta.parse(string)
+            # inp = []
+            # push!(inp,inputs)
+            # out = []
+            # push!(out,)
+            println("---------------\n",inputs)
+            outputs = modules_output_info[m.id]["output_channels"]
+            println(outputs)
+            string = """$(m.functionid).$(m.functionid)_f(inputs, outputs)"""
+            println(string,"\n---------------")
+            # func = Meta.parse(string)
+            # println(func)
             task = @async Task(eval(Meta.parse(string)))
-            push!(tasks,@async Task(func))
+            push!(tasks,@async Task(eval(Meta.parse(string))))
         # end
     end
-    string = "ToUpercase.ToUpercase_f(Channel{Any}(sz_max:1,sz_curr:0), Dict{Any,Any}())"
-    task1 = @async Task(eval(Meta.parse(string)))
+    # channel = Channel(1)
+    # inputs = Dict()
+    # inputs[1] = channel
+    # outputs = Dict()
+    #
+    # string = """ToUpercase.ToUpercase_f(inputs, outputs)"""
+    # println(string)
+    # println(inputs,"\n", outputs)
+    #
+    # task1 = @async Task(eval(Meta.parse(string)))
+    # # end
+
     # schedule(tasks[2])
 
     # for task in tasks
