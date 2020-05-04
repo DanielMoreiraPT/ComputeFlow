@@ -21,8 +21,48 @@
                 "Inputs":[
                 ]
             }
-            
-                
+            },
+            {
+                "Name":"IntegerTemplate",
+                "Id":"1",
+                "Coord":{
+                    "CoordX":"600",
+                    "CoordY":"600"
+                },
+                "IO":{
+                    "Outputs":[		
+                            {
+                                "PortID":"0",
+                                "PortType": "Integer",
+                                "VarName": "value"
+                            }
+                        ]
+                    },
+                "Connections":{
+                    "Inputs":[
+                    ]
+                }
+            },
+            {
+                "Name":"DoubleTemplate",
+                "Id":"2",
+                "Coord":{
+                    "CoordX":"600",
+                    "CoordY":"600"
+                },
+                "IO":{
+                    "Outputs":[		
+                            {
+                                "PortID":"0",
+                                "PortType": "Double",
+                                "VarName": "value"
+                            }
+                        ]
+                    },
+                "Connections":{
+                    "Inputs":[
+                    ]
+                }
             }
         ],
         "Functions":[
@@ -42,6 +82,58 @@
                         "PortID":"0",
                         "PortType": "String",
                         "VarName": "result"
+                    }
+                    ]
+                },
+            "Connections":{
+                "Inputs":[
+                    
+                ]
+            
+            }
+            },
+{
+            "Name":"UpperCase",
+            "FunctionID":"2",
+            "IO":{
+                "Inputs":[
+                    {
+                        "PortID":"0",
+                        "PortType":"String",
+                        "VarName":"value"
+                    }
+                ],
+                "Outputs":[		
+                    {
+                        "PortID":"0",
+                        "PortType": "String",
+                        "VarName": "result"
+                    }
+                    ]
+                },
+            "Connections":{
+                "Inputs":[
+                    
+                ]
+            
+            }
+            },
+{
+            "Name":"FileReader",
+            "FunctionID":"11",
+            "IO":{
+                "Inputs":[
+                    {
+                        "PortID":"0",
+                        "PortType":"String",
+                        "VarName":"filename"
+                    }
+                ],
+                "Outputs":[		
+                    {
+                        "PortID":"0",
+                        "PortType": "String",
+                        "VarName": "output"
                     }
                     ]
                 },

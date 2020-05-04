@@ -5,8 +5,8 @@
 			"Name": "Employee",
 			"Id": "0",
 			"Coord": {
-				"CoordX": "510",
-				"CoordY": "720"
+				"CoordX": "596",
+				"CoordY": "795"
 			},
 			"FunctionID": "0",
 			"IO": {
@@ -69,8 +69,8 @@
 			"Name": "UpperCase",
 			"Id": "1",
 			"Coord": {
-				"CoordX": "900",
-				"CoordY": "531"
+				"CoordX": "974",
+				"CoordY": "713"
 			},
 			"FunctionID": "1",
 			"IO": {
@@ -103,8 +103,8 @@
 			"Name": "StringTemplate",
 			"Id": "2",
 			"Coord": {
-				"CoordX": "464",
-				"CoordY": "269"
+				"CoordX": "345",
+				"CoordY": "646"
 			},
 			"FunctionID": "2",
 			"IO": {
@@ -125,8 +125,8 @@
 			"Name": "StringTemplate",
 			"Id": "3",
 			"Coord": {
-				"CoordX": "252",
-				"CoordY": "869"
+				"CoordX": "350",
+				"CoordY": "872"
 			},
 			"FunctionID": "3",
 			"IO": {
@@ -147,8 +147,8 @@
 			"Name": "LowerCase",
 			"Id": "4",
 			"Coord": {
-				"CoordX": "924",
-				"CoordY": "119"
+				"CoordX": "954",
+				"CoordY": "509"
 			},
 			"FunctionID": "4",
 			"IO": {

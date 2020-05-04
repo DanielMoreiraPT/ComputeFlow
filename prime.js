@@ -461,7 +461,7 @@ class Chart {
 
   prepareTarget(event) {
     let element = event.target;
-    console.log(element);
+    //console.log(element);
     let drag;
 
 
@@ -562,7 +562,6 @@ class Chart {
       const id = split[0];
       const dragType = split[1];
       
-      console.log(dragType);
       switch (dragType) {
         case "diagram":
           this.target = this;
@@ -1175,6 +1174,7 @@ function createTemplatesOptions(){
   
   for (j = 0; j < FunctionCreators.length; j++) {
     FunctionCreators[j].addEventListener("click", function() {
+      console.log(this.id)
       createEspecificTemplate("function", this.id);
     })
 
