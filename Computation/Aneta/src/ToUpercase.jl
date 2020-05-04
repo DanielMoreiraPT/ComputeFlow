@@ -55,8 +55,8 @@ module ToUpercase
     end
 
     struct IOinfo
-        inputs::Array{Port_info, 1}
-        outputs::Array{Port_info, 1}
+        inputs_p::Array{Port_info, 1}
+        outputs_p::Array{Port_info, 1}
         IOinfo(input_array, output_array) = new(input_array, output_array)
     end
 
@@ -154,14 +154,14 @@ module ToUpercase
         return txt
     end
 ################# PROGRAM #################
-function ToUpercase_f(inputs_d = nothing, outputs_d = nothing)
+function ToUpercase_f(inputs_p, outputs_p)
 
     # println(func_info)
     options = set_options()
     println("OPTIONS----------------to-uppercase-------> ", options)
     #wait(ToUpercase_channel)
-    # println(inputs,"\n", outputs)
-    text = get_text(inputs_d[1])
+    println(inputs_p,"\n", outputs_p)
+    text = get_text(inputs_p[1])
     #println("==>", text)
     result = ""
 

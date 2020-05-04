@@ -53,8 +53,8 @@ module FileReader()
     end
 
     struct IOinfo
-        inputs::Array{Port_info, 1}
-        outputs::Array{Port_info, 1}
+        inputs_p::Array{Port_info, 1}
+        outputs_p::Array{Port_info, 1}
         IOinfo(input_array, output_array) = new(input_array, output_array)
     end
     struct Options
@@ -76,16 +76,17 @@ module FileReader()
     #FileReader_chanel = Channel(1)
 ############################################
 #   MUTABLE part of module schema.
-    function FileReader_f(inputs, outputs)
+    function FileReader_f(inputs_p, outputs_p)
 
         options = set_options()
         text = read(options.file_name, String)
-        println("-------\n",text)
+        println("-------\n",text,inputs_p)
         # include("ToUpercase.jl")
-        println(inputs,"\n", outputs)
+        println("================================>",inputs_p,"\n", outputs_p,"================================>")
+        println(inputs_p[1])
 
-        put!(outputs[1],text)
-        fetch(outputs[1])
-
+        put!(inputs_p[1],text)
+        fetch(inputs_p[1])
+        println("---333----\n")
     end
 end

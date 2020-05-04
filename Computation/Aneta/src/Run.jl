@@ -55,7 +55,7 @@ module Run
         # push!(modules_inputs, modules_dict)
         modules_output_info[m.id] = modules_dict
     end
-
+    inputs_info_dict = Dict()
     println(modules_output_info)
     for m in modules
         # if length(m.connections.inputs)>0
@@ -88,45 +88,45 @@ module Run
             # push!(inp,inputs)
             # out = []
             # push!(out,)
+            inputs_info_dict[m.id] = inputs
             println("---------------\n",inputs)
             outputs = modules_output_info[m.id]["output_channels"]
             println(outputs)
-            string = """$(m.functionid).$(m.functionid)_f(inputs, outputs)"""
+            data = ("inputs" => inputs, "outputs" => outputs)
+            println("""$(m.functionid).$(m.functionid)_f(data)""")
+            string = """$(m.functionid).$(m.functionid)_f(data)"""
+
             println(string,"\n---------------")
             # func = Meta.parse(string)
             # println(func)
-            task = @async Task(eval(Meta.parse(string)))
+            # task = @async Task(eval(Meta.parse(string)))
             push!(tasks,@async Task(eval(Meta.parse(string))))
         # end
     end
-    # channel = Channel(1)
-    # inputs = Dict()
-    # inputs[1] = channel
-    # outputs = Dict()
-    #
-    # string = """ToUpercase.ToUpercase_f(inputs, outputs)"""
-    # println(string)
-    # println(inputs,"\n", outputs)
-    #
-    # task1 = @async Task(eval(Meta.parse(string)))
+    @async Task(wait(1000))
+    channel = Channel(1)
+    inputs = Dict()
+    inputs[1] = channel
+    outputs = Dict()
+    data = ("inputs" => inputs, "outputs" => outputs)
+
+    string = """ToUpercase.ToUpercase_f(data)"""
+    println(string)
+    println(inputs,"\n", outputs)
+
+    task1 = @async Task(eval(Meta.parse(string)))
     # # end
 
-    # schedule(tasks[2])
 
-    # for task in tasks
-    #     println("---",summary(task))
-    #     # Task(task)
-    #     schedule(task)
-    # end
 
-    # function run_tasks()
-    #     for task in tasks
-    #         println("---",summary(task))
-    #         Task(task)
-    #         schedule(task)
-    #     end
-    # end
-    # @async(run_tasks())
+    # include("FileReader.jl")
+    #
+    # include("ToUpercase.jl")
+    # global ToUpercase_channel = Channel(1)
+    # task1 = @async Task(ToUpercase.ToUpercase_f(ToUpercase_channel))
+    #
+    # task2 = @async Task(FileReader.FileReader_f(ToUpercase_channel))
+    #
     println("Im running")
 
 ######################################3
