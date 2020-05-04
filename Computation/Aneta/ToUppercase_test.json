@@ -50,15 +50,14 @@
 
       },
       "Connections":{
-        "Inputs":[
+        "Inputs":[],
+
+        "Outputs" : [
           {
             "ModuleID": 1,
             "ModulePort": 1,
-            "InputPort": 1
+            "OutputPort": 1
           }
-        ],
-        "Outputs" : [
-
         ]
 
       }

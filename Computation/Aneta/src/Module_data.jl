@@ -115,7 +115,7 @@ module Module_data
             push!(inputs, Port_info(port_id,port_type))
         end
         outputs = []
-        for output in get(dict,"Inputs",missing)
+        for output in get(dict,"Outputs",missing)
             output === missing && throw(ErrorException("Missing IO information."))
 
             port_id = get(output, "PortID", missing)

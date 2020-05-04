@@ -76,13 +76,14 @@ module FileReader()
     #FileReader_chanel = Channel(1)
 ############################################
 #   MUTABLE part of module schema.
-    function FileReader_f(ToUpercase_channel)
+    function FileReader_f(inputs, outputs)
 
         options = set_options()
         text = read(options.file_name, String)
         println("-------\n",text)
         # include("ToUpercase.jl")
-        put!(ToUpercase_channel,text)
+        put!(outputs["1"],text)
+        fetch(outputs["1"])
 
     end
 end
