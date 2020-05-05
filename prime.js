@@ -10,9 +10,9 @@ const GroupOfModules = {};
 const GroupOfPorts = {};
 const GroupOfConnectors = {};
 
-const ports = [];
-const modules = [];
-const connectorList = [];
+var ports = [];
+var modules = [];
+var connectorList = [];
 
 const dragProxy = document.querySelector("#drag-proxy"); 
 const moduleElements = Array.from(document.querySelectorAll(".node-container"));
@@ -343,7 +343,6 @@ class NodeModule {
       output.update();
     }
   }} 
-    
 class Chart {
 
   constructor() {
@@ -571,8 +570,9 @@ class Chart {
   
         case "port":
           const port = GroupOfPorts[id];
-          //TODO ver cardinalidade com o professor
-          if(port.connectors.length < 2){
+          //TODO ver cardinalidade
+          //default 6
+          if(port.connectors.length < 6){
             port.createConnector();
             this.target = port.lastConnector;
             this.dragType = this.target.dragType;
@@ -673,8 +673,50 @@ function createConnections(data){
   }                                                                                                                                                    
 };
 
-document.getElementById('load_project').onclick=() => {  
-  readTextFile("foo.json", function(text){
+function resetDiagram(){
+  console.log(modules)
+  for(let i=0;i<modules.length; i++){
+      //console.log(modules[i]);
+      // search for connectors in output ports and consequently remove them
+      for (let PortNumber=0; PortNumber < modules[i].outputs.length; PortNumber++){
+      //console.log(PortNumber);
+        for(let h=0;h<modules[i].outputs[PortNumber].connectors.length;h++){
+          //console.log(h);
+          //console.log(modules[i].outputs[PortNumber].connectors[h]);
+          modules[i].outputs[PortNumber].connectors[h].remove()
+        }
+      }
+
+    // search for connectors in input ports and consequently remove them
+      for (let PortNumber=0; PortNumber < modules[i].inputs.length; PortNumber++){
+        //console.log(PortNumber);
+        for(let h=0;h<modules[i].inputs[PortNumber].connectors.length;h++){
+          //console.log(h);
+          modules[i].inputs[PortNumber].connectors[h].remove();
+        }
+      }
+
+
+       
+      let elmnt = modules[i].element;
+      elmnt.id = modules[i].id;
+      let SVGcontainer = document.getElementById(elmnt.id); 
+      SVGcontainer.remove();
+         
+      
+  }
+  //reset modules so it wont load over the other
+  var arr1 = [];   
+  modules=arr1;
+  
+};
+
+function loadDiagram(fileName){
+  readTextFile(fileName, function(text){
+  
+  
+
+  
   const data = JSON.parse(text);
   document.getElementById("ProjectName").innerHTML = data.title;
 
@@ -772,16 +814,11 @@ document.getElementById('load_project').onclick=() => {
 
   }
   createConnections(data);
+  
   });
 }
 
-//save project
-const app = require("electron").remote;
-var dialog = app.dialog;
-var fs = require("fs");
-
-document.getElementById('save_project').onclick=() => {    
-  //trying to get info from svg so later we can send through json
+function saveProject(fileName){
   //write a json file
   const writeJsonFile = require('write-json-file');
 
@@ -885,18 +922,27 @@ document.getElementById('save_project').onclick=() => {
   }
   
   (async () => {
-      await writeJsonFile('foo.json', obj);
+      await writeJsonFile(fileName, obj);
   })();
-  
-  
-  
+}
+
+document.getElementById('load_project').onclick=() => {  
+  resetDiagram();
+  loadDiagram("foo.json");
+}
+
+//save project
+const app = require("electron").remote;
+var dialog = app.dialog;
+var fs = require("fs");
+
+document.getElementById('save_project').onclick=() => {    
+  saveProject("foo.json");
 };
 
 
 //enable user to create modules from previous templates
 //get Var and FunctionTemplates
-var scope_for_functions = {};
-var scope_for_vars = {};
 var ListVarTemplates = [];
 var ListFunctionTemplates = [];
 
@@ -1185,84 +1231,3 @@ function createTemplatesOptions(){
   }
 }
 
-
-/* Codigo base para cada modulo
-      <g class="node-container">    
-                  <rect class="node-background" width="204" height="128" x="0" y="0" rx="6" ry="6" />
-          
-                  <g class="node-header">
-                    <rect class="header-round-rect" width="200" height="40" x="2" y="2" rx="4" ry="4" />
-                    <rect class="header-rect" width="200" height="36" x="2" y="6" />
-                    <text class="header-title" x="102" y="30">Process 3</text>
-                  </g>
-          
-                  <g class="node-content">
-          
-                    <rect class="content-round-rect" width="200" height="82" x="2" y="44" rx="4" ry="4" />
-                    <rect class="content-rect" width="200" height="77" x="2" y="44" />
-          
-                    <g class="inputs">
-          
-                      <g class="input-field" transform="translate(0, 50)">
-                        <g class="port">
-                          <circle class="port-outer" cx="15" cy="10" r="7.5" />
-                          <circle class="port-inner" cx="15" cy="10" r="5" />
-                          <circle class="port-scrim" cx="15" cy="10" r="7.5" />
-                        </g>
-                        <text class="port-label" x="28" y="14">Input 7</text>
-                      </g>
-                      
-                      <g class="input-field" transform="translate(0, 75)">
-                        <g class="port">
-                          <circle class="port-outer" cx="15" cy="10" r="7.5" />
-                          <circle class="port-inner" cx="15" cy="10" r="5" />
-                          <circle class="port-scrim" cx="15" cy="10" r="7.5" />
-                        </g>
-                        <text class="port-label" x="28" y="14">Input 8</text>
-                      </g>
-                      
-                      <g class="input-field" transform="translate(0, 100)">
-                        <g class="port">
-                          <circle class="port-outer" cx="15" cy="10" r="7.5" />
-                          <circle class="port-inner" cx="15" cy="10" r="5" />
-                          <circle class="port-scrim" cx="15" cy="10" r="7.5" />
-                        </g>
-                        <text class="port-label" x="28" y="14">Input 9</text>
-                      </g>
-                      
-                    </g>
-          
-                    <g class="outputs">
-          
-                      <g class="output-field" transform="translate(0, 50)">
-                        <g class="port" data-clickable="false">
-                          <circle class="port-outer" cx="189" cy="10" r="7.5" />
-                          <circle class="port-inner" cx="189" cy="10" r="5" />
-                          <circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" />
-                        </g>
-                        <text class="port-label" x="176" y="14">Output 7</text>
-                      </g>
-                      
-                      <g class="output-field" transform="translate(0, 75)">
-                        <g class="port" data-clickable="false">
-                          <circle class="port-outer" cx="189" cy="10" r="7.5" />
-                          <circle class="port-inner" cx="189" cy="10" r="5" />
-                          <circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" />
-                        </g>
-                        <text class="port-label" x="176" y="14">Output 8</text>
-                      </g>
-                      
-                      <g class="output-field" transform="translate(0, 100)">
-                        <g class="port" data-clickable="false">
-                          <circle class="port-outer" cx="189" cy="10" r="7.5" />
-                          <circle class="port-inner" cx="189" cy="10" r="5" />
-                          <circle class="port-scrim" cx="189" cy="10" r="7.5" data-clickable="false" />
-                        </g>
-                        <text class="port-label" x="176" y="14">Output 9</text>
-                      </g>            
-                    </g>
-          
-                  </g>
-                </g> 
-                
-      */
