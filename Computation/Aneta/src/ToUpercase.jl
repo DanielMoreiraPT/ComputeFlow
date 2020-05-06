@@ -16,9 +16,6 @@ julia>
 #
 module ToUpercase
     using JSON
-    #export ToUpercase_channel
-#    include("FileReader.jl")
-
 
 ###############################################
 #   UNMUTABLE part of module schema.
@@ -30,41 +27,11 @@ module ToUpercase
             new(name, verion, id)
     end
 
-    struct Port_info
-        port_id
-        port_type::String
-        Port_info(id, type) = new(id, type)
-    end
-
-    struct InputInfo
-        name::String
-        version::String
-        id::UInt64
-        port::Port_info
-        InputInfo(name, verion, id, port) =
-            new(name, verion, id, port)
-    end
-
-    struct OutputInfo
-        name::String
-        version::String
-        id::UInt64
-        port::Port_info
-        OurputInfo(name, verion, id, port) =
-            new(name, verion, id, port)
-    end
-
-    struct IOinfo
-        inputs_p::Array{Port_info, 1}
-        outputs_p::Array{Port_info, 1}
-        IOinfo(input_array, output_array) = new(input_array, output_array)
-    end
 
 ############################################
 #   MUTABLE part of module schema.
 
     func_info = Function_info("ToUpercase", "v.1.0.0",hash("ToUpercase"*"v.1.0.0"))
-    ioinfo = nothing
 
     struct Options
         all_text::Bool
@@ -79,7 +46,7 @@ module ToUpercase
 
 
     function set_options()
-        name = "/home/anunia/Documents/ComputeFlow/Computation/Aneta/16551191982327271023_options.json"
+        name = "Computation/Aneta/16551191982327271023_options.json"
 
 
         #name = "$(func_info.id)_options.json"
@@ -123,7 +90,7 @@ module ToUpercase
                 i = i + 1
             end
         end
-        # println("--->",result)
+
         return result
     end
     function from_the_end(text, amount)
@@ -152,37 +119,24 @@ module ToUpercase
 ################# PROGRAM #################
 function ToUpercase_f(inputs_p, outputs_p)
 
-    # println(func_info)
-    options = set_options()
-    println("OPTIONS----------------to-uppercase-------> ", options)
-    println("inputs: ",inputs_p,"\noutputs: ", outputs_p)
 
-    #wait(ToUpercase_channel)
-    # println(inputs_p,"\n", outputs_p)
+    options = set_options()
+
     text = get_text(inputs_p[1])
-    #println("==>", text)
-    result = ""
 
     if options.all_text
-        println("==> all_text")
         text = all_text(text)
     else
         if options.just_first_letters
-            println("==> just_first_letters")
             text = just_first_letters(text)
         end
         if options.from_the_begging
-            println("==> from_the_begging",options.fb_amount_of_char)
             text = from_the_begging(text,options.fb_amount_of_char)
         end
         if options.from_the_end
-            println("==> from_the_end",options.fe_amount_of_char)
             text = from_the_end(text, options.fe_amount_of_char)
         end
     end
-    println("===========>",text)
     put!(outputs_p[1], text)
-    println("done", fetch(outputs_p[1]))
-    # close(ToUpercase_channel)
 end
 end

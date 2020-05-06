@@ -29,7 +29,6 @@ module Run2
         out_channels = Dict()
 
             for io in m.io.outputs
-                # channel = Channel(1)
                 out_channels[io.port_id] = io.channel
             end
             for connection in m.connections.inputs
@@ -41,8 +40,6 @@ module Run2
         modules_dict = Dict("functionid" => m.functionid,"input_channels" => in_channels, "output_channels" => out_channels)
         modules_info[m.id] = modules_dict
         string = """$(m.functionid).$(m.functionid)_f(modules_info[$(m.id)]["input_channels"], modules_info[$(m.id)]["output_channels"])"""
-        string2 = """$(m.functionid).$(m.functionid)_f($(modules_info[(m.id)]["input_channels"]), modules_info[$(m.id)]["output_channels"])"""
-        println("----->",string2)
         push!(tasks,@task (eval(Meta.parse(string))))
 
     end
