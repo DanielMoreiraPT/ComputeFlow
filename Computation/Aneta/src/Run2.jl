@@ -49,51 +49,7 @@ module Run2
     for task in tasks
         schedule( task)
     end
-    # inputs_info_dict = Dict()
-    # println(modules_info)
-    # for m in modules
-    #         inputs = Dict()
-    #         for connection in m.connections.inputs
-    #             module_in = connection.module_id
-    #             module_port = connection.module_port
-    #             input_port = connection.input_port
-    #             inputs[input_port] = modules_info[module_in]["output_channels"][module_port]
-    #         end
-    #         inputs_info_dict[m.id] = inputs
-    #         outputs = modules_info[m.id]["output_channels"]
-    #
-    # end
-    # i = 1
-    #
-    # while i <= length(modules)
-    #     m = modules[i]
-    #     outputs = modules_info[m.id]["output_channels"]
-    #     inputs = inputs_info_dict[m.id]
-    #     string = """$(m.functionid).$(m.functionid)_f(inputs, outputs)"""
-    #     data = ("inputs" => inputs, "outputs" => outputs)
-    #     println("""$(m.functionid).$(m.functionid)_f($inputs, $outputs)""")
-    #     println(string,"\n---------------")
-    #     # func = Meta.parse(string)
-    #     # println(func)
-    #     # global task = Threads.@async Task(eval(Meta.parse(string)))
-    #     push!(tasks,@task (eval(Meta.parse(string))))
-    #     # schedule(@task (eval(Meta.parse(string))))
-    #
-    #     global i = i + 1
-    # end
 
-########
-    # for some reason this code must be here
-    # channel = Channel(1)
-    # inputs = Dict()
-    # inputs[1] = channel
-    # outputs = Dict()
-    # outputs[1] = Channel(1)
-
-    # wait(tasks[1])
-    # while istaskdone(tasks[1]) == false
-    #     println(istaskdone(tasks[1]))
-    # end
     println("Im running")
 
 

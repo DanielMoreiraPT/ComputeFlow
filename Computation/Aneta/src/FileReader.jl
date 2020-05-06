@@ -87,6 +87,6 @@ module FileReader()
 
         put!(outputs_p[1],text)
         # fetch(outputs_p[1])
-        println("---333----\n")
+        println(text,"---333----\n")
     end
 end

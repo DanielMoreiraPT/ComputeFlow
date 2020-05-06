@@ -9,7 +9,7 @@ module WriteToFile
             new(name, verion, id)
     end
     func_info = Function_info("WriteToFile", "v.1.0.0",hash("WriteToFile"*"v.1.0.0"))
-    # println(func_info.id)
+    println(func_info.id)
     struct Options
         file_name::String
         Options(file_name) = new(file_name)
@@ -17,19 +17,15 @@ module WriteToFile
 ##########
     function set_options()
         #/home/anunia/Documents/ComputeFlow/Computation/Aneta/6480418423639474263_options.json
-        name = "/home/anunia/Documents/ComputeFlow/Computation/Aneta/$(func_info.id)_options.json"
+        name = "Computation/Aneta/$(func_info.id)_options.json"
         options = JSON.parse(read(name,String))
-
+        println(name)
         file_name = get(options,"file_name",missing)
-        Options("/home/anunia/Documents/ComputeFlow/Computation/Aneta/"*file_name)
+        Options(file_name)
     end
-
-    func_info = Function_info("FileReader", "v.1.0.0",hash("FileReader"*"v.1.0.0"))
-    ioinfo = nothing
 
     function get_text(channel)
         txt = take!(channel)
-        println("aaaaaaaaaaaaaa",txt)
         return txt
     end
     #FileReader_chanel = Channel(1)
@@ -44,8 +40,8 @@ module WriteToFile
         # println("================================>",inputs_p,"\n", outputs_p,"================================>")
         # println(inputs_p[1])
         text = get_text(inputs_p[1])
-        write(options.file_name, String)
+        write(options.file_name, text)
         # fetch(inputs_p[1])
-        println("----WriteToFile----\n")
+        println("----WriteToFile----\n",options.file_name)
     end
 end
