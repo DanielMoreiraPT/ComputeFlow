@@ -80,8 +80,8 @@ module FileReader()
 
         options = set_options()
         text = read(options.file_name, String)
-        println(text)
-        include("ToUpercase.jl")
+        println("-------\n",text)
+        # include("ToUpercase.jl")
         put!(ToUpercase_channel,text)
 
     end
