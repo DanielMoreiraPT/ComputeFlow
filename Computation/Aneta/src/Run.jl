@@ -23,8 +23,6 @@ module Run
     modules_output_info = Dict()
     tasks = []
 
-    global ToUpercase_channel = Channel(1)
-
     for m in modules
         include(m.functionid*".jl")
         channels = Dict()
@@ -63,6 +61,8 @@ module Run
         # println(func)
         # global task = Threads.@async Task(eval(Meta.parse(string)))
         push!(tasks,@task (eval(Meta.parse(string))))
+        # schedule(@task (eval(Meta.parse(string))))
+
         global i = i + 1
     end
     for task in tasks
@@ -74,7 +74,12 @@ module Run
     inputs = Dict()
     inputs[1] = channel
     outputs = Dict()
+    outputs[1] = Channel(1)
 
+    # wait(tasks[1])
+    # while istaskdone(tasks[1]) == false
+    #     println(istaskdone(tasks[1]))
+    # end
     println("Im running")
 
 

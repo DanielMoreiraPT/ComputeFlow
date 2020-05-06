@@ -24,7 +24,9 @@ module Module_data
     struct Port_info
         port_id
         port_type::String
+        channel
         Port_info(id, type) = new(id, type)
+        Port_info(id, type, channel) = new(id, type, channel)
     end
 
     struct IOinfo
@@ -120,10 +122,11 @@ module Module_data
 
             port_id = get(output, "PortID", missing)
             port_type = get(output, "PortType", missing)
+            channel = Channel(1)
             if port_id === missing || port_type === missing
                 throw(ErrorException("Missing IO information."))
             end
-            push!(outputs, Port_info(port_id,port_type))
+            push!(outputs, Port_info(port_id,port_type, channel))
         end
         IOinfo(inputs, outputs)
     end

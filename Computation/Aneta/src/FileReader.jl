@@ -83,10 +83,10 @@ module FileReader()
         println("-------\n",text,inputs_p)
         # include("ToUpercase.jl")
         println("================================>",inputs_p,"\n", outputs_p,"================================>")
-        println(inputs_p[1])
+        # println(outputs_p[1])
 
-        put!(inputs_p[1],text)
-        fetch(inputs_p[1])
+        put!(outputs_p[1],text)
+        # fetch(outputs_p[1])
         println("---333----\n")
     end
 end
