@@ -54,7 +54,8 @@ module Module_data
         functionid
         io::IOinfo
         connections
-        Module_info(id, coords, functionid, io, connections) = new(id, coords, functionid, io, connections)
+        options
+        Module_info(id, coords, functionid, io, connections, options) = new(id, coords, functionid, io, connections, options)
     end
 
 
@@ -65,8 +66,9 @@ module Module_data
         functionid = get(data, "FunctionID", missing)
         io = get_IOinfo(get(data,"IO", missing))
         connections = get_connections(get(data, "Connections",missing))
+        options = "Computation/Aneta/" * functionid * string(id) * "_options.json"
 
-        module_info = Module_info(id, coords, functionid, io, connections)
+        module_info = Module_info(id, coords, functionid, io, connections, options)
         # println("=====>", module_info)
         # println("=====>", module_info.id)
         # println("=====>", module_info.coords)
@@ -122,6 +124,7 @@ module Module_data
 
             port_id = get(output, "PortID", missing)
             port_type = get(output, "PortType", missing)
+            # channel = Channel{eval(Symbol(port_type))}(1)
             channel = Channel(1)
             if port_id === missing || port_type === missing
                 throw(ErrorException("Missing IO information."))
