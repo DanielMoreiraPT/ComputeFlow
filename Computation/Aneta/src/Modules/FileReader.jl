@@ -32,7 +32,7 @@ module FileReader()
     end
 
     function set_options()
-        name = "Computation/Aneta/$(func_info.id)_options.json"
+        name = "Computation/Aneta/FileReader_options.json"
         options = JSON.parse(read(name,String))
 
         file_name = get(options,"file_name",missing)

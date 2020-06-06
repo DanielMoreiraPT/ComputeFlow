@@ -11,45 +11,25 @@
 julia>
 ```
 """
-#using JSON
-#export ToUpercase_channel
-#
-module ToUpercase
+
+module ToUppercase
     using JSON
 
-###############################################
-#   UNMUTABLE part of module schema.
-    struct Function_info
-        name::String
-        version::String
-        id::UInt64
-        Function_info(name, verion, id) =
-            new(name, verion, id)
-    end
-
-
-############################################
-#   MUTABLE part of module schema.
-
-    func_info = Function_info("ToUpercase", "v.1.0.0",hash("ToUpercase"*"v.1.0.0"))
-
-    struct Options
+    struct Options_ToUppercase
         all_text::Bool
         just_first_letters::Bool
         from_the_begging::Bool
         fb_amount_of_char::Int64
         from_the_end::Bool
         fe_amount_of_char::Int64
-        Options(all_text, just_first_letters, from_the_begging, fb_amount_of_char, from_the_end, fe_amount_of_char) =
+        Options_ToUppercase(all_text, just_first_letters, from_the_begging, fb_amount_of_char, from_the_end, fe_amount_of_char) =
             new(all_text, just_first_letters, from_the_begging, fb_amount_of_char, from_the_end, fe_amount_of_char)
     end
 
 
-    function set_options()
-        name = "Computation/Aneta/16551191982327271023_options.json"
+    function set_options_ToUppercase()
+        name = "Computation/Aneta/ToUppercase_options.json"
 
-
-        #name = "$(func_info.id)_options.json"
         options = JSON.parse(read(name,String))
 
         all_text = get(options,"all_text",missing)
@@ -58,12 +38,13 @@ module ToUpercase
         fb_amount_of_char = get(options,"fb_amount_of_char",missing)
         from_the_end = get(options,"from_the_end",missing)
         fe_amount_of_char = get(options,"fe_amount_of_char",missing)
-        Options(all_text, just_first_letters, from_the_begging, fb_amount_of_char, from_the_end, fe_amount_of_char)
+
+        Options_ToUppercase(all_text, just_first_letters, from_the_begging, fb_amount_of_char, from_the_end, fe_amount_of_char)
     end
-    function all_text(text)
+    function all_text_ToUppercase(text)
         uppercase(text)
     end
-    function just_first_letters(text)
+    function just_first_letters_ToUppercase(text)
         result = ""
         words = split(text, " ")
         for word in words
@@ -74,7 +55,7 @@ module ToUpercase
         end
         return result
     end
-    function from_the_begging(text, amount)
+    function from_the_begging_ToUppercase(text, amount)
         result = ""
         if length(text) <= amount
             result = all_text(text)
@@ -93,7 +74,7 @@ module ToUpercase
 
         return result
     end
-    function from_the_end(text, amount)
+    function from_the_end_ToUppercase(text, amount)
         textlength = length(text)
         result = ""
         if textlength <= amount
@@ -117,24 +98,24 @@ module ToUpercase
         return txt
     end
 ################# PROGRAM #################
-function ToUpercase_f(inputs_p, outputs_p)
+function ToUppercase_f(inputs_p, outputs_p)
 
 
-    options = set_options()
+    options = set_options_ToUppercase()
 
     text = get_text(inputs_p[1])
 
     if options.all_text
-        text = all_text(text)
+        text = all_text_ToUppercase(text)
     else
         if options.just_first_letters
-            text = just_first_letters(text)
+            text = just_first_letters_ToUppercase(text)
         end
         if options.from_the_begging
-            text = from_the_begging(text,options.fb_amount_of_char)
+            text = from_the_begging_ToUppercase(text,options.fb_amount_of_char)
         end
         if options.from_the_end
-            text = from_the_end(text, options.fe_amount_of_char)
+            text = from_the_end_ToUppercase(text, options.fe_amount_of_char)
         end
     end
     put!(outputs_p[1], text)

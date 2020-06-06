@@ -7,7 +7,7 @@
         "CoordX":"X",
         "CoordY":"Y"
       },
-      "FunctionID": "ToUpercase",
+      "FunctionID": "ToUppercase",
       "IO":{
         "Inputs":[
           {

@@ -17,14 +17,14 @@ module Run
     include("JsonReader.jl")
 
 
-    modules = JsonReader.upload_modules("Computation/Aneta/ToDo.json")
+    modules = JsonReader.upload_modules("Computation/Aneta/ToUppercase_test.json")
 
     modules_dict = Dict()
     modules_info = Dict()
     tasks = []
 
     for m in modules
-        include(m.functionid*".jl")
+        include("Modules/"*m.functionid*".jl")
         in_channels = Dict()
         out_channels = Dict()
 
@@ -46,5 +46,5 @@ module Run
     for task in tasks
         schedule( task)
     end
-
+    println("End")
 end
