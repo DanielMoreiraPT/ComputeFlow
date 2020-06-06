@@ -18,9 +18,11 @@ module WriteToFile
     #   MUTABLE part of module schema.
     function WriteToFile_f(inputs_p, outputs_p)
         options = set_options_WriteToFile()
-
         text = take!(inputs_p[1])
+        println(text)
 
-        write(options.file_name, text)
+        open(options.file_name, "w") do f
+            write(f, string(text))
+        end
     end
 end
