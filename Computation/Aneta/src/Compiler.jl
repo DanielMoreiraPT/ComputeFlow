@@ -11,7 +11,7 @@
 julia>
 ```
 """
-module Run2
+module Compiler
     import Base.Threads
     import Distributed
     include("JsonReader.jl")
