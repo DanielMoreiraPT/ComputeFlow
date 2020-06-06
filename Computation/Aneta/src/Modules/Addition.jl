@@ -16,7 +16,7 @@ module Addition
 
 ############################################
     #   MUTABLE part of module schema.
-    function Addition_f(inputs_p, outputs_p)
+    function Addition_f(inputs_p, outputs_p, options)
 
         # options = set_options_Addition()
         number1 = take!(inputs_p[1])
@@ -24,7 +24,7 @@ module Addition
         number2 = take!(inputs_p[2])
 
         sum = parse(Int64 ,number1) + parse(Int64 ,number2)
-        println(summary(sum))
+
         put!(outputs_p[1], sum)
     end
 end

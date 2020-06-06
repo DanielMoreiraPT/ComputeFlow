@@ -2,37 +2,26 @@ module GetNumber
     using JSON
 
     struct Options_GetNumber
-        file_name::String
-        Options_GetNumber(file_name) = new(file_name)
+        number
+        Options_GetNumber(number) = new(number)
     end
 ##########
-    function set_options_GetNumber()
-        name = "Computation/Aneta/Addition_options.json"
+    function set_options_GetNumber(options)
 
-        options = JSON.parse(read(name,String))
-        file_name = get(options,"file_name",missing)
+        options = JSON.parse(read(options,String))
+        number = get(options,"number",missing)
 
-        Options_GetNumber(file_name)
+        Options_GetNumber(number)
     end
 
 
 ############################################
     #   MUTABLE part of module schema.
-    function GetNumber_f(inputs_p, outputs_p)
+    function GetNumber_f(inputs_p, outputs_p, options)
 
-        # options = set_options_GetNumber()
+        options = set_options_GetNumber(options)
 
-
-        number = "553"
-        sum = 555 + 1
-
-        # number = parse(Int64 ,number)
-        # println(summary(number))
-        put!(outputs_p[1], number)
-
-        # println("here--------")
-        # println(fetch(outputs_p[1]))
-
+        put!(outputs_p[1], string(options.number))
 
     end
 end
