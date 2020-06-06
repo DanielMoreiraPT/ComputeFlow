@@ -11,11 +11,16 @@
       "IO":{
         "Inputs":[
           {
-            "PortID": "1",
+            "PortID": 1,
             "PortType": "String"
           }
         ],
-        "Outputs":[ ]
+        "Outputs":[
+          {
+            "PortID": 1,
+            "PortType": "String"
+          }
+         ]
 
       },
       "Connections":{
@@ -43,9 +48,43 @@
 
         "Outputs":[
           {
-            "PortID": "1",
+            "PortID": 1,
             "PortType": "String"
           }
+        ]
+
+      },
+      "Connections":{
+        "Inputs":[],
+
+        "Outputs" : [
+          {
+            "ModuleID": 1,
+            "ModulePort": 1,
+            "OutputPort": 1
+          }
+        ]
+
+      }
+
+    },
+    {
+      "Id": 3,
+      "Coord":{
+        "CoordX":"X",
+        "CoordY":"Y"
+      },
+      "FunctionID": "WriteToFile",
+      "IO":{
+        "Inputs":[
+          {
+            "PortID": 1,
+            "PortType": "String"
+          }
+        ],
+
+        "Outputs":[
+
         ]
 
       },
@@ -57,6 +96,7 @@
             "InputPort": 1
           }
         ],
+
         "Outputs" : [
 
         ]

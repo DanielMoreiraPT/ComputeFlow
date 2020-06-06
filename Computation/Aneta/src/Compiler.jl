@@ -1,5 +1,5 @@
 """
-# module Run
+# module Run2
 
 - Julia version:
 - Author: anunia
@@ -11,13 +11,13 @@
 julia>
 ```
 """
-module Run
+module Compiler
     import Base.Threads
     import Distributed
     include("JsonReader.jl")
 
 
-    modules = JsonReader.upload_modules("Computation/Aneta/ToDo.json")
+    modules = JsonReader.upload_modules("Computation/Aneta/ToUppercase_test.json")
 
     modules_dict = Dict()
     modules_info = Dict()
@@ -46,5 +46,8 @@ module Run
     for task in tasks
         schedule( task)
     end
+
+    println("Im running")
+
 
 end
