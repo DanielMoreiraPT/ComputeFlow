@@ -12,31 +12,29 @@ julia>
 ```
 """
 
-module FileReader()
-    import JSON
+import JSON
 
 
 ################################################
-    struct Options_FileReader
-        file_name::String
-        Options_FileReader(file_name) = new(file_name)
-    end
+struct Options_FileReader
+    file_name::String
+    Options_FileReader(file_name) = new(file_name)
+end
 
-    function set_options_FileReader(options)
-        options = JSON.parse(read(options,String))
+function set_options_FileReader(options)
+    options = JSON.parse(read(options,String))
 
-        file_name = get(options,"file_name",missing)
-        Options_FileReader("Computation/Aneta/"*file_name)
-    end
+    file_name = get(options,"file_name",missing)
+    Options_FileReader("Computation/Aneta/"*file_name)
+end
 
 ############################################
 #   Main function of the module
-    function FileReader_f(outPort1, options)
+function FileReader_f(outPort1, options)
 
-        options = set_options_FileReader(options)
+    options = set_options_FileReader(options)
 
-        text = read(options.file_name, String)
+    text = read(options.file_name, String)
 
-        put!(outPort1,text)
-    end
+    put!(outPort1,text)
 end
