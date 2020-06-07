@@ -24,7 +24,9 @@ module Module_data
     struct Port_info
         port_id
         port_type::String
+        channel
         Port_info(id, type) = new(id, type)
+        Port_info(id, type, channel) = new(id, type, channel)
     end
 
     struct IOinfo
@@ -52,7 +54,8 @@ module Module_data
         functionid
         io::IOinfo
         connections
-        Module_info(id, coords, functionid, io, connections) = new(id, coords, functionid, io, connections)
+        options
+        Module_info(id, coords, functionid, io, connections, options) = new(id, coords, functionid, io, connections, options)
     end
 
 
@@ -63,8 +66,9 @@ module Module_data
         functionid = get(data, "FunctionID", missing)
         io = get_IOinfo(get(data,"IO", missing))
         connections = get_connections(get(data, "Connections",missing))
+        options = "Computation/Aneta/Options_files/" * functionid * string(id) * "_options.json"
 
-        module_info = Module_info(id, coords, functionid, io, connections)
+        module_info = Module_info(id, coords, functionid, io, connections, options)
         # println("=====>", module_info)
         # println("=====>", module_info.id)
         # println("=====>", module_info.coords)
@@ -115,15 +119,17 @@ module Module_data
             push!(inputs, Port_info(port_id,port_type))
         end
         outputs = []
-        for output in get(dict,"Inputs",missing)
+        for output in get(dict,"Outputs",missing)
             output === missing && throw(ErrorException("Missing IO information."))
 
             port_id = get(output, "PortID", missing)
             port_type = get(output, "PortType", missing)
+            # channel = Channel{eval(Symbol(port_type))}(1)
+            channel = Channel(1)
             if port_id === missing || port_type === missing
                 throw(ErrorException("Missing IO information."))
             end
-            push!(outputs, Port_info(port_id,port_type))
+            push!(outputs, Port_info(port_id,port_type, channel))
         end
         IOinfo(inputs, outputs)
     end

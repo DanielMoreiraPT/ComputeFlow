@@ -1,5 +1,5 @@
 {
-  "title": "ToUppercase_test",
+  "title": "Math",
   "Modules":[
     {
       "Id": 1,
@@ -7,18 +7,22 @@
         "CoordX":"X",
         "CoordY":"Y"
       },
-      "FunctionID": "ToUppercase",
+      "FunctionID": "Addition",
       "IO":{
         "Inputs":[
           {
             "PortID": 1,
-            "PortType": "String"
+            "PortType": "Int64"
+          },
+          {
+            "PortID": 2,
+            "PortType": "Int64"
           }
         ],
         "Outputs":[
           {
             "PortID": 1,
-            "PortType": "String"
+            "PortType": "Int64"
           }
          ]
 
@@ -29,6 +33,11 @@
             "ModuleID": 2,
             "ModulePort": 1,
             "InputPort": 1
+          },
+          {
+            "ModuleID": 3,
+            "ModulePort": 1,
+            "InputPort": 2
           }
         ],
         "Outputs" : [ ]
@@ -42,28 +51,24 @@
         "CoordX":"X",
         "CoordY":"Y"
       },
-      "FunctionID": "FileReader",
+      "FunctionID": "GetNumber",
       "IO":{
-        "Inputs":[],
+        "Inputs":[
 
+        ],
         "Outputs":[
           {
             "PortID": 1,
-            "PortType": "String"
+            "PortType": "Int64"
           }
-        ]
+         ]
 
       },
       "Connections":{
-        "Inputs":[],
+        "Inputs":[
 
-        "Outputs" : [
-          {
-            "ModuleID": 1,
-            "ModulePort": 1,
-            "OutputPort": 1
-          }
-        ]
+        ],
+        "Outputs" : [ ]
 
       }
 
@@ -74,12 +79,40 @@
         "CoordX":"X",
         "CoordY":"Y"
       },
+      "FunctionID": "GetNumber",
+      "IO":{
+        "Inputs":[
+
+        ],
+        "Outputs":[
+          {
+            "PortID": 1,
+            "PortType": "Int64"
+          }
+         ]
+
+      },
+      "Connections":{
+        "Inputs":[
+
+        ],
+        "Outputs" : [ ]
+
+      }
+
+    },
+    {
+      "Id": 4,
+      "Coord":{
+        "CoordX":"X",
+        "CoordY":"Y"
+      },
       "FunctionID": "WriteToFile",
       "IO":{
         "Inputs":[
           {
             "PortID": 1,
-            "PortType": "String"
+            "PortType": ""
           }
         ],
 
