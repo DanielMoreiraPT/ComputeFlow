@@ -96,26 +96,25 @@ module ToUppercase
         return txt
     end
 ################# PROGRAM #################
-function ToUppercase_f(inputs_p, outputs_p, options)
+    function ToUppercase_f(inputs_p, outputs_p, options)
 
+        options = set_options_ToUppercase(options)
 
-    options = set_options_ToUppercase(options)
+        text = get_text(inputs_p[1])
 
-    text = get_text(inputs_p[1])
-
-    if options.all_text
-        text = all_text_ToUppercase(text)
-    else
-        if options.just_first_letters
-            text = just_first_letters_ToUppercase(text)
+        if options.all_text
+            text = all_text_ToUppercase(text)
+        else
+            if options.just_first_letters
+                text = just_first_letters_ToUppercase(text)
+            end
+            if options.from_the_begging
+                text = from_the_begging_ToUppercase(text,options.fb_amount_of_char)
+            end
+            if options.from_the_end
+                text = from_the_end_ToUppercase(text, options.fe_amount_of_char)
+            end
         end
-        if options.from_the_begging
-            text = from_the_begging_ToUppercase(text,options.fb_amount_of_char)
-        end
-        if options.from_the_end
-            text = from_the_end_ToUppercase(text, options.fe_amount_of_char)
-        end
+        put!(outputs_p[1], text)
     end
-    put!(outputs_p[1], text)
-end
 end
