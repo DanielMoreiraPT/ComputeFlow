@@ -96,11 +96,11 @@ module ToUppercase
         return txt
     end
 ################# PROGRAM #################
-    function ToUppercase_f(inputs_p, outputs_p, options)
+    function ToUppercase_f(inPort1, outPort1, options)
         println(options)
         options = set_options_ToUppercase(options)
 
-        text = get_text(inputs_p[1])
+        text = get_text(inPort1)
 
         if options.all_text
             text = all_text_ToUppercase(text)
@@ -115,7 +115,7 @@ module ToUppercase
                 text = from_the_end_ToUppercase(text, options.fe_amount_of_char)
             end
         end
-        put!(outputs_p[1], text)
+        put!(outPort1, text)
     end
 end
 
@@ -153,13 +153,13 @@ module FileReader()
 
 ############################################
 #   Main function of the module
-    function FileReader_f(inputs_p, outputs_p, options)
+    function FileReader_f(outPort1, options)
 
         options = set_options_FileReader(options)
 
         text = read(options.file_name, String)
 
-        put!(outputs_p[1],text)
+        put!(outPort1,text)
     end
 end
 
@@ -181,9 +181,9 @@ module WriteToFile
 
 ############################################
     #   MUTABLE part of module schema.
-    function WriteToFile_f(inputs_p, outputs_p, options)
+    function WriteToFile_f(inPort1, options)
         options = set_options_WriteToFile(options)
-        text = take!(inputs_p[1])
+        text = take!(inPort1)
         println(text)
 
         open(options.file_name, "w") do f

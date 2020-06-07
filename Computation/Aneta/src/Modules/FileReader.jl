@@ -31,12 +31,12 @@ module FileReader()
 
 ############################################
 #   Main function of the module
-    function FileReader_f(inputs_p, outputs_p, options)
+    function FileReader_f(outPort1, options)
 
         options = set_options_FileReader(options)
 
         text = read(options.file_name, String)
 
-        put!(outputs_p[1],text)
+        put!(outPort1,text)
     end
 end

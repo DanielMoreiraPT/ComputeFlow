@@ -15,9 +15,9 @@ module WriteToFile
 
 ############################################
     #   MUTABLE part of module schema.
-    function WriteToFile_f(inputs_p, outputs_p, options)
+    function WriteToFile_f(inPort1, options)
         options = set_options_WriteToFile(options)
-        text = take!(inputs_p[1])
+        text = take!(inPort1)
         println(text)
 
         open(options.file_name, "w") do f

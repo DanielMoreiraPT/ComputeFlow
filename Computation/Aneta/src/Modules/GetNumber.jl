@@ -17,11 +17,11 @@ module GetNumber
 
 ############################################
     #   MUTABLE part of module schema.
-    function GetNumber_f(inputs_p, outputs_p, options)
+    function GetNumber_f(outPort1, options)
 
         options = set_options_GetNumber(options)
 
-        put!(outputs_p[1], string(options.number))
+        put!(outPort1, string(options.number))
 
     end
 end

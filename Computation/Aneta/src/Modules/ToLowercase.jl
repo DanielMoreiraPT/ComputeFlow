@@ -16,13 +16,13 @@ module ToLowercase
 
 ############################################
     #   MUTABLE part of module schema.
-    function ToLowercase_f(inputs_p, outputs_p, options)
+    function ToLowercase_f(inPort1, outPort1, options)
 
         options = set_options_ToLowercase(options)
 
-        text = take!(inputs_p[1])
+        text = take!(inPort1)
         lowercase(text)
 
-        put!(outputs_p[1], text)
+        put!(outPort1, text)
     end
 end

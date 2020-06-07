@@ -96,11 +96,11 @@ module ToUppercase
         return txt
     end
 ################# PROGRAM #################
-    function ToUppercase_f(inputs_p, outputs_p, options)
-
+    function ToUppercase_f(inPort1, outPort1, options)
+        println(options)
         options = set_options_ToUppercase(options)
 
-        text = get_text(inputs_p[1])
+        text = get_text(inPort1)
 
         if options.all_text
             text = all_text_ToUppercase(text)
@@ -115,6 +115,6 @@ module ToUppercase
                 text = from_the_end_ToUppercase(text, options.fe_amount_of_char)
             end
         end
-        put!(outputs_p[1], text)
+        put!(outPort1, text)
     end
 end
