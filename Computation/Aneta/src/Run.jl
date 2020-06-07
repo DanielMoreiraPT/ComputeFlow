@@ -17,7 +17,7 @@ module Run
     include("JsonReader.jl")
 
 
-    modules = JsonReader.upload_modules("Computation/Aneta/Math.json")
+    modules = JsonReader.upload_modules("Computation/Aneta/ToUppercase_test.json")
 
     modules_dict = Dict()
     modules_info = Dict()
