@@ -27,10 +27,8 @@ module ToUppercase
     end
 
 
-    function set_options_ToUppercase()
-        name = "Computation/Aneta/ToUppercase_options.json"
-
-        options = JSON.parse(read(name,String))
+    function set_options_ToUppercase(options)
+        options = JSON.parse(read(options,String))
 
         all_text = get(options,"all_text",missing)
         just_first_letters = get(options,"just_first_letters",missing)
@@ -98,10 +96,10 @@ module ToUppercase
         return txt
     end
 ################# PROGRAM #################
-function ToUppercase_f(inputs_p, outputs_p)
+function ToUppercase_f(inputs_p, outputs_p, options)
 
 
-    options = set_options_ToUppercase()
+    options = set_options_ToUppercase(options)
 
     text = get_text(inputs_p[1])
 

@@ -6,9 +6,8 @@ module WriteToFile
         Options_WriteToFile(file_name) = new(file_name)
     end
 ##########
-    function set_options_WriteToFile()
-        name = "Computation/Aneta/WriteToFile_options.json"
-        options = JSON.parse(read(name,String))
+    function set_options_WriteToFile(options)
+        options = JSON.parse(read(options,String))
         file_name = get(options,"file_name",missing)
         Options_WriteToFile(file_name)
     end
@@ -17,7 +16,7 @@ module WriteToFile
 ############################################
     #   MUTABLE part of module schema.
     function WriteToFile_f(inputs_p, outputs_p, options)
-        options = set_options_WriteToFile()
+        options = set_options_WriteToFile(options)
         text = take!(inputs_p[1])
         println(text)
 
