@@ -29,8 +29,6 @@ module FileReader()
         Options_FileReader("Computation/Aneta/"*file_name)
     end
 
-    func_info = Function_info("FileReader", "v.1.0.0",hash("FileReader"*"v.1.0.0"))
-
 ############################################
 #   Main function of the module
     function FileReader_f(inputs_p, outputs_p, options)
