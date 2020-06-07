@@ -66,7 +66,7 @@ module Module_data
         functionid = get(data, "FunctionID", missing)
         io = get_IOinfo(get(data,"IO", missing))
         connections = get_connections(get(data, "Connections",missing))
-        options = "Computation/Aneta/" * functionid * string(id) * "_options.json"
+        options = "Computation/Aneta/Options_files/" * functionid * string(id) * "_options.json"
 
         module_info = Module_info(id, coords, functionid, io, connections, options)
         # println("=====>", module_info)
