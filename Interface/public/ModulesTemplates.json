@@ -1,0 +1,274 @@
+{
+	"Templates":{
+        "Variables": [
+            {
+                "Name":"Revenue",
+                "Id":"0",
+                "Coord":{
+                    "CoordX":"600",
+                    "CoordY":"600"
+                },
+                "IO":{
+                    "Outputs":[		
+                            {
+                                "PortID":"0",
+                                "PortType": "Revenue",
+                                "VarName": "monthly_revenue"
+                            }
+                        ]
+                    },
+                "Connections":{
+                    "Inputs":[
+                    ]
+                }  
+            },
+            {
+            "Name":"Costs of Goods&Services",
+            "Id":"0",
+            "Coord":{
+                "CoordX":"600",
+                "CoordY":"600"
+            },
+            "IO":{
+                "Outputs":[		
+                        {
+                            "PortID":"0",
+                            "PortType": "COGS",
+                            "VarName": "cost_goods"
+                        }
+                    ]
+                },
+            "Connections":{
+                "Inputs":[
+                ]
+            }  
+          },{
+            "Name":"Marketing Costs",
+            "Id":"0",
+            "Coord":{
+                "CoordX":"600",
+                "CoordY":"600"
+            },
+            "IO":{
+                "Outputs":[		
+                        {
+                            "PortID":"0",
+                            "PortType": "Cost",
+                            "VarName": "marketing_cost"
+                        }
+                    ]
+                },
+            "Connections":{
+                "Inputs":[
+                ]
+            }  
+          },
+          {
+            "Name":"Insurance Costs",
+            "Id":"0",
+            "Coord":{
+                "CoordX":"600",
+                "CoordY":"600"
+            },
+            "IO":{
+                "Outputs":[		
+                        {
+                            "PortID":"0",
+                            "PortType": "Cost",
+                            "VarName": "insurance_cost"
+                        }
+                    ]
+                },
+            "Connections":{
+                "Inputs":[
+                ]
+            }  
+          },
+          {
+            "Name":"Security Costs",
+            "Id":"0",
+            "Coord":{
+                "CoordX":"600",
+                "CoordY":"600"
+            },
+            "IO":{
+                "Outputs":[		
+                        {
+                            "PortID":"0",
+                            "PortType": "Cost",
+                            "VarName": "value"
+                        }
+                    ]
+                },
+            "Connections":{
+                "Inputs":[
+                ]
+            }  
+          },
+          {
+            "Name":"Taxes",
+            "Id":"0",
+            "Coord":{
+                "CoordX":"600",
+                "CoordY":"600"
+            },
+            "IO":{
+                "Outputs":[		
+                        {
+                            "PortID":"0",
+                            "PortType": "Taxes",
+                            "VarName": "taxes"
+                        }
+                    ]
+                },
+            "Connections":{
+                "Inputs":[
+                ]
+            }  
+          }
+        ],
+        "Functions":[
+            {
+            "Name":"Operational Costs",
+            "FunctionID":"4",
+            "IO":{
+                "Inputs":[
+                    {
+                        "PortID":"0",
+                        "PortType":"COGS",
+                        "VarName":"cost_goods"
+                    },
+                    {
+                        "PortID":"1",
+                        "PortType": "SG&A",
+                        "VarName": "expenses"
+                    }
+                ],
+                "Outputs":[		
+                    {
+                        "PortID":"0",
+                        "PortType": "OperationalCosts",
+                        "VarName": "op_costs"
+                    }
+                    ]
+                },
+            "Connections":{
+                "Inputs":[
+                    
+                ]
+            
+            }
+            },
+            {
+                "Name":"SG&A Costs",
+                "FunctionID":"4",
+                "IO":{
+                    "Inputs":[
+                        {
+                            "PortID":"0",
+                            "PortType":"Cost",
+                            "VarName":"custo"
+                        },
+                        {
+                            "PortID":"1",
+                            "PortType": "Cost",
+                            "VarName": "custo"
+                        },
+                        {
+                            "PortID":"2",
+                            "PortType": "Cost",
+                            "VarName": "custo"
+                        },
+                        {
+                            "PortID":"3",
+                            "PortType": "Cost",
+                            "VarName": "custo"
+                        }
+                    ],
+                    "Outputs":[		
+                        {
+                            "PortID":"0",
+                            "PortType": "SG&A",
+                            "VarName": "total expenses"
+                        }
+                        ]
+                    },
+                "Connections":{
+                    "Inputs":[
+                        
+                    ]
+                
+                }
+                },
+            {
+                "Name":"Profit",
+                "FunctionID":"9",
+                "IO":{
+                    "Inputs":[
+                        {
+                            "PortID":"0",
+                            "PortType":"Revenue",
+                            "VarName":"monthly_revenue"
+                        },
+                        {
+                            "PortID":"1",
+                            "PortType": "OperationalCosts",
+                            "VarName": "op_costs"
+                        }
+                    ],
+                    "Outputs":[		
+                        {
+                            "PortID":"0",
+                            "PortType": "Profit",
+                            "VarName": "profit"
+                        }
+                        ]
+                    },
+                "Connections":{
+                    "Inputs":[
+                        
+                    ]
+                
+                }
+            },
+            {
+                    "Name":"Margin",
+                    "FunctionID":"6",
+                    "IO":{
+                        "Inputs":[
+                            {
+                                "PortID":"0",
+                                "PortType":"Revenue",
+                                "VarName":"revenue"
+                            },
+                            {
+                                "PortID":"1",
+                                "PortType": "OperationalCosts",
+                                "VarName": "op_costs"
+                            },
+                            {
+                                "PortID":"1",
+                                "PortType": "Taxes",
+                                "VarName": "taxes"
+                            }
+
+                        ],
+                        "Outputs":[		
+                            {
+                                "PortID":"0",
+                                "PortType": "Margin",
+                                "VarName": "margin"
+                            }
+                            ]
+                        },
+                    "Connections":{
+                        "Inputs":[
+                            
+                        ]
+                    
+                    }
+                }
+        ]
+    }
+        
+}

@@ -1,0 +1,98 @@
+{
+	"title": "title", 
+	"Modules":[
+  		{
+            "Name":"Employee",
+          "Id":"0",
+          "Coord":{
+              "CoordX":"510",
+              "CoordY":"720"
+          },
+          "FunctionID":"12",
+          "IO":{
+              "Inputs":[
+                  {     
+                      "PortID":"0",
+                      "PortType": "String",
+                      "VarName": "name"
+                  },
+                  {
+                      "PortID":"1",
+                      "PortType": "Integer",
+                      "VarName": "age"
+                  },
+                  {
+                      "PortID":"2",
+                      "PortType": "Integer",
+                      "VarName": "wage"
+                  },
+                  {
+                      "PortID":"3",
+                      "PortType": "String",
+                      "VarName": "position"
+                  },
+                  {
+                      "PortID":"4",
+                      "PortType": "Double",
+                      "VarName": "extraHours"
+                  }
+              ],
+              "Outputs":[		
+                  {
+                      "PortID":"0",
+                      "PortType": "String",
+                      "VarName": "info"
+                  },
+                  {
+                      "PortID":"1",
+                      "PortType": "Integer",
+                      "VarName": "totalPayment"
+                  }
+              ]
+
+            },
+          "Connections":{
+                "Inputs":[
+                    
+                ]
+            
+            }
+            
+        },{
+        "Name":"UpperCase",
+          "Id":"1",
+          "Coord":{
+              "CoordX":"900",
+              "CoordY":"531"
+          },
+          "FunctionID":"4",
+          "IO":{
+              "Inputs":[
+                  {
+                      "PortID":"0",
+                      "PortType":"String",
+                      "VarName":"string"
+                  }
+              ],
+              "Outputs":[		
+                  {
+                      "PortID":"0",
+                      "PortType": "String",
+                      "VarName":"result"
+                  }
+              ]
+
+            },
+          "Connections":{
+            "Inputs":[
+                {
+                "InputPort":"0",		
+                "ModuleID":"0",
+                "ModulePort":"0"		
+                 }
+            ]}
+            
+        }
+  		
+  ]  
+}
