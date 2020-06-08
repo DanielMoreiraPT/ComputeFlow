@@ -31,7 +31,7 @@ include("JsonReader.jl")
 
 separatorInProjectFile = "\n###################\n"
 
-projectName, modules = JsonReader.upload_modules("Computation/Aneta/ToUppercase_test.json")
+projectName, modules = JsonReader.upload_modules("Computation/Aneta/Math.json")
 
 added_modules = Dict()
 
@@ -54,8 +54,6 @@ for m in modules
 end
 
 for m in modules
-    in_channels = Dict()
-    out_channels = Dict()
     functionCallString = """\t @async Task($(m.functionid)_f("""
     i = 0
     for connection in m.connections.inputs
