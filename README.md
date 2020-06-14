@@ -16,3 +16,8 @@ _It's goal is to develop software able to provide an intuitive and interactive I
 - José Moreira (jose.moreira@ua.pt)
 - António Sousa Pereira (f185@ua.pt)
 - Rui Aguiar (ruilaa@ua.pt)
+
+
+npm install
+npm install --save svelte-icons
+npm run dev
