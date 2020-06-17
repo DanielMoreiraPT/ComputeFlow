@@ -127,7 +127,7 @@ module Module_data
             port_id = get(output, "PortID", missing)
             port_type = get(output, "PortType", missing)
             # channel = Channel{eval(Symbol(port_type))}(1)
-            channelName = "" * functionid_name * "_" * string(functionid) * "_" * string(port_id) * "_" * port_type
+            channelName = "" * functionid_name * "_" * string(functionid) * "_" * string(port_id)
             channel = Channel(1)
             if port_id === missing || port_type === missing
                 throw(ErrorException("Missing IO information."))

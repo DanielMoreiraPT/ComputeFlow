@@ -31,7 +31,7 @@ include("JsonReader.jl")
 
 separatorInProjectFile = "\n###################\n"
 
-projectName, modules = JsonReader.upload_modules("Computation/Aneta/Math.json")
+projectName, modules = JsonReader.upload_modules("Computation/Aneta/Temperature_Calculations.json")
 
 added_modules = Dict()
 
@@ -48,7 +48,7 @@ writeFileToProjectFile(projectFile, "function $(projectName)_f()", "\n")
 
 for m in modules
         for out in m.io.outputs
-            createChannel = "$(out.channelName) = Channel(1)\n"
+            createChannel = "\t$(out.channelName) = Channel{$(out.port_type)}(1)\n"
             writeFileToProjectFile(projectFile, createChannel, "\n")
         end
 end

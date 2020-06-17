@@ -146,37 +146,37 @@ end
 
 ###################
 function Temperature_Calculations_f()
-FileReader_1_1_String = Channel(1)
+	FileReader_1_1 = Channel{String}(1)
 
-ParseToFloat_2_1_Array{Float64,1} = Channel(1)
+	ParseToFloat_2_1 = Channel{Array{Float64,1}}(1)
 
-Average_3_1_Float64 = Channel(1)
+	Average_3_1 = Channel{Float64}(1)
 
-Mean_4_1_Float64 = Channel(1)
+	Mean_4_1 = Channel{Float64}(1)
 
-Histogram_5_1_ = Channel(1)
+	Histogram_5_1 = Channel{}(1)
 
-Plot_6_1_ = Channel(1)
+	Plot_6_1 = Channel{}(1)
 
-	 @async Task(FileReader_f(FileReader_1_1_String,"Computation/Aneta/Options_files/FileReader1_options.json"))
+	 @async Task(FileReader_f(FileReader_1_1,"Computation/Aneta/Options_files/FileReader1_options.json"))
 
-	 @async Task(ParseToFloat_f(FileReader_1_1_String,ParseToFloat_2_1_Array{Float64,1},"Computation/Aneta/Options_files/ParseToFloat2_options.json"))
+	 @async Task(ParseToFloat_f(FileReader_1_1,ParseToFloat_2_1,"Computation/Aneta/Options_files/ParseToFloat2_options.json"))
 
-	 @async Task(Average_f(ParseToFloat_2_1_Array{Float64,1},Average_3_1_Float64,"Computation/Aneta/Options_files/Average3_options.json"))
+	 @async Task(Average_f(ParseToFloat_2_1,Average_3_1,"Computation/Aneta/Options_files/Average3_options.json"))
 
-	 @async Task(Mean_f(ParseToFloat_2_1_Array{Float64,1},Mean_4_1_Float64,"Computation/Aneta/Options_files/Mean4_options.json"))
+	 @async Task(Mean_f(ParseToFloat_2_1,Mean_4_1,"Computation/Aneta/Options_files/Mean4_options.json"))
 
-	 @async Task(Histogram_f(ParseToFloat_2_1_Array{Float64,1},Histogram_5_1_,"Computation/Aneta/Options_files/Histogram5_options.json"))
+	 @async Task(Histogram_f(ParseToFloat_2_1,Histogram_5_1,"Computation/Aneta/Options_files/Histogram5_options.json"))
 
-	 @async Task(Plot_f(ParseToFloat_2_1_Array{Float64,1},Plot_6_1_,"Computation/Aneta/Options_files/Plot6_options.json"))
+	 @async Task(Plot_f(ParseToFloat_2_1,Plot_6_1,"Computation/Aneta/Options_files/Plot6_options.json"))
 
-	 @async Task(SavePNG_f(Histogram_5_1_,"Computation/Aneta/Options_files/SavePNG7_options.json"))
+	 @async Task(SavePNG_f(Histogram_5_1,"Computation/Aneta/Options_files/SavePNG7_options.json"))
 
-	 @async Task(SavePNG_f(Plot_6_1_,"Computation/Aneta/Options_files/SavePNG8_options.json"))
+	 @async Task(SavePNG_f(Plot_6_1,"Computation/Aneta/Options_files/SavePNG8_options.json"))
 
-	 @async Task(WriteToFile_f(Average_3_1_Float64,"Computation/Aneta/Options_files/WriteToFile9_options.json"))
+	 @async Task(WriteToFile_f(Average_3_1,"Computation/Aneta/Options_files/WriteToFile9_options.json"))
 
-	 @async Task(WriteToFile_f(Mean_4_1_Float64,"Computation/Aneta/Options_files/WriteToFile10_options.json"))
+	 @async Task(WriteToFile_f(Mean_4_1,"Computation/Aneta/Options_files/WriteToFile10_options.json"))
 
 
 end
