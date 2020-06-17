@@ -117,3 +117,88 @@ function ToUppercase_f(inPort1, outPort1, options)
     end
     put!(outPort1, text)
 end
+
+###################
+"""
+# module FileReader
+
+- Julia version:
+- Author: anunia
+- Date: 2020-04-25
+
+# Examples
+
+```jldoctest
+julia>
+```
+"""
+
+import JSON
+
+
+################################################
+struct Options_FileReader
+    file_name::String
+    Options_FileReader(file_name) = new(file_name)
+end
+
+function set_options_FileReader(options)
+    options = JSON.parse(read(options,String))
+
+    file_name = get(options,"file_name",missing)
+    Options_FileReader("Computation/Aneta/"*file_name)
+end
+
+############################################
+#   Main function of the module
+function FileReader_f(outPort1, options)
+
+    options = set_options_FileReader(options)
+
+    text = read(options.file_name, String)
+
+    put!(outPort1,text)
+end
+
+###################
+using JSON
+
+struct Options_WriteToFile
+    file_name::String
+    Options_WriteToFile(file_name) = new(file_name)
+end
+##########
+function set_options_WriteToFile(options)
+    options = JSON.parse(read(options,String))
+    file_name = get(options,"file_name",missing)
+    Options_WriteToFile(file_name)
+end
+
+
+############################################
+#   MUTABLE part of module schema.
+function WriteToFile_f(inPort1, options)
+    options = set_options_WriteToFile(options)
+    text = take!(inPort1)
+    println(text)
+
+    open(options.file_name, "w") do f
+        write(f, string(text))
+    end
+end
+
+###################
+function ToUppercase_test_f()
+ToUppercase_1_1_String = Channel(1)
+
+FileReader_2_1_String = Channel(1)
+
+	 @async Task(ToUppercase_f(FileReader_2_1_String,ToUppercase_1_1_String,"Computation/Aneta/Options_files/ToUppercase1_options.json"))
+
+	 @async Task(FileReader_f(FileReader_2_1_String,"Computation/Aneta/Options_files/FileReader2_options.json"))
+
+	 @async Task(WriteToFile_f(ToUppercase_1_1_String,"Computation/Aneta/Options_files/WriteToFile3_options.json"))
+
+
+end
+ ToUppercase_test_f()

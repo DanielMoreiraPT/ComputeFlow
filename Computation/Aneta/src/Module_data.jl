@@ -25,8 +25,10 @@ module Module_data
         port_id
         port_type::String
         channel
+        channelName
         Port_info(id, type) = new(id, type)
         Port_info(id, type, channel) = new(id, type, channel)
+        Port_info(id, type, channel, channelName) = new(id, type, channel, channelName)
     end
 
     struct IOinfo
@@ -61,14 +63,14 @@ module Module_data
 
 
     function creat_module(data)
-        id = get(data,"Id",missing)
+        functionid = get(data,"Id",missing)
         coords = get_coords(get(data, "Coord",missing))
-        functionid = get(data, "FunctionID", missing)
-        io = get_IOinfo(get(data,"IO", missing))
+        functionid_name = get(data, "FunctionID", missing)
+        io = get_IOinfo(get(data,"IO", missing), functionid, functionid_name)
         connections = get_connections(get(data, "Connections",missing))
-        options = "Computation/Aneta/Options_files/" * functionid * string(id) * "_options.json"
+        options = "Computation/Aneta/Options_files/" * functionid_name * string(functionid) * "_options.json"
 
-        module_info = Module_info(id, coords, functionid, io, connections, options)
+        module_info = Module_info(functionid, coords, functionid_name, io, connections, options)
         # println("=====>", module_info)
         # println("=====>", module_info.id)
         # println("=====>", module_info.coords)
@@ -106,7 +108,7 @@ module Module_data
         Connections(inputs, outputs)
     end
 
-    function get_IOinfo(dict)
+    function get_IOinfo(dict, functionid, functionid_name)
         inputs = []
         for input in get(dict,"Inputs",missing)
             input === missing && throw(ErrorException("Missing IO information.")) #Julia check left side first, if it's false don't check rest
@@ -125,19 +127,18 @@ module Module_data
             port_id = get(output, "PortID", missing)
             port_type = get(output, "PortType", missing)
             # channel = Channel{eval(Symbol(port_type))}(1)
+            channelName = "" * functionid_name * "_" * string(functionid) * "_" * string(port_id) * "_" * port_type
             channel = Channel(1)
             if port_id === missing || port_type === missing
                 throw(ErrorException("Missing IO information."))
             end
-            push!(outputs, Port_info(port_id,port_type, channel))
+            push!(outputs, Port_info(port_id,port_type, channel, channelName))
         end
         IOinfo(inputs, outputs)
     end
+
     function get_coords(coords)
-        #=coords = Coord(get(dict,"CoordX",missing),get(dict,"CoordY",missing))
-        if coords === missing
-            throw(ErrorException("Missing argument: Coords"))
-        end=#
+
         coordX = get(coords, "CoordX", missing)
         coordY = get(coords, "CoordY", missing)
         if coordX === missing || coordY === missing
@@ -145,10 +146,4 @@ module Module_data
         end
         Coord(coordX, coordY)
     end
-    #=open("test.json","r") do jfile
-        dataDict = JSON.parse(read(jfile,String))
-        for mod in get(dataDict,"Modules",missing)
-            creat_module(mod)
-        end
-    end=#
 end
