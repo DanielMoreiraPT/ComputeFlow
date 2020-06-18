@@ -31,13 +31,14 @@ include("JsonReader.jl")
 
 separatorInProjectFile = "\n###################\n"
 
-projectName, modules = JsonReader.upload_modules("Computation/Aneta/Temperature_Calculations.json")
+projectName, modules = JsonReader.upload_modules("Computation/Aneta/SDSDSD.json")
 
 added_modules = Dict()
 
 projectFile = open(projectName * ".jl", "w")
 for m in modules
     if ! haskey(added_modules, m.functionid)
+        println(m.functionid)
         code = readFile("Computation/Aneta/src/Modules/" * m.functionid*".jl")
         writeFileToProjectFile(projectFile, code, separatorInProjectFile)
         push!(added_modules, m.functionid => 1)

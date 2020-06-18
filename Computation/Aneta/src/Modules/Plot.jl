@@ -2,7 +2,7 @@
 ############################################
 #   Function counting mean of the numbers received by input Channel
 #   Receiving "end" finishes reading the numbers
-function Mean_f(inPort1, outPort1, options)
+function Mean_f(inPort1, options)
     import Statistics
 
     numbers = []
