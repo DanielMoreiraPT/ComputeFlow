@@ -63,8 +63,11 @@ for m in modules
         end
         module_in = connection.module_id
         module_port = connection.module_port
-
-        functionCallString = functionCallString * """$(modules[module_in].io.outputs[module_port].channelName)"""
+        if (length(modules[module_in].io.outputs) < module_port)
+            functionCallString = functionCallString * """None"""
+        else
+            functionCallString = functionCallString * """$(modules[module_in].io.outputs[module_port].channelName)"""
+        end
         i = i + 1
     end
 
