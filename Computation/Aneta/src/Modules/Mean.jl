@@ -1,21 +1,13 @@
 
 ############################################
 #   Function counting mean of the numbers received by input Channel
-#   Receiving "end" finishes reading the numbers
+#
+import Statistics
+
 function Mean_f(inPort1, outPort1, options)
-    import Statistics
 
-    # numberOfInputs = 0
+    numbers = fetch(inPort1)
 
-    numbers = take!(inPort1)
-
-    # while input != "end"
-    #     add(numbers, input)
-    #     numberOfInputs += 1
-    #     input = take!(inPort1)
-    # end
-
-    mean = Statistict.mean(numbers)
-
-    put!(outPort1, mean)
+    middle = Statistics.middle(numbers)
+    put!(outPort1, middle)
 end

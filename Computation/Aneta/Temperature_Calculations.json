@@ -7,7 +7,7 @@
         "CoordX":"X",
         "CoordY":"Y"
       },
-      "FunctionID": "FileReader",
+      "Name": "FileReader",
       "IO":{
         "Inputs":[
 
@@ -36,7 +36,7 @@
         "CoordX":"X",
         "CoordY":"Y"
       },
-      "FunctionID": "ParseToFloat",
+      "Name": "ParseToFloat",
       "IO":{
         "Inputs":[
           {
@@ -71,7 +71,7 @@
         "CoordX":"X",
         "CoordY":"Y"
       },
-      "FunctionID": "Average",
+      "Name": "Average",
       "IO":{
         "Inputs":[
           {
@@ -106,7 +106,7 @@
         "CoordX":"X",
         "CoordY":"Y"
       },
-      "FunctionID": "Mean",
+      "Name": "Mean",
       "IO":{
         "Inputs":[
           {
@@ -146,7 +146,7 @@
         "CoordX":"X",
         "CoordY":"Y"
       },
-      "FunctionID": "Histogram",
+      "Name": "Histogram",
       "IO":{
         "Inputs":[
           {
@@ -185,7 +185,7 @@
         "CoordX":"X",
         "CoordY":"Y"
       },
-      "FunctionID": "Plot",
+      "Name": "Plot",
       "IO":{
         "Inputs":[
           {
@@ -224,7 +224,7 @@
         "CoordX":"X",
         "CoordY":"Y"
       },
-      "FunctionID": "SavePNG",
+      "Name": "SavePNG",
       "IO":{
         "Inputs":[
           {
@@ -260,7 +260,7 @@
         "CoordX":"X",
         "CoordY":"Y"
       },
-      "FunctionID": "SavePNG",
+      "Name": "SavePNG",
       "IO":{
         "Inputs":[
           {
@@ -296,7 +296,7 @@
         "CoordX":"X",
         "CoordY":"Y"
       },
-      "FunctionID": "WriteToFile",
+      "Name": "WriteToFile",
       "IO":{
         "Inputs":[
           {
@@ -332,7 +332,7 @@
         "CoordX":"X",
         "CoordY":"Y"
       },
-      "FunctionID": "WriteToFile",
+      "Name": "WriteToFile",
       "IO":{
         "Inputs":[
           {

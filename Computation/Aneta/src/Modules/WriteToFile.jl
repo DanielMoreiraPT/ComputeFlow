@@ -17,7 +17,6 @@ end
 function WriteToFile_f(inPort1, options)
     options = set_options_WriteToFile(options)
     text = take!(inPort1)
-    println(text)
 
     open(options.file_name, "w") do f
         write(f, string(text))

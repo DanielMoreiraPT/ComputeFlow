@@ -40,27 +40,41 @@ function FileReader_f(outPort1, options)
 end
 
 ###################
+############################################
+#   Function counting mean of the numbers received by input Channel
+#
+function ParseToFloat_f(inPort1, outPort1, options)
+    text = fetch(inPort1)
+
+    splitedText = split(text, r"\n| ",keepempty=false)
+    numbers = []
+
+    for txt in splitedText
+        number = parse(Float64, txt)
+        push!(numbers, number)
+
+    end
+
+    put!(outPort1, numbers)
+
+
+end
 
 ###################
 
 ############################################
 #   Function counting Average of the numbers received by input Channel
-#   Receiving "end" finishes reading the numbers
+#
 function Average_f(inPort1, outPort1, options)
 
     sum = 0
-    numberOfInputs = 0
+    numbers = fetch(inPort1)
 
-    input = take!(inPort1)
-
-    while input != "end"
-        sum += input;
-        numberOfInputs += 1
-        input = take!(inPort1)
+    for number in numbers
+        sum += number
     end
 
-
-    avr = sum / numberOfInputs
+    avr = sum / length(numbers)
 
     put!(outPort1, avr)
 end
@@ -69,53 +83,71 @@ end
 
 ############################################
 #   Function counting mean of the numbers received by input Channel
-#   Receiving "end" finishes reading the numbers
+#
+import Statistics
+
 function Mean_f(inPort1, outPort1, options)
-    import Statistics
 
-    numbers = []
-    numberOfInputs = 0
+    numbers = fetch(inPort1)
 
-    input = take!(inPort1)
-
-    while input != "end"
-        add(numbers, input)
-        numberOfInputs += 1
-        input = take!(inPort1)
-    end
-
-    mean = Statistict.mean(numbers)
-
-    put!(outPort1, mean)
+    middle = Statistics.middle(numbers)
+    put!(outPort1, middle)
 end
 
 ###################
+############################################
+#   Function counting mean of the numbers received by input Channel
+#   Receiving "end" finishes reading the numbers
+using Plots
+using Distributions
+
+function Histogram_f(inPort1, outPort1, options)
+    y = fetch(inPort1)
+
+    plt = histogram(y,fmt = :png)
+    # savefig(plt,"histogram.png")
+
+    put!(outPort1, plt)
+end
 
 ###################
 
 ############################################
 #   Function counting mean of the numbers received by input Channel
 #   Receiving "end" finishes reading the numbers
-function Mean_f(inPort1, outPort1, options)
-    import Statistics
+using Plots
 
-    numbers = []
-    numberOfInputs = 0
+function Plot_f(inPort1, outPort1, options)
+    y = fetch(inPort1)
 
-    input = take!(inPort1)
+    plt = plot(y,fmt = :png)
+    # savefig(plt,"plot.png")
 
-    while input != "end"
-        add(numbers, input)
-        numberOfInputs += 1
-        input = take!(inPort1)
-    end
-
-    mean = Statistict.mean(numbers)
-
-    put!(outPort1, mean)
+    put!(outPort1, plt)
 end
 
 ###################
+############################################
+#   Function counting mean of the numbers received by input Channel
+#   Receiving "end" finishes reading the numbers
+struct Options_SavePNG
+    file_name::String
+    Options_SavePNG(file_name) = new(file_name)
+end
+##########
+function set_options_SavePNG(options)
+    options = JSON.parse(read(options,String))
+    file_name = get(options,"file_name",missing)
+    Options_SavePNG(file_name)
+end
+
+function SavePNG_f(inPort1, options)
+    options = set_options_SavePNG(options)
+
+    plot = fetch(inPort1)
+
+    savefig(plot, options.file_name)
+end
 
 ###################
 using JSON
@@ -137,7 +169,6 @@ end
 function WriteToFile_f(inPort1, options)
     options = set_options_WriteToFile(options)
     text = take!(inPort1)
-    println(text)
 
     open(options.file_name, "w") do f
         write(f, string(text))

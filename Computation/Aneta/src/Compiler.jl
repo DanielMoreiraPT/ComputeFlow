@@ -15,7 +15,7 @@ julia>
 function readFile(path)
     open(path, "r") do io
        read(io)
-   end;
+   end
 end
 function writeFileToProjectFile(path, text, separator)
     write(path, text)
@@ -31,7 +31,7 @@ include("JsonReader.jl")
 
 separatorInProjectFile = "\n###################\n"
 
-projectName, modules = JsonReader.upload_modules("Computation/Aneta/SDSDSD.json")
+projectName, modules = JsonReader.upload_modules("Computation/Aneta/Temperature_Calculations.json")
 
 added_modules = Dict()
 
