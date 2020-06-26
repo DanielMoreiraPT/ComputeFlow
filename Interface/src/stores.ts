@@ -3,43 +3,37 @@ import { Module, Port, Connection, Chart } from './StructureLogic';
 
 export class ChartHistory {
 
-	ChartRedo : Chart[] = [];
-	ChartUndo : Chart[] = [];
-	actualState ?:Chart | undefined;
+	__redoStack : string[] = [];
+	__undoStack : string[] = [];
 	constructor(){
+		this.__redoStack=[];
+		this.__undoStack=[];
 	}
-	addState(NewChart: Chart){
-		if(this.actualState !== undefined){
-			this.ChartUndo.push(this.actualState)
+	
+	redo(ChartStruc: Chart): string|undefined{
+		const newState = this.__redoStack.pop();
+		if(newState){
+			this.__undoStack.push(ChartStruc.toJSON());
 		}
-		this.actualState=NewChart;
-		this.ChartRedo=[];
+		return newState;
+	}	
+	undo(ChartStruc: Chart): string|undefined{
+		const newState = this.__undoStack.pop();
+		if (newState){
+			this.__redoStack.push(ChartStruc.toJSON());
+		}
+		return newState;
+
+	}
+	addState(OldState: string): void{
+		this.__undoStack.push(OldState);
+		if (this.__redoStack.length>0){
+			this.__redoStack=[];
+		}
+	}	
+	clear(): void{
+		this.__redoStack.splice(0, this.__redoStack.length);
+		this.__undoStack.splice(0, this.__undoStack.length);
 	}
 
-	undo(){
-		if(this.ChartUndo.length > 0){
-			let elem = this.ChartUndo.pop();
-			if(elem !== undefined){
-				this.actualState = elem;
-			}
-			if(this.actualState !== undefined){
-				this.ChartRedo.push(this.actualState);
-			}
-			
-		}
-	}
-
-	redo(){
-		if(this.ChartRedo.length > 0){
-			let elem = this.ChartRedo.pop();
-			if(elem !== undefined){
-				this.actualState = elem;
-			}
-			if(this.actualState !== undefined){
-				this.ChartUndo.push(this.actualState);
-			}
-			
-		}
-		
-	}
 }

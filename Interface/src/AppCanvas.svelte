@@ -1,11 +1,10 @@
 <script lang="typescript">	
     import Canvas from './Canvas.svelte'
     import { Module, Port, Connection, Chart } from './StructureLogic';
-    import Sidebar from './Sidebar.svelte';
     import Button from './Button.svelte';
-    import {addModule, removeModule} from './ChartInteraction';
     import { createEventDispatcher} from 'svelte';
-    
+    import { ChartHistory} from './stores';
+   
     const dispatch = createEventDispatcher();
     
     var fs = require('fs');
@@ -13,7 +12,8 @@
 
   
     let ChartStruc: Chart = new Chart("New Project");
-
+    
+    let __HistoryChart: ChartHistory = new ChartHistory();
     //need to initialize vars -> it would not work if after loaded, the diagram was not moved
     let Background_dxInitial: number = -3000;
     let Background_dyInitial: number = -3000;
@@ -27,158 +27,38 @@
     const handleBackGroundMovement = (e) => {
         Background_dx = e.detail.Background_dx.Background_dx;
         Background_dy = e.detail.Background_dy.Background_dy;
-        SpawnX = -Background_dx+600;
-        SpawnY = -Background_dy+600;
+        SpawnX = -Background_dx+400;
+        SpawnY = -Background_dy+400;
     }
-    //done
-    function saveToFile(ProjectName:string, chart: Chart){
-        var obj = {
-        "title":chart.ProjectName,
-        "Modules":[
-
-        ]
-        }
-
-
-        let i:number;
-        if(chart.ModuleList.length){
-        for(i=0;i<chart.ModuleList.length;i++){
-            let module_obj = {
-                "Name":chart.ModuleList[i].name,
-                "Id":i,
-                "Coord":{
-                    "CoordX":chart.ModuleList[i].xPos,
-                    "CoordY":chart.ModuleList[i].yPos
-                },
-                "FunctionID":chart.ModuleList[i].functionId,
-                "IO":{
-                "Inputs":[
-        
-                ],
-                "Outputs":[
-        
-                ]
-                },
-                "Connections":{
-                "Inputs":[
-                ],
-                "Outputs":[
-                ]
-                }
-            }
-            let j: number;
-            for( j=0; j<chart.ModuleList[i].inputList.length; j++){
-                let inputPortObj = {
-                "PortID":j,
-                "PortType":chart.ModuleList[i].inputList[j].varType,
-                "VarName":chart.ModuleList[i].inputList[j].varName
-                }
-        
-                module_obj["IO"]["Inputs"].push(inputPortObj);
-        
-                
-                
-                let connectionIndex: number; 
-                if(chart.ModuleList[i].connectionsInputs !== undefined){
-                    for(connectionIndex=0; connectionIndex<chart.ModuleList[i].connectionsInputs.length; connectionIndex++){
-                        if(chart.ModuleList[i].connectionsInputs[connectionIndex].InternalPort.id == j){
-                            let connectionObj = {
-                                "ModuleID":chart.ModuleList[i].connectionsInputs[connectionIndex].ExternalNode.id,
-                                "ModulePort":chart.ModuleList[i].connectionsInputs[connectionIndex].ExternalPort.id,
-                                "InputPort":j		
-                            }
-                            module_obj["Connections"]["Inputs"].push(connectionObj);
-                        }
-                        
-                    
-                    }
-                }
-                /*
-                if(chart.ModuleList[i].connectionsOutputs !== undefined){
-                    for(connectionIndex=0; connectionIndex<chart.ModuleList[i].connectionsOutputs.length; connectionIndex++){
-
-                        if(chart.ModuleList[i].connectionsOutputs[connectionIndex].InternalPort.id == j){
-                            let connectionObj = {
-                                "ModuleID":chart.ModuleList[i].connectionsOutputs[connectionIndex].ExternalNode.id,
-                                "ModulePort":chart.ModuleList[i].connectionsOutputs[connectionIndex].ExternalPort.id,
-                                "OutputPort":j		
-                            }
-                            module_obj["Connections"]["Outputs"].push(connectionObj);
-                        }
-                        
-                    
-                    }
-                }
-                */
-            }
-
-            for( j=0; j<chart.ModuleList[i].outputList.length; j++){
-                let outputPortObj = {
-                "PortID":j,
-                "PortType":chart.ModuleList[i].outputList[j].varType,
-                "VarName":chart.ModuleList[i].outputList[j].varName
-                }
-        
-                module_obj["IO"]["Outputs"].push(outputPortObj);
-        
-                
-                
-                let connectionIndex: number; 
-                /*
-                if(chart.ModuleList[i].connectionsInputs !== undefined){
-                    for(connectionIndex=0; connectionIndex<chart.ModuleList[i].connectionsInputs.length; connectionIndex++){
-                        if(chart.ModuleList[i].connectionsInputs[connectionIndex].InternalPort.id == j){
-                            let connectionObj = {
-                                "ModuleID":chart.ModuleList[i].connectionsInputs[connectionIndex].ExternalNode.id,
-                                "ModulePort":chart.ModuleList[i].connectionsInputs[connectionIndex].ExternalPort.id,
-                                "InputPort":j		
-                            }
-                            module_obj["Connections"]["Inputs"].push(connectionObj);
-                        }
-                        
-                    
-                    }
-                }*/
-                
-                if(chart.ModuleList[i].connectionsOutputs !== undefined){
-                    for(connectionIndex=0; connectionIndex<chart.ModuleList[i].connectionsOutputs.length; connectionIndex++){
-
-                        if(chart.ModuleList[i].connectionsOutputs[connectionIndex].InternalPort.id == j){
-                            let connectionObj = {
-                                "ModuleID":chart.ModuleList[i].connectionsOutputs[connectionIndex].ExternalNode.id,
-                                "ModulePort":chart.ModuleList[i].connectionsOutputs[connectionIndex].ExternalPort.id,
-                                "OutputPort":j		
-                            }
-                            module_obj["Connections"]["Outputs"].push(connectionObj);
-                        }
-                        
-                    
-                    }
-                }
-                
-            }
-        
-            obj["Modules"].push(module_obj);
-        
-            }
-        }
-        var json = JSON.stringify(obj);
+    function saveAsToFile(filename:string, chart: Chart){
+        var json = ChartStruc.toJSON();
         
         //create directory with files
         if (!fs.existsSync(dir)){
             fs.mkdirSync(dir);
         }
-        
-        fs.writeFile('../MyFlowProjects/'+ProjectName+'.json', json, (err) => {
+        fs.writeFile(filename+'.json', json, (err) => {
                 if(err){
                     alert("An error ocurred creating the file ")
-                    //alert("An error ocurred creating the file "+ err.message)
-                }else{
-                    alert("The file has been succesfully saved");
-                    //add to the side bar to load projects
-                    dispatch('fileWasSaved', {
-                        fileSaved: {ProjectName}
+                    dispatch('error', {
+                        message: "An error ocurred creating the file "
                     });
+                }else{
+                    var path = require('path');  
+                    var justfilename = filename.replace(/^.*[\\\/]/, '')
+                    var pathName = filename.replace(justfilename,'')
+                    let realDefaultDir = path.join(__dirname, "../"+dir+"/");
+                    if(realDefaultDir == pathName){
+                        dispatch('fileWasSavedAsOnDefaultDirectory', {
+                            fileSaved: {justfilename},
+                            path: {filename}
+                        });
+                    }else{
+                        dispatch('fileWasSavedAsOutsideDefaultDirectory', {
+                            fileSaved: {justfilename},
+                            path: {filename}
+                        });
+                    }
                     
                 }
                             
@@ -190,7 +70,7 @@
         var path = require('path');  
 
         var filePath = path.join(dir, ProjectName+'.json');
-        ChartStruc= new Chart(ProjectName);
+        ChartStruc = new Chart(ProjectName);
         fs.readFile(filePath, function(err,data){
             if (!err) {
                 let json = JSON.parse(data);
@@ -221,6 +101,7 @@
                     ChartStruc.addModule(FlowModuleObject); 
 
                 }
+                
                 for(let i=0; i<json.Modules.length; i++){
                     let inputConnectionslist=[];
                     let outputConnectionslist=[];
@@ -247,8 +128,18 @@
                 }
                 ChartStruc=ChartStruc;
 
-                dispatch('updateActiveProjectNameAndState', {
+                var justfilename = ProjectName
+                //var pathName = filePath.replace(justfilename,'')
+                var pathName = filePath.replace(".json",'')
+                let realpath = path.join(__dirname, "../"+pathName);
+
+
+                //history
+                __HistoryChart.clear();
+
+                dispatch('updateActiveProjectName', {
                             projectName: {ProjectName},
+                            projectpath: realpath,
                             state: {ChartStruc}
                         });
             } else {
@@ -261,29 +152,83 @@
     }
     //done
     export function addXModule(ModuleToBeAdded: Module){
+        __HistoryChart.addState(ChartStruc.toJSON());
+
         ModuleToBeAdded.setXPos(SpawnX);
         ModuleToBeAdded.setYPos(SpawnY);
-        ModuleToBeAdded.setModuleWidth();
-        ModuleToBeAdded.setModuleHeight();
-        ModuleToBeAdded.setPortCoords();
-
+        ModuleToBeAdded.adjustOwnProperties();
         ChartStruc.findIdealModuleId(0);
         ModuleToBeAdded.id=ChartStruc.nextModuleID;
         ChartStruc.ModuleList.push(ModuleToBeAdded);
         ChartStruc.ModuleList=ChartStruc.ModuleList;
+        let chartToBePassed: Chart = ChartStruc;
     }   
-    //done
-    export function saveProjectToFile(ProjectName: string){
-        saveToFile(ProjectName, ChartStruc);
-    } 
-    //done
-    export function updateState(newState: Chart){
-        ChartStruc=newState;
+    export function saveProject(filename:string){
+        saveAsToFile(filename, ChartStruc);
     }
+    //done
+    export function trySaveProjectToFile(){
+        const {dialog} = require("electron").remote;
+        let filename = dialog.showSaveDialogSync()
+        if(filename === undefined){
+            console.log("filename undefined");
+            return;
+        }else{  
+            saveAsToFile(filename, ChartStruc);
+        }
+    }
+    export function newProject(){
+        ChartStruc= new Chart("New Project");
+
+        __HistoryChart.clear();
+    }
+    let myCanvas;
+    export let left: number;
+    export let top: number;
+    
+    
+    export function redo(){
+        //console.log("before redo")
+        //console.log(__HistoryChart)
+        let newstate =__HistoryChart.redo(ChartStruc);
+        if(newstate){
+            ChartStruc.loadJSON(newstate);
+            for(let moduleEntry of ChartStruc.ModuleList){
+                moduleEntry.setPortCoords();
+            }ChartStruc.ModuleList=ChartStruc.ModuleList
+        } 
+        ChartStruc=ChartStruc;
+        
+        //console.log("after redo")
+        //console.log(__HistoryChart)
+    }
+    export function undo(){
+        //console.log("before undo")
+        //console.log(__HistoryChart)
+        let newstate =__HistoryChart.undo(ChartStruc);
+        if(newstate){
+            ChartStruc.loadJSON(newstate);
+            for(let moduleEntry of ChartStruc.ModuleList){
+                moduleEntry.setPortCoords();
+            }ChartStruc.ModuleList=ChartStruc.ModuleList
+        } 
+        ChartStruc=ChartStruc;
+        
+        //console.log("after undo")
+        //console.log(__HistoryChart)
+    }
+    export function handleWrongTypes(){
+        dispatch("wrongTypes");
+    }
+    
 </script>
-    <Canvas 
+    <Canvas bind:this={myCanvas}
         on:BackgroundMovement={handleBackGroundMovement}
+        on:wrongTypes={handleWrongTypes}
         ChartStruc={ChartStruc}
         Background_dx={-3000}
         Background_dy={-3000}
+        {__HistoryChart}
+        {left}
+        {top}
         />
