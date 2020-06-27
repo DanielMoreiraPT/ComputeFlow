@@ -1,5 +1,5 @@
 {
-	"title": "title", 
+	"title": "title",
 	"Modules":[
   		{
           "Id":"this one is going upalways and the lowest one has the primary coords (ancoor point)-> probably has a default value on the svg",
@@ -7,6 +7,12 @@
               "CoordX":"X",
               "CoordY":"Y"
           },
+					"Variables":{
+							"variableName1" : 1,
+							"variableName2" : "text"
+							"variableNameN" : true
+
+					},
           "FunctionID":"12 -> we need to have a seperated file which is also sent with the info from each function",
           "IO":{
               "Inputs":[
@@ -19,7 +25,7 @@
                       "PortType": "Integer"
                   }
               ],
-              "Outputs":[		
+              "Outputs":[
                   {
                       "PortID":"1",
                       "PortType": "String"
@@ -36,15 +42,15 @@
                 {
                 "ModuleID":"26",
                 "ModulePort":"23 -> this one is supposed to have the number related to the module's port connected to this one",
-                "InputPort":"1"				
+                "InputPort":"1"
                  },
                 {
                 "ModuleID":"2",
                 "ModulePort":"12",
-                "InputPort":"2"				
+                "InputPort":"2"
               }
             ],
-                
+
                 "Outputs" : [
                 {
                         "ModuleID":"26",
@@ -57,10 +63,10 @@
                         "OutputPort":"3"
                     }
                 ]
-            
+
             }
-            
+
         }
-  		
-  ]  
+
+  ]
 }
