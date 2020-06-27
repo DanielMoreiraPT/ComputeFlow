@@ -31,17 +31,23 @@ include("JsonReader.jl")
 
 separatorInProjectFile = "\n###################\n"
 
-projectName, modules = JsonReader.upload_modules("Computation/Aneta/Temperature_Calculations.json")
+projectName, modules = JsonReader.upload_modules("Computation/Aneta/Math.json")
 
 added_modules = Dict()
 
 projectFile = open(projectName * ".jl", "w")
 for m in modules
-    if ! haskey(added_modules, m.functionid)
-        println(m.functionid)
-        code = readFile("Computation/Aneta/src/Modules/" * m.functionid*".jl")
+    if ! haskey(added_modules, m.name)
+        println(m.name)
+        code = readFile("Computation/Aneta/src/Modules/" * m.name*".jl")
         writeFileToProjectFile(projectFile, code, separatorInProjectFile)
-        push!(added_modules, m.functionid => 1)
+        push!(added_modules, m.name => 1)
+    end
+end
+for m in modules
+    if ! haskey(added_modules, m.name)
+        println(m.variables)
+
     end
 end
 
@@ -55,7 +61,7 @@ for m in modules
 end
 
 for m in modules
-    functionCallString = """\t @async Task($(m.functionid)_f("""
+    functionCallString = """\t @async Task($(m.name)_f("""
     i = 0
     for connection in m.connections.inputs
         if i > 0
@@ -81,7 +87,7 @@ for m in modules
     if i > 0
         (functionCallString = functionCallString * """,""")
     end
-    functionCallString = functionCallString * """"$(m.options)"))\n"""
+    functionCallString = functionCallString * """$(m.variables)))\n"""
 
     writeFileToProjectFile(projectFile, functionCallString, "\n")
 
