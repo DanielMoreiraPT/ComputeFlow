@@ -13,7 +13,7 @@
 							"variableNameN" : true
 
 					},
-          "FunctionID":"12 -> we need to have a seperated file which is also sent with the info from each function",
+          "Name":"12 -> we need to have a seperated file which is also sent with the info from each function",
           "IO":{
               "Inputs":[
                   {
