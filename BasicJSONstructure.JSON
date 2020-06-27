@@ -9,7 +9,7 @@
           },
 					"Variables":{
 							"variableName1" : 1,
-							"variableName2" : "text"
+							"variableName2" : "text",
 							"variableNameN" : true
 
 					},
