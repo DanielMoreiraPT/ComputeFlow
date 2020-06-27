@@ -1,108 +1,105 @@
 {
   "title": "ToUppercase_test",
-  "Modules":[
+  "Modules": [
+    {
+      "Id": 0,
+      "Coord": {
+        "CoordX": "X",
+        "CoordY": "Y"
+      },
+      "Variables": {
+        "all_text": false,
+        "just_first_letters": false,
+        "from_the_begging": true,
+        "fb_amount_of_char": 10,
+        "from_the_end": true,
+        "fe_amount_of_char": 15
+      },
+      "Name": "ToUppercase",
+      "IO": {
+        "Inputs": [
+          {
+            "PortID": 0,
+            "PortType": "String"
+          }
+        ],
+        "Outputs": [
+          {
+            "PortID": 0,
+            "PortType": "String"
+          }
+        ]
+      },
+      "Connections": {
+        "Inputs": [
+          {
+            "ModuleID": 1,
+            "ModulePort": 0,
+            "InputPort": 0
+          }
+        ],
+        "Outputs": []
+      }
+    },
     {
       "Id": 1,
-      "Coord":{
-        "CoordX":"X",
-        "CoordY":"Y"
+      "Coord": {
+        "CoordX": "X",
+        "CoordY": "Y"
       },
-      "FunctionID": "ToUppercase",
-      "IO":{
-        "Inputs":[
+      "Variables": {
+        "file_name": "test.txt"
+      },
+      "Name": "FileReader",
+      "IO": {
+        "Inputs": [],
+        "Outputs": [
           {
-            "PortID": 1,
+            "PortID": 0,
             "PortType": "String"
           }
-        ],
-        "Outputs":[
-          {
-            "PortID": 1,
-            "PortType": "String"
-          }
-         ]
-
+        ]
       },
-      "Connections":{
-        "Inputs":[
+      "Connections": {
+        "Inputs": [],
+        "Outputs": [
           {
-            "ModuleID": 2,
-            "ModulePort": 1,
-            "InputPort": 1
+            "ModuleID": 0,
+            "ModulePort": 0,
+            "OutputPort": 0
           }
-        ],
-        "Outputs" : [ ]
-
+        ]
       }
-
     },
     {
       "Id": 2,
-      "Coord":{
-        "CoordX":"X",
-        "CoordY":"Y"
+      "Coord": {
+        "CoordX": "X",
+        "CoordY": "Y"
       },
-      "FunctionID": "FileReader",
-      "IO":{
-        "Inputs":[],
-
-        "Outputs":[
-          {
-            "PortID": 1,
-            "PortType": "String"
-          }
-        ]
-
+      "Variables": {
+        "file_name": "ToUpercase_result.txt"
       },
-      "Connections":{
-        "Inputs":[],
-
-        "Outputs" : [
+      "Name": "WriteToFile",
+      "IO": {
+        "Inputs": [
           {
-            "ModuleID": 1,
-            "ModulePort": 1,
-            "OutputPort": 1
-          }
-        ]
-
-      }
-
-    },
-    {
-      "Id": 3,
-      "Coord":{
-        "CoordX":"X",
-        "CoordY":"Y"
-      },
-      "FunctionID": "WriteToFile",
-      "IO":{
-        "Inputs":[
-          {
-            "PortID": 1,
+            "PortID": 0,
             "PortType": "String"
           }
         ],
-
-        "Outputs":[
-
-        ]
-
+        "Outputs": []
       },
-      "Connections":{
-        "Inputs":[
+      "Connections": {
+        "Inputs": [
           {
-            "ModuleID": 1,
-            "ModulePort": 1,
-            "InputPort": 1
+            "ModuleID": 0,
+            "ModulePort": 0,
+            "InputPort": 0
           }
         ],
-
-        "Outputs" : [
-
-        ]
-
+        "Outputs": []
       }
-
     }
   ]
 }

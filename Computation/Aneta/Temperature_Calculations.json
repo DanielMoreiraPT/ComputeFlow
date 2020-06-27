@@ -1,366 +1,314 @@
 {
   "title": "Temperature_Calculations",
-  "Modules":[
+  "Modules": [
     {
       "Id": 1,
-      "Coord":{
-        "CoordX":"X",
-        "CoordY":"Y"
+      "Coord": {
+        "CoordX": "X",
+        "CoordY": "Y"
+      },
+      "Variables": {
+        "file_name": "Temperatures.txt"
       },
       "Name": "FileReader",
-      "IO":{
-        "Inputs":[
-
-        ],
-        "Outputs":[
+      "IO": {
+        "Inputs": [],
+        "Outputs": [
           {
             "PortID": 1,
             "PortType": "String"
           }
-         ]
-
-      },
-      "Connections":{
-        "Inputs":[
-
-        ],
-        "Outputs" : [
         ]
-
+      },
+      "Connections": {
+        "Inputs": [],
+        "Outputs": []
       }
-
     },
     {
       "Id": 2,
-      "Coord":{
-        "CoordX":"X",
-        "CoordY":"Y"
+      "Coord": {
+        "CoordX": "X",
+        "CoordY": "Y"
       },
+      "Variables": {},
       "Name": "ParseToFloat",
-      "IO":{
-        "Inputs":[
+      "IO": {
+        "Inputs": [
           {
             "PortID": 1,
             "PortType": "String"
           }
         ],
-        "Outputs":[
+        "Outputs": [
           {
             "PortID": 1,
             "PortType": "Array{Float64,1}"
           }
-         ]
-
+        ]
       },
-      "Connections":{
-        "Inputs":[
+      "Connections": {
+        "Inputs": [
           {
             "ModuleID": 1,
             "ModulePort": 1,
             "InputPort": 1
           }
         ],
-        "Outputs" : [ ]
-
+        "Outputs": []
       }
-
     },
     {
       "Id": 3,
-      "Coord":{
-        "CoordX":"X",
-        "CoordY":"Y"
+      "Coord": {
+        "CoordX": "X",
+        "CoordY": "Y"
       },
+      "Variables": {},
       "Name": "Average",
-      "IO":{
-        "Inputs":[
+      "IO": {
+        "Inputs": [
           {
             "PortID": 1,
             "PortType": "Array{Float64,1}"
           }
         ],
-        "Outputs":[
+        "Outputs": [
           {
             "PortID": 1,
             "PortType": "Float64"
           }
-         ]
-
+        ]
       },
-      "Connections":{
-        "Inputs":[
+      "Connections": {
+        "Inputs": [
           {
             "ModuleID": 2,
             "ModulePort": 1,
             "InputPort": 1
           }
         ],
-        "Outputs" : [ ]
-
+        "Outputs": []
       }
-
     },
     {
       "Id": 4,
-      "Coord":{
-        "CoordX":"X",
-        "CoordY":"Y"
+      "Coord": {
+        "CoordX": "X",
+        "CoordY": "Y"
       },
+      "Variables": {},
       "Name": "Mean",
-      "IO":{
-        "Inputs":[
+      "IO": {
+        "Inputs": [
           {
             "PortID": 1,
             "PortType": "Array{Float64,1}"
           }
         ],
-
-        "Outputs":[
+        "Outputs": [
           {
             "PortID": 1,
             "PortType": "Float64"
           }
         ]
-
       },
-      "Connections":{
-        "Inputs":[
+      "Connections": {
+        "Inputs": [
           {
             "ModuleID": 2,
             "ModulePort": 1,
             "InputPort": 1
           }
         ],
-
-        "Outputs" : [
-
-        ]
-
+        "Outputs": []
       }
-
-    }
-    ,
+    },
     {
       "Id": 5,
-      "Coord":{
-        "CoordX":"X",
-        "CoordY":"Y"
+      "Coord": {
+        "CoordX": "X",
+        "CoordY": "Y"
       },
+      "Variables": {},
       "Name": "Histogram",
-      "IO":{
-        "Inputs":[
+      "IO": {
+        "Inputs": [
           {
             "PortID": 1,
             "PortType": "Array{Float64,1}"
           }
         ],
-
-        "Outputs":[
+        "Outputs": [
           {
             "PortID": 1,
             "PortType": ""
           }
         ]
-
       },
-      "Connections":{
-        "Inputs":[
+      "Connections": {
+        "Inputs": [
           {
             "ModuleID": 2,
             "ModulePort": 1,
             "InputPort": 1
           }
         ],
-
-        "Outputs" : [
-
-        ]
-
+        "Outputs": []
       }
-
     },
     {
       "Id": 6,
-      "Coord":{
-        "CoordX":"X",
-        "CoordY":"Y"
+      "Coord": {
+        "CoordX": "X",
+        "CoordY": "Y"
       },
+      "Variables": {},
       "Name": "Plot",
-      "IO":{
-        "Inputs":[
+      "IO": {
+        "Inputs": [
           {
             "PortID": 1,
             "PortType": "Array{Float64,1}"
           }
         ],
-
-        "Outputs":[
+        "Outputs": [
           {
             "PortID": 1,
             "PortType": ""
           }
         ]
-
       },
-      "Connections":{
-        "Inputs":[
+      "Connections": {
+        "Inputs": [
           {
             "ModuleID": 2,
             "ModulePort": 1,
             "InputPort": 1
           }
         ],
-
-        "Outputs" : [
-
-        ]
-
+        "Outputs": []
       }
-
     },
     {
       "Id": 7,
-      "Coord":{
-        "CoordX":"X",
-        "CoordY":"Y"
+      "Coord": {
+        "CoordX": "X",
+        "CoordY": "Y"
+      },
+      "Variables": {
+        "file_name": "histogramSave.png"
       },
       "Name": "SavePNG",
-      "IO":{
-        "Inputs":[
+      "IO": {
+        "Inputs": [
           {
             "PortID": 1,
             "PortType": ""
           }
         ],
-
-        "Outputs":[
-
-        ]
-
+        "Outputs": []
       },
-      "Connections":{
-        "Inputs":[
+      "Connections": {
+        "Inputs": [
           {
             "ModuleID": 5,
             "ModulePort": 1,
             "InputPort": 1
           }
         ],
-
-        "Outputs" : [
-
-        ]
-
+        "Outputs": []
       }
-
     },
     {
       "Id": 8,
-      "Coord":{
-        "CoordX":"X",
-        "CoordY":"Y"
+      "Coord": {
+        "CoordX": "X",
+        "CoordY": "Y"
+      },
+      "Variables": {
+        "file_name": "plotSave.png"
       },
       "Name": "SavePNG",
-      "IO":{
-        "Inputs":[
+      "IO": {
+        "Inputs": [
           {
             "PortID": 1,
             "PortType": ""
           }
         ],
-
-        "Outputs":[
-
-        ]
-
+        "Outputs": []
       },
-      "Connections":{
-        "Inputs":[
+      "Connections": {
+        "Inputs": [
           {
             "ModuleID": 6,
             "ModulePort": 1,
             "InputPort": 1
           }
         ],
-
-        "Outputs" : [
-
-        ]
-
+        "Outputs": []
       }
-
     },
     {
       "Id": 9,
-      "Coord":{
-        "CoordX":"X",
-        "CoordY":"Y"
+      "Coord": {
+        "CoordX": "X",
+        "CoordY": "Y"
+      },
+      "Variables": {
+        "file_name": "avr_temp.txt"
       },
       "Name": "WriteToFile",
-      "IO":{
-        "Inputs":[
+      "IO": {
+        "Inputs": [
           {
             "PortID": 1,
             "PortType": "Float64"
           }
         ],
-
-        "Outputs":[
-
-        ]
-
+        "Outputs": []
       },
-      "Connections":{
-        "Inputs":[
+      "Connections": {
+        "Inputs": [
           {
             "ModuleID": 3,
             "ModulePort": 1,
             "InputPort": 1
           }
         ],
-
-        "Outputs" : [
-
-        ]
-
+        "Outputs": []
       }
-
     },
     {
       "Id": 10,
-      "Coord":{
-        "CoordX":"X",
-        "CoordY":"Y"
+      "Coord": {
+        "CoordX": "X",
+        "CoordY": "Y"
+      },
+      "Variables": {
+        "file_name": "mean_temp.txt"
       },
       "Name": "WriteToFile",
-      "IO":{
-        "Inputs":[
+      "IO": {
+        "Inputs": [
           {
             "PortID": 1,
             "PortType": "Float64"
           }
         ],
-
-        "Outputs":[
-
-        ]
-
+        "Outputs": []
       },
-      "Connections":{
-        "Inputs":[
+      "Connections": {
+        "Inputs": [
           {
             "ModuleID": 4,
             "ModulePort": 1,
             "InputPort": 1
           }
         ],
-
-        "Outputs" : [
-
-        ]
-
+        "Outputs": []
       }
-
     }
   ]
 }

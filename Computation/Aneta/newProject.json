@@ -1,0 +1,219 @@
+{
+  "title": "NewProject",
+  "Modules": [
+    {
+      "Name": "WriteToFile",
+      "Id": 0,
+      "Coord": {
+        "CoordX": 3949,
+        "CoordY": 3238
+      },
+      "FunctionID": "WriteToFile",
+      "IO": {
+        "Inputs": [
+          {
+            "PortID": 0,
+            "PortType": "Float64",
+            "VarName": "data"
+          }
+        ],
+        "Outputs": []
+      },
+      "Connections": {
+        "Inputs": [
+          {
+            "ModuleID": 1,
+            "ModulePort": 0,
+            "InputPort": 0
+          }
+        ],
+        "Outputs": []
+      }
+    },
+    {
+      "Name": "Average",
+      "Id": 1,
+      "Coord": {
+        "CoordX": 3579,
+        "CoordY": 3172
+      },
+      "FunctionID": "Average",
+      "IO": {
+        "Inputs": [
+          {
+            "PortID": 0,
+            "PortType": "Array{Float64,1}",
+            "VarName": "values"
+          }
+        ],
+        "Outputs": [
+          {
+            "PortID": 0,
+            "PortType": "Float64",
+            "VarName": "avg"
+          }
+        ]
+      },
+      "Connections": {
+        "Inputs": [
+          {
+            "ModuleID": 2,
+            "ModulePort": 0,
+            "InputPort": 0
+          }
+        ],
+        "Outputs": [
+          {
+            "ModuleID": 0,
+            "ModulePort": 0,
+            "OutputPort": 0
+          }
+        ]
+      }
+    },
+    {
+      "Name": "ParseToFloat",
+      "Id": 2,
+      "Coord": {
+        "CoordX": 3253,
+        "CoordY": 3289
+      },
+      "FunctionID": "ParseToFloat",
+      "IO": {
+        "Inputs": [
+          {
+            "PortID": 0,
+            "PortType": "String",
+            "VarName": "string"
+          }
+        ],
+        "Outputs": [
+          {
+            "PortID": 0,
+            "PortType": "Array{Float64,1}",
+            "VarName": "float"
+          }
+        ]
+      },
+      "Connections": {
+        "Inputs": [
+          {
+            "ModuleID": 3,
+            "ModulePort": 0,
+            "InputPort": 0
+          }
+        ],
+        "Outputs": [
+          {
+            "ModuleID": 1,
+            "ModulePort": 0,
+            "OutputPort": 0
+          },
+          {
+            "ModuleID": 4,
+            "ModulePort": 0,
+            "OutputPort": 0
+          }
+        ]
+      }
+    },
+    {
+      "Name": "FileReader",
+      "Id": 3,
+      "Coord": {
+        "CoordX": 3041,
+        "CoordY": 3198
+      },
+      "IO": {
+        "Inputs": [],
+        "Outputs": [
+          {
+            "PortID": 0,
+            "PortType": "String",
+            "VarName": "data"
+          }
+        ]
+      },
+      "Connections": {
+        "Inputs": [],
+        "Outputs": [
+          {
+            "ModuleID": 2,
+            "ModulePort": 0,
+            "OutputPort": 0
+          }
+        ]
+      }
+    },
+    {
+      "Name": "Plot",
+      "Id": 4,
+      "Coord": {
+        "CoordX": 3576,
+        "CoordY": 3393
+      },
+      "FunctionID": "Plot",
+      "IO": {
+        "Inputs": [
+          {
+            "PortID": 0,
+            "PortType": "Array{Float64,1}",
+            "VarName": "data"
+          }
+        ],
+        "Outputs": [
+          {
+            "PortID": 0,
+            "PortType": "Plot",
+            "VarName": "plotdata"
+          }
+        ]
+      },
+      "Connections": {
+        "Inputs": [
+          {
+            "ModuleID": 2,
+            "ModulePort": 0,
+            "InputPort": 0
+          }
+        ],
+        "Outputs": [
+          {
+            "ModuleID": 5,
+            "ModulePort": 0,
+            "OutputPort": 0
+          }
+        ]
+      }
+    },
+    {
+      "Name": "SavePNG",
+      "Id": 5,
+      "Coord": {
+        "CoordX": 3916,
+        "CoordY": 3511
+      },
+      "FunctionID": "SavePNG",
+      "IO": {
+        "Inputs": [
+          {
+            "PortID": 0,
+            "PortType": "Plot",
+            "VarName": "data"
+          }
+        ],
+        "Outputs": []
+      },
+      "Connections": {
+        "Inputs": [
+          {
+            "ModuleID": 4,
+            "ModulePort": 0,
+            "InputPort": 0
+          }
+        ],
+        "Outputs": []
+      }
+    }
+  ]
+}

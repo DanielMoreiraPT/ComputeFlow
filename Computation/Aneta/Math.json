@@ -1,141 +1,125 @@
 {
   "title": "Math",
-  "Modules":[
+  "Modules": [
     {
-      "Id": 1,
-      "Coord":{
-        "CoordX":"X",
-        "CoordY":"Y"
+      "Id": 0,
+      "Coord": {
+        "CoordX": "X",
+        "CoordY": "Y"
       },
-      "FunctionID": "Addition",
-      "IO":{
-        "Inputs":[
+      "Variables": {},
+      "Name": "Addition",
+      "IO": {
+        "Inputs": [
           {
-            "PortID": 1,
+            "PortID": 0,
             "PortType": "Int64"
           },
           {
-            "PortID": 2,
-            "PortType": "Int64"
-          }
-        ],
-        "Outputs":[
-          {
             "PortID": 1,
             "PortType": "Int64"
           }
-         ]
-
+        ],
+        "Outputs": [
+          {
+            "PortID": 0,
+            "PortType": "Int64"
+          }
+        ]
       },
-      "Connections":{
-        "Inputs":[
+      "Connections": {
+        "Inputs": [
+          {
+            "ModuleID": 1,
+            "ModulePort": 0,
+            "InputPort": 0
+          },
           {
             "ModuleID": 2,
-            "ModulePort": 1,
+            "ModulePort": 0,
             "InputPort": 1
-          },
-          {
-            "ModuleID": 3,
-            "ModulePort": 1,
-            "InputPort": 2
           }
         ],
-        "Outputs" : [ ]
-
+        "Outputs": []
       }
-
+    },
+    {
+      "Id": 1,
+      "Coord": {
+        "CoordX": "X",
+        "CoordY": "Y"
+      },
+      "Variables": {
+        "number": 145
+      },
+      "Name": "GetNumber",
+      "IO": {
+        "Inputs": [],
+        "Outputs": [
+          {
+            "PortID": 0,
+            "PortType": "Int64"
+          }
+        ]
+      },
+      "Connections": {
+        "Inputs": [],
+        "Outputs": []
+      }
     },
     {
       "Id": 2,
-      "Coord":{
-        "CoordX":"X",
-        "CoordY":"Y"
+      "Coord": {
+        "CoordX": "X",
+        "CoordY": "Y"
       },
-      "FunctionID": "GetNumber",
-      "IO":{
-        "Inputs":[
-
-        ],
-        "Outputs":[
+      "Variables": {
+        "number": 200
+      },
+      "Name": "GetNumber",
+      "IO": {
+        "Inputs": [],
+        "Outputs": [
           {
-            "PortID": 1,
+            "PortID": 0,
             "PortType": "Int64"
           }
-         ]
-
+        ]
       },
-      "Connections":{
-        "Inputs":[
-
-        ],
-        "Outputs" : [ ]
-
+      "Connections": {
+        "Inputs": [],
+        "Outputs": []
       }
-
     },
     {
       "Id": 3,
-      "Coord":{
-        "CoordX":"X",
-        "CoordY":"Y"
+      "Coord": {
+        "CoordX": "X",
+        "CoordY": "Y"
       },
-      "FunctionID": "GetNumber",
-      "IO":{
-        "Inputs":[
-
-        ],
-        "Outputs":[
+      "Variables": {
+        "file_name": "mathOutput.txt"
+      },
+      "Name": "WriteToFile",
+      "IO": {
+        "Inputs": [
           {
-            "PortID": 1,
-            "PortType": "Int64"
-          }
-         ]
-
-      },
-      "Connections":{
-        "Inputs":[
-
-        ],
-        "Outputs" : [ ]
-
-      }
-
-    },
-    {
-      "Id": 4,
-      "Coord":{
-        "CoordX":"X",
-        "CoordY":"Y"
-      },
-      "FunctionID": "WriteToFile",
-      "IO":{
-        "Inputs":[
-          {
-            "PortID": 1,
+            "PortID": 0,
             "PortType": ""
           }
         ],
-
-        "Outputs":[
-
-        ]
-
+        "Outputs": []
       },
-      "Connections":{
-        "Inputs":[
+      "Connections": {
+        "Inputs": [
           {
-            "ModuleID": 1,
-            "ModulePort": 1,
-            "InputPort": 1
+            "ModuleID": 0,
+            "ModulePort": 0,
+            "InputPort": 0
           }
         ],
-
-        "Outputs" : [
-
-        ]
-
+        "Outputs": []
       }
-
     }
   ]
 }
