@@ -4,11 +4,10 @@
 using Plots
 using Distributions
 
-function Histogram_f(inPort1, outPort1, options)
+function Histogram_f(inPort1, outPort1, variables)
     y = fetch(inPort1)
 
     plt = histogram(y,fmt = :png)
-    # savefig(plt,"histogram.png")
 
     put!(outPort1, plt)
 end

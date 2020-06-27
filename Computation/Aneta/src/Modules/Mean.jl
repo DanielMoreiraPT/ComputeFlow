@@ -4,7 +4,7 @@
 #
 import Statistics
 
-function Mean_f(inPort1, outPort1, options)
+function Mean_f(inPort1, outPort1, variables)
 
     numbers = fetch(inPort1)
 

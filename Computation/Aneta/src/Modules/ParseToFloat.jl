@@ -1,7 +1,7 @@
 ############################################
 #   Function counting mean of the numbers received by input Channel
 #
-function ParseToFloat_f(inPort1, outPort1, options)
+function ParseToFloat_f(inPort1, outPort1, variables)
     text = fetch(inPort1)
 
     splitedText = split(text, r"\n| ",keepempty=false)

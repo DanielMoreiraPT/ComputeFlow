@@ -27,15 +27,13 @@ struct Options_ToUppercase
 end
 
 
-function set_options_ToUppercase(options)
-    options = JSON.parse(read(options,String))
-
-    all_text = get(options,"all_text",missing)
-    just_first_letters = get(options,"just_first_letters",missing)
-    from_the_begging = get(options,"from_the_begging",missing)
-    fb_amount_of_char = get(options,"fb_amount_of_char",missing)
-    from_the_end = get(options,"from_the_end",missing)
-    fe_amount_of_char = get(options,"fe_amount_of_char",missing)
+function set_options_ToUppercase(variables)
+    all_text = get(variables,"all_text",missing)
+    just_first_letters = get(variables,"just_first_letters",missing)
+    from_the_begging = get(variables,"from_the_begging",missing)
+    fb_amount_of_char = get(variables,"fb_amount_of_char",missing)
+    from_the_end = get(variables,"from_the_end",missing)
+    fe_amount_of_char = get(variables,"fe_amount_of_char",missing)
 
     Options_ToUppercase(all_text, just_first_letters, from_the_begging, fb_amount_of_char, from_the_end, fe_amount_of_char)
 end
@@ -96,9 +94,9 @@ function get_text(channel)
     return txt
 end
 ################# PROGRAM #################
-function ToUppercase_f(inPort1, outPort1, options)
-    println(options)
-    options = set_options_ToUppercase(options)
+function ToUppercase_f(inPort1, outPort1, variables)
+    println(variables)
+    options = set_options_ToUppercase(variables)
 
     text = get_text(inPort1)
 

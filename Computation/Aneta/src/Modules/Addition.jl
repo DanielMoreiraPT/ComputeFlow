@@ -1,23 +1,6 @@
-using JSON
-
-struct Options_Addition
-    Options_Addition() = new()
-end
-##########
-function set_options_Addition()
-    name = "Computation/Aneta/Addition_options.json"
-
-    options = JSON.parse(read(name,String))
-
-    Options_Addition()
-end
-
-
 ############################################
 #   MUTABLE part of module schema.
-function Addition_f(inPort1, inPort2, outPort1, options)
-
-    # options = set_options_Addition()
+function Addition_f(inPort1, inPort2, outPort1, variables)
     number1 = take!(inPort1)
 
     number2 = take!(inPort2)

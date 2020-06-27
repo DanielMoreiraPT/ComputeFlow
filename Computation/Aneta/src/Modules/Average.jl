@@ -2,7 +2,7 @@
 ############################################
 #   Function counting Average of the numbers received by input Channel
 #
-function Average_f(inPort1, outPort1, options)
+function Average_f(inPort1, outPort1, variables)
 
     sum = 0
     numbers = fetch(inPort1)

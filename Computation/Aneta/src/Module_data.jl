@@ -53,30 +53,25 @@ module Module_data
     struct Module_info
         id
         coords::Coord
-        functionid
+        name
         io::IOinfo
         connections
-        options
-        Module_info(id, coords, functionid, io, connections, options) = new(id, coords, functionid, io, connections, options)
+        variables
+        Module_info(id, coords, functionid, io, connections, variables) = new(id, coords, functionid, io, connections, variables)
     end
 
 
-
     function creat_module(data)
-        functionid = get(data,"Id",missing) ##+ 1
+        functionid = get(data,"Id",missing) + 1
         coords = get_coords(get(data, "Coord",missing))
-        functionid_name = get(data, "Name", missing)
-        io = get_IOinfo(get(data,"IO", missing), functionid, functionid_name)
+        name = get(data, "Name", missing)
+        io = get_IOinfo(get(data,"IO", missing), functionid, name)
         connections = get_connections(get(data, "Connections",missing))
-        options = "Computation/Aneta/Options_files/" * functionid_name * string(functionid) * "_options.json"
+        # options = "Computation/Aneta/Options_files/" * functionid_name * string(functionid) * "_options.json"
+        variables = get(data, "Variables", missing)
 
-        module_info = Module_info(functionid, coords, functionid_name, io, connections, options)
-        # println("=====>", module_info)
-        # println("=====>", module_info.id)
-        # println("=====>", module_info.coords)
-        # println("=====>", module_info.functionid)
-        # println("=====>", module_info.io)
-        # println("=====>", module_info.connections)
+        module_info = Module_info(functionid, coords, name, io, connections, variables)
+
         return module_info
     end
 
@@ -85,9 +80,9 @@ module Module_data
         for input in get(dict, "Inputs",missing)
             (input === missing) && throw(ErrorException("Missing IO information.")) #Julia check left side first, if it's false don't check rest
 
-            moduleid = get(input, "ModuleID",missing) ##+ 1
-            moduleport = get(input, "ModulePort", missing)#+ 1
-            inputport = get(input, "InputPort", missing)#+ 1
+            moduleid = get(input, "ModuleID",missing) + 1
+            moduleport = get(input, "ModulePort", missing)+ 1
+            inputport = get(input, "InputPort", missing)+ 1
             if moduleid === missing || moduleport === missing || inputport === missing
                 throw(ErrorException("Missing IO information."))
             end
@@ -97,9 +92,9 @@ module Module_data
         for output in get(dict, "Outputs",missing)
             output === missing && throw(ErrorException("Missing IO information.")) #Julia check left side first, if it's false don't check rest
 
-            moduleid = get(output, "ModuleID",missing)#+ 1
-            moduleport = get(output, "ModulePort", missing)#+ 1
-            outputport = get(output, "OutputPort", missing)#+ 1
+            moduleid = get(output, "ModuleID",missing)+ 1
+            moduleport = get(output, "ModulePort", missing)+ 1
+            outputport = get(output, "OutputPort", missing)+ 1
             if moduleid === missing || moduleport === missing || outputport === missing
                 throw(ErrorException("Missing IO information."))
             end
