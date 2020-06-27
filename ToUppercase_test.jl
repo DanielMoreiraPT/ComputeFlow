@@ -27,15 +27,13 @@ struct Options_ToUppercase
 end
 
 
-function set_options_ToUppercase(options)
-    options = JSON.parse(read(options,String))
-
-    all_text = get(options,"all_text",missing)
-    just_first_letters = get(options,"just_first_letters",missing)
-    from_the_begging = get(options,"from_the_begging",missing)
-    fb_amount_of_char = get(options,"fb_amount_of_char",missing)
-    from_the_end = get(options,"from_the_end",missing)
-    fe_amount_of_char = get(options,"fe_amount_of_char",missing)
+function set_options_ToUppercase(variables)
+    all_text = get(variables,"all_text",missing)
+    just_first_letters = get(variables,"just_first_letters",missing)
+    from_the_begging = get(variables,"from_the_begging",missing)
+    fb_amount_of_char = get(variables,"fb_amount_of_char",missing)
+    from_the_end = get(variables,"from_the_end",missing)
+    fe_amount_of_char = get(variables,"fe_amount_of_char",missing)
 
     Options_ToUppercase(all_text, just_first_letters, from_the_begging, fb_amount_of_char, from_the_end, fe_amount_of_char)
 end
@@ -96,9 +94,9 @@ function get_text(channel)
     return txt
 end
 ################# PROGRAM #################
-function ToUppercase_f(inPort1, outPort1, options)
-    println(options)
-    options = set_options_ToUppercase(options)
+function ToUppercase_f(inPort1, outPort1, variables)
+    println(variables)
+    options = set_options_ToUppercase(variables)
 
     text = get_text(inPort1)
 
@@ -119,85 +117,41 @@ function ToUppercase_f(inPort1, outPort1, options)
 end
 
 ###################
-"""
-# module FileReader
-
-- Julia version:
-- Author: anunia
-- Date: 2020-04-25
-
-# Examples
-
-```jldoctest
-julia>
-```
-"""
-
-import JSON
-
-
-################################################
-struct Options_FileReader
-    file_name::String
-    Options_FileReader(file_name) = new(file_name)
-end
-
-function set_options_FileReader(options)
-    options = JSON.parse(read(options,String))
-
-    file_name = get(options,"file_name",missing)
-    Options_FileReader("Computation/Aneta/"*file_name)
-end
-
 ############################################
 #   Main function of the module
-function FileReader_f(outPort1, options)
+function FileReader_f(outPort1, variables)
 
-    options = set_options_FileReader(options)
+    fileName = get(variables,"file_name",missing)
 
-    text = read(options.file_name, String)
+    text = read(fileName, String)
 
     put!(outPort1,text)
 end
 
 ###################
-using JSON
-
-struct Options_WriteToFile
-    file_name::String
-    Options_WriteToFile(file_name) = new(file_name)
-end
-##########
-function set_options_WriteToFile(options)
-    options = JSON.parse(read(options,String))
-    file_name = get(options,"file_name",missing)
-    Options_WriteToFile(file_name)
-end
-
-
 ############################################
 #   MUTABLE part of module schema.
-function WriteToFile_f(inPort1, options)
-    options = set_options_WriteToFile(options)
+function WriteToFile_f(inPort1, variables)
     text = take!(inPort1)
-    println(text)
 
-    open(options.file_name, "w") do f
+    fileName = get(variables,"file_name",missing)
+
+    open(fileName, "w") do f
         write(f, string(text))
     end
 end
 
 ###################
 function ToUppercase_test_f()
-ToUppercase_1_1_String = Channel(1)
+	ToUppercase_1_0 = Channel{String}(1)
 
-FileReader_2_1_String = Channel(1)
+	FileReader_2_0 = Channel{String}(1)
 
-	 @async Task(ToUppercase_f(FileReader_2_1_String,ToUppercase_1_1_String,"Computation/Aneta/Options_files/ToUppercase1_options.json"))
+	 @async Task(ToUppercase_f(FileReader_2_0,ToUppercase_1_0,Dict{String,Any}("from_the_begging" => true,"just_first_letters" => false,"all_text" => false,"fe_amount_of_char" => 15,"from_the_end" => true,"fb_amount_of_char" => 10)))
 
-	 @async Task(FileReader_f(FileReader_2_1_String,"Computation/Aneta/Options_files/FileReader2_options.json"))
+	 @async Task(FileReader_f(FileReader_2_0,Dict{String,Any}("file_name" => "test.txt")))
 
-	 @async Task(WriteToFile_f(ToUppercase_1_1_String,"Computation/Aneta/Options_files/WriteToFile3_options.json"))
+	 @async Task(WriteToFile_f(ToUppercase_1_0,Dict{String,Any}("file_name" => "ToUpercase_result.txt")))
 
 
 end

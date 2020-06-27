@@ -6,8 +6,9 @@
 ############################################
 #   Function counting mean of the numbers received by input Channel
 #   Receiving "end" finishes reading the numbers
-function Mean_f(inPort1, outPort1, options)
     import Statistics
+function Mean_f(inPort1, outPort1, options)
+
 
     # numberOfInputs = 0
 
@@ -125,7 +126,7 @@ end
 #   Function counting mean of the numbers received by input Channel
 #   Receiving "end" finishes reading the numbers
 function Mean_f(inPort1, options)
-    import Statistics
+
 
     numbers = []
     numberOfInputs = 0
@@ -145,7 +146,7 @@ end
 
 ###################
 function SDSDSD_f()
-	Histogram_1_0 = Channel{Plot}(1)
+	Histogram_1_0 = Channel{}(1)
 
 	Mean_3_0 = Channel{Float64}(1)
 
@@ -155,7 +156,7 @@ function SDSDSD_f()
 
 	FileReader_6_0 = Channel{String}(1)
 
-	Plot_9_0 = Channel{Plot}(1)
+	Plot_9_0 = Channel{}(1)
 
 	 @async Task(Histogram_f(None,Histogram_1_0,"Computation/Aneta/Options_files/Histogram1_options.json"))
 
