@@ -8,11 +8,11 @@ export function draggable(node: HTMLElement) {
 		lastY = event.clientY;
 		event.preventDefault();
 		event.stopPropagation();
-		node.dispatchEvent(new CustomEvent('dragstart', {
+		node.dispatchEvent(new CustomEvent("dragstart", {
 			detail: { lastX, lastY }
 		}));
-		window.addEventListener('mousemove', handleMousemove);
-		window.addEventListener('mouseup', handleMouseup);
+		window.addEventListener("mousemove", handleMousemove);
+		window.addEventListener("mouseup", handleMouseup);
 	}
 	function handleMousemove(event){
 	 	const dx = event.clientX - lastX;
@@ -20,7 +20,7 @@ export function draggable(node: HTMLElement) {
 		lastX = event.clientX;
 		lastY = event.clientY;
 		event.preventDefault();
-		node.dispatchEvent(new CustomEvent('dragmove', {
+		node.dispatchEvent(new CustomEvent("dragmove", {
 			detail: { lastX, lastY, dx, dy }
 		}));
 	}
@@ -28,18 +28,18 @@ export function draggable(node: HTMLElement) {
 		lastX = event.clientX;
 		lastY = event.clientY;
 		event.preventDefault();
-		node.dispatchEvent(new CustomEvent('dragend', {
+		node.dispatchEvent(new CustomEvent("dragend", {
 		detail: { lastX, lastY }
 		}));
-		window.removeEventListener('mousemove', handleMousemove);
-		window.removeEventListener('mouseup', handleMouseup);
+		window.removeEventListener("mousemove", handleMousemove);
+		window.removeEventListener("mouseup", handleMouseup);
 	}
-	node.addEventListener('mousedown', handleMousedown);
+	node.addEventListener("mousedown", handleMousedown);
 	return {
 		destroy() {
-			node.removeEventListener('mousedown', handleMousedown);
-			node.removeEventListener('mouseup', handleMouseup);
-			node.removeEventListener('mousemove', handleMousemove);
+			node.removeEventListener("mousedown", handleMousedown);
+			node.removeEventListener("mouseup", handleMouseup);
+			node.removeEventListener("mousemove", handleMousemove);
 		}
 	};
 }

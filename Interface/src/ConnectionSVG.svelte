@@ -22,21 +22,20 @@ const handleDblClick = (e) => {
     path{
         stroke-width: 5;
         stroke-opacity: 0.5;
-        stroke:#f17b53;
+        stroke:rgb(0, 0, 0);
 
     }
     path:hover{
         stroke-width: 7;
         stroke-opacity: 0.7;
-        stroke:#ff4000;
-
+        stroke:rgb(0, 0, 0)
     }
 	circle { 
-        fill: #ff3e00; 
+        fill: rgb(255, 255, 255); 
         opacity:1;
     }
 	circle:hover { 
-        fill: #a50c25; 
+        fill: rgb(255, 255, 255); 
         opacity:1;
     }
 

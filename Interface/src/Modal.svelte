@@ -6,8 +6,7 @@
       <main><h1>ComputeFlow</h1>
             <h4>https://github.com/DanielMoreiraPT/ComputeFlow</h4>
             <h2>Computeflow is a final project for Informatics Engineering Bachlor's degree.</h2>
-            <p>It's goal is to develop software able to provide an intuitive and interactive Interface for users that require usage of data flow programming without having extensive programming knowledge.
-                Members</p>
+            <p>It's goal is to develop software able to provide an intuitive and interactive Interface for users that require usage of data flow programming without having extensive programming knowledge.</p>
             <h2>Members</h2>    
             <h3>Computation: </h3>
                     <p>Aneta Pawelec (pawelec.aneta98@gmail.com)</p>
@@ -57,8 +56,8 @@ export let show = false;
 }
 .modal-container {
   position: relative;
-  background-color:rgb(92, 20, 44);;
-  width: 90vw;
+  background-color:rgb(51, 51, 51);
+  width: 50vw;
   margin: 1rem auto 0.2rem;
   box-shadow: 0 3px 10px #555;
 }

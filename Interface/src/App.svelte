@@ -2,32 +2,53 @@
     import AppCanvas from './AppCanvas.svelte'
     import { onMount } from 'svelte';   
     import { Module, Port, Connection, Chart } from './StructureLogic';
-    import Sidebar from './Sidebar.svelte';
-    import LoadProjectBar from './LoadProjectBar.svelte';
-    import {addModule, removeModule} from './ChartInteraction';
-    import {ChartHistory} from './stores';
-
+    import Button from './Button.svelte';
+    import LoadProjectBarv2 from './LoadProjectBarv2.svelte';
+    import Navbar from './Navbar.svelte';
+    import AddModuleBar from './AddModuleBar.svelte';
+    import AppRedoUndoSave from './AppRedoUndoSave.svelte';
+    import ModalAlert from './ModalAlert.svelte';
+    import { ChartHistory} from './stores';
     
-    var fs = require('fs');
-    var dir = '../MyFlowProjects';
-
-    let ProjectName: string;
-
-    let ChartHistory_ = new ChartHistory();
-
-
-    //conditon to swithc canvas here needed to be implemented
-    let myAppCanvas;
-    let myLoadProjectBar;
-
-    //done
-    const handleSaveProject = (e) => {
-        let ProjectName:string = e.detail.name
-        //TODO not the  ideal solution
-        myAppCanvas.saveProjectToFile(ProjectName)
+    
+    import ModalWrongTypes from './ModalWrongTypes.svelte';
+    let ModalWrongTypesshow=false;
+    const handleWrongTypes = (e) => {
+        ModalWrongTypesshow=true;
     }
 
-    //done
+    var fs = require('fs'); 
+    var dir = '../MyFlowProjects';
+
+
+    let ProjectName: string;
+    let ProjectPath: string;
+    
+
+    let myAppCanvas;
+    let myLoadProjectBar;
+    let myNavBar;
+    let myAddModule;
+    let canvasArea;
+
+    //needed to know the size of the navbar
+	$: top = myNavBar ? myNavBar.getBoundingClientRect().bottom : 0;
+    $: left = myAddModule ? myAddModule.getBoundingClientRect().right : 0;
+    
+    let ModalAlertshow=false
+    let ModalAlertError=false
+    let Alertmessage;
+
+    const handleSaveProject = (e) => {
+        let ProjectName:string = e.detail.name
+        if(ProjectName.length == 0){
+            Alertmessage="Project Name not defined";
+            ModalAlertshow=true;
+            ModalAlertError=true;
+        }else{
+            myAppCanvas.saveProject(ProjectPath)
+        }
+    }
     const handleAddModule = (e) => {
         let TemplateModule= e.detail.module;
         let ModuleToBeAdded: Module = new Module(TemplateModule.name);
@@ -45,77 +66,170 @@
         myAppCanvas.addXModule(ModuleToBeAdded)
         
     }
-    //done
     const handleLoadFile = (e) => {
         //dont know if i should put it here
         //save opened project first
         myAppCanvas.loadFile(e.detail.name);
     }
-    
-   
+    const handleUpdateActiveProjectName = (e) => {
+        let nameOfProject = e.detail.projectName.ProjectName;
+        let path = e.detail.projectpath;
+        ProjectName = nameOfProject;
+        ProjectPath = path;
+    }
+    const handleNewProject = (e) => {
+        myAppCanvas.newProject()
+    }
+    const handleProjectNameNotDefined = (e) => {
+        
+        Alertmessage=e.detail.message;
+        ModalAlertshow=true;
+    }
+    const handleTrytoSaveProject = (e) => {
+        myAppCanvas.trySaveProjectToFile()
+    }
+    const handleFileWasSavedAsOnDefaultDirectory = (e) => {
+        ProjectName=e.detail.fileSaved.justfilename;
+        ProjectPath=e.detail.path.filename;
+        myLoadProjectBar.addProjectName(ProjectName);
+
+    }
+    const handleFileWasSavedAsOutsideDefaultDirectory = (e) => {
+        ProjectName=e.detail.fileSaved.justfilename;
+        ProjectPath=e.detail.path.filename;
+    }
+    const handleError = (e) => {
+        Alertmessage=e.detail.message;
+        ModalAlertshow=false;
+        ModalAlertError=true;
+    }
     const handleUndo = (e) => {
-        ChartHistory_.undo();
-        myAppCanvas.updateState(ChartHistory_.actualState);
+        //TODO
+        myAppCanvas.undo()
     }
     const handleRedo = (e) => {
-        ChartHistory_.redo();
-        myAppCanvas.updateState(ChartHistory_.actualState);
-        
+        //TODO
+        myAppCanvas.redo()
     }
-
-    //done(new logic associated)
-    const handleFileWasSaved = (e) => {
-        let nameOfProject = e.detail.fileSaved.ProjectName;
-        myLoadProjectBar.addProjectName(nameOfProject);
-        
-    }
-    //done
-    const handleUpdateActiveProjectNameAndState = (e) => {
-        let nameOfProject = e.detail.projectName.ProjectName;
-        ProjectName = nameOfProject
-        ChartHistory_.addState(e.detail.state.ChartStruc);
-    }
-    
 
 </script>
+<div class="grid-container">
+    <div class="grid-item title" bind:this={myNavBar}>
+        <div style="float: left;padding-left: 50px;">
+            <h2>ComputeFlow</h2>
+        </div>
+    </div>  
+    <div class="grid-item navbar" bind:this={myNavBar}>
+        <Navbar
+            on:NewProject={handleNewProject}
+            on:AddModule={handleAddModule}
+            on:TrytoSaveProject={handleTrytoSaveProject}
+            ProjectName={ProjectName} />
+    </div> 
+    <div class="grid-item zoom">
+    </div>
+    <div class="grid-item redoundo">
+        <AppRedoUndoSave
+            ProjectName={ProjectName} 
+            on:SaveProject={handleSaveProject}
+            on:ProjectNameNotDefined={handleProjectNameNotDefined}
+            on:Redo={handleRedo}
+            on:Undo={handleUndo}/>
+    </div>
+    <div class="grid-item AddModule" bind:this={myAddModule}>
+        <AddModuleBar 
+            on:AddModule={handleAddModule}
+            />
 
-<div id="WorkingCanvas">
-    <AppCanvas 
-        bind:this={myAppCanvas}
-        on:fileWasSaved={handleFileWasSaved}
-        on:updateActiveProjectNameAndState={handleUpdateActiveProjectNameAndState}
-        /> 
-    <!--
-    <Canvas 
-        on:BackgroundMovement={handleBackGroundMovement}
-        ChartStruc={Chart0}
-        Background_dx={Background_dxInitial}
-        Background_dy={Background_dyInitial}
-        />-->
-
-    <Sidebar 
-        on:SaveProject={handleSaveProject}
-        on:AddModule={handleAddModule}
-        on:Undo={handleUndo}
-        on:Redo={handleRedo}
-        ProjectName={ProjectName}
-        />
-    <LoadProjectBar
-        bind:this={myLoadProjectBar}
-        on:LoadFile={handleLoadFile}
-        />
-
+    </div>
+    <div class="grid-item LoadFile">
+        <LoadProjectBarv2 
+            bind:this={myLoadProjectBar}
+            on:LoadFile={handleLoadFile}
+            ProjectName={ProjectName} 
+            />
+    </div>
+    <div class="grid-item canvas" bind:this={canvasArea}>
+        <AppCanvas 
+            bind:this={myAppCanvas}
+            {left}
+            {top}
+            on:updateActiveProjectName={handleUpdateActiveProjectName}
+            on:fileWasSavedAsOnDefaultDirectory={handleFileWasSavedAsOnDefaultDirectory}
+            on:fileWasSavedAsOutsideDefaultDirectory={handleFileWasSavedAsOutsideDefaultDirectory}
+            on:error={handleError}
+            on:wrongTypes={handleWrongTypes}
+            ProjectName={ProjectName} 
+            /> 
+    </div>
 </div>
+<ModalAlert bind:show={ModalAlertshow} message={Alertmessage} />
+<ModalWrongTypes bind:show={ModalWrongTypesshow} />
+
 <style>
-    #WorkingCanvas {
-        z-index: -1;
-        height: 100%;
-        width: 80%;
-        background-color:rgb(92, 20, 44);
+    .grid-container {
+    display: grid;
+    grid-row-gap: 1px;
+    background-color: #27948e;
+	grid-auto-rows: 50px minmax(100px, auto)  minmax(100px, auto) minmax(100px, auto);
+	grid-auto-columns: 250px auto auto auto auto;
+    height:100%;
     }
-    #BarModulesForAdding {
-        height: 100%;
-        width: 20%;
-        background-color:rgb(83, 71, 75);
+
+    .grid-item {
+    background-color:  rgb(51, 51, 51);
+    text-align: center;
+    }
+
+    .title {
+    grid-column: 1 / span 2;
+    grid-row: 1;
+    }
+    .navbar {
+    grid-column: 3 / span 4;
+    grid-row: 1;
+    }
+    
+    .zoom {
+    grid-column: 7 / span 2;
+    grid-row: 1;
+    }
+    .undoredo {
+    grid-column: 9 / span 2;
+    grid-row: 1;
+    }
+    .canvas {
+    grid-column: 2 / span 8;
+    grid-row: 2/ span 2;
+	overflow: hidden; 
+	position: relative;
+    }
+
+    .AddModule {
+    grid-column: 1 / span 1;
+    grid-row: 2;
+	overflow-y: scroll; 
+    }
+
+    .LoadFile {
+    grid-column: 1 / span 1;
+    grid-row: 3;
+	overflow-y: scroll; 
+    }
+    .ProjectNameInput {
+    height: 50px;
+    }
+
+    h1, h5, h4, h2 {
+        color:white;
+    }
+    ::-webkit-scrollbar {     
+        background-color: #27948e;
+        width: .8em
+    }
+
+    ::-webkit-scrollbar-thumb:window-inactive,
+    ::-webkit-scrollbar-thumb {
+            background:  white
     }
 </style>
