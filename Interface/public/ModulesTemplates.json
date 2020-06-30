@@ -2,194 +2,41 @@
 	"Templates":{
         "Variables": [
             {
-                "Name":"Revenue",
-                "Id":"0",
-                "Coord":{
-                    "CoordX":"600",
-                    "CoordY":"600"
-                },
+                "Name":"FileReader",
                 "IO":{
                     "Outputs":[		
-                            {
-                                "PortID":"0",
-                                "PortType": "Revenue",
-                                "VarName": "monthly_revenue"
-                            }
+                        {
+                            "PortID":"0",
+                            "PortType": "String",
+                            "VarName": "data"
+                        }
                         ]
                     },
                 "Connections":{
                     "Inputs":[
+                        
                     ]
-                }  
-            },
-            {
-            "Name":"Costs of Goods&Services",
-            "Id":"0",
-            "Coord":{
-                "CoordX":"600",
-                "CoordY":"600"
-            },
-            "IO":{
-                "Outputs":[		
-                        {
-                            "PortID":"0",
-                            "PortType": "COGS",
-                            "VarName": "cost_goods"
-                        }
-                    ]
-                },
-            "Connections":{
-                "Inputs":[
-                ]
-            }  
-          },{
-            "Name":"Marketing Costs",
-            "Id":"0",
-            "Coord":{
-                "CoordX":"600",
-                "CoordY":"600"
-            },
-            "IO":{
-                "Outputs":[		
-                        {
-                            "PortID":"0",
-                            "PortType": "Cost",
-                            "VarName": "marketing_cost"
-                        }
-                    ]
-                },
-            "Connections":{
-                "Inputs":[
-                ]
-            }  
-          },
-          {
-            "Name":"Insurance Costs",
-            "Id":"0",
-            "Coord":{
-                "CoordX":"600",
-                "CoordY":"600"
-            },
-            "IO":{
-                "Outputs":[		
-                        {
-                            "PortID":"0",
-                            "PortType": "Cost",
-                            "VarName": "insurance_cost"
-                        }
-                    ]
-                },
-            "Connections":{
-                "Inputs":[
-                ]
-            }  
-          },
-          {
-            "Name":"Security Costs",
-            "Id":"0",
-            "Coord":{
-                "CoordX":"600",
-                "CoordY":"600"
-            },
-            "IO":{
-                "Outputs":[		
-                        {
-                            "PortID":"0",
-                            "PortType": "Cost",
-                            "VarName": "value"
-                        }
-                    ]
-                },
-            "Connections":{
-                "Inputs":[
-                ]
-            }  
-          },
-          {
-            "Name":"Taxes",
-            "Id":"0",
-            "Coord":{
-                "CoordX":"600",
-                "CoordY":"600"
-            },
-            "IO":{
-                "Outputs":[		
-                        {
-                            "PortID":"0",
-                            "PortType": "Taxes",
-                            "VarName": "taxes"
-                        }
-                    ]
-                },
-            "Connections":{
-                "Inputs":[
-                ]
-            }  
-          }
+                
+                }
+            }
         ],
         "Functions":[
             {
-            "Name":"Operational Costs",
-            "FunctionID":"4",
-            "IO":{
-                "Inputs":[
-                    {
-                        "PortID":"0",
-                        "PortType":"COGS",
-                        "VarName":"cost_goods"
-                    },
-                    {
-                        "PortID":"1",
-                        "PortType": "SG&A",
-                        "VarName": "expenses"
-                    }
-                ],
-                "Outputs":[		
-                    {
-                        "PortID":"0",
-                        "PortType": "OperationalCosts",
-                        "VarName": "op_costs"
-                    }
-                    ]
-                },
-            "Connections":{
-                "Inputs":[
-                    
-                ]
-            
-            }
-            },
-            {
-                "Name":"SG&A Costs",
-                "FunctionID":"4",
+                "Name":"ParseToFloat",
+                "FunctionID":"ParseToFloat",
                 "IO":{
                     "Inputs":[
                         {
                             "PortID":"0",
-                            "PortType":"Cost",
-                            "VarName":"custo"
-                        },
-                        {
-                            "PortID":"1",
-                            "PortType": "Cost",
-                            "VarName": "custo"
-                        },
-                        {
-                            "PortID":"2",
-                            "PortType": "Cost",
-                            "VarName": "custo"
-                        },
-                        {
-                            "PortID":"3",
-                            "PortType": "Cost",
-                            "VarName": "custo"
+                            "PortType":"String",
+                            "VarName": "string"
                         }
                     ],
                     "Outputs":[		
                         {
                             "PortID":"0",
-                            "PortType": "SG&A",
-                            "VarName": "total expenses"
+                            "PortType": "Array{Float64,1}",
+                            "VarName": "float"
                         }
                         ]
                     },
@@ -201,26 +48,21 @@
                 }
                 },
             {
-                "Name":"Profit",
-                "FunctionID":"9",
+                "Name":"Average",
+                "FunctionID":"Average",
                 "IO":{
                     "Inputs":[
                         {
                             "PortID":"0",
-                            "PortType":"Revenue",
-                            "VarName":"monthly_revenue"
-                        },
-                        {
-                            "PortID":"1",
-                            "PortType": "OperationalCosts",
-                            "VarName": "op_costs"
+                            "PortType":"Array{Float64,1}",
+                            "VarName":"values"
                         }
                     ],
                     "Outputs":[		
                         {
                             "PortID":"0",
-                            "PortType": "Profit",
-                            "VarName": "profit"
+                            "PortType": "Float64",
+                            "VarName": "avg"
                         }
                         ]
                     },
@@ -232,33 +74,118 @@
                 }
             },
             {
-                    "Name":"Margin",
-                    "FunctionID":"6",
+                    "Name":"Mean",
+                    "FunctionID":"Mean",
                     "IO":{
                         "Inputs":[
                             {
                                 "PortID":"0",
-                                "PortType":"Revenue",
-                                "VarName":"revenue"
-                            },
-                            {
-                                "PortID":"1",
-                                "PortType": "OperationalCosts",
-                                "VarName": "op_costs"
-                            },
-                            {
-                                "PortID":"1",
-                                "PortType": "Taxes",
-                                "VarName": "taxes"
+                                "PortType":"Array{Float64,1}",
+                                "VarName":"data"
                             }
-
                         ],
                         "Outputs":[		
                             {
                                 "PortID":"0",
-                                "PortType": "Margin",
-                                "VarName": "margin"
+                                "PortType": "Float64",
+                                "VarName": "result"
                             }
+                            ]
+                        },
+                    "Connections":{
+                        "Inputs":[
+                            
+                        ]
+                    
+                    }
+                },
+            {
+                    "Name":"Histogram",
+                    "FunctionID":"Histogram",
+                    "IO":{
+                        "Inputs":[
+                            {
+                                "PortID":"0",
+                                "PortType":"Array{Float64,1}",
+                                "VarName":"data"
+                            }
+                        ],
+                        "Outputs":[		
+                            {
+                                "PortID":"0",
+                                "PortType": "Plot",
+                                "VarName":"plotdata"
+                            }
+                            ]
+                        },
+                    "Connections":{
+                        "Inputs":[
+                            
+                        ]
+                    
+                    }
+                },
+            {
+                    "Name":"Plot",
+                    "FunctionID":"Plot",
+                    "IO":{
+                        "Inputs":[
+                            {
+                                "PortID":"0",
+                                "PortType":"Array{Float64,1}",
+                                "VarName":"data"
+                            }
+                        ],
+                        "Outputs":[		
+                            {
+                                "PortID":"0",
+                                "PortType": "Plot",
+                                "VarName":"plotdata"
+                            }
+                            ]
+                        },
+                    "Connections":{
+                        "Inputs":[
+                            
+                        ]
+                    
+                    }
+                },
+            {
+                    "Name":"SavePNG",
+                    "FunctionID":"SavePNG",
+                    "IO":{
+                        "Inputs":[
+                            {
+                                "PortID":"0",
+                                "PortType":"Plot",
+                                "VarName":"data"
+                            }
+                        ],
+                        "Outputs":[		
+                            
+                            ]
+                        },
+                    "Connections":{
+                        "Inputs":[
+                            
+                        ]
+                    
+                    }
+                },
+            {
+                    "Name":"WriteToFile",
+                    "FunctionID":"WriteToFile",
+                    "IO":{
+                        "Inputs":[
+                            {
+                                "PortID":"0",
+                                "PortType":"Float64",
+                                "VarName":"data"
+                            }
+                        ],
+                        "Outputs":[		
+                            
                             ]
                         },
                     "Connections":{
