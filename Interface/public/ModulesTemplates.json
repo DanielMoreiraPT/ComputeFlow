@@ -2,13 +2,13 @@
 	"Templates":{
         "Variables": [
             {
-                "Name":"FileReader",
+                "Name":"String",
                 "IO":{
                     "Outputs":[		
                         {
                             "PortID":"0",
                             "PortType": "String",
-                            "VarName": "data"
+                            "VarName": "name"
                         }
                         ]
                     },
@@ -21,6 +21,31 @@
             }
         ],
         "Functions":[
+            {
+            "Name":"FileReader",
+            "IO":{
+                "Inputs":[
+                    {
+                        "PortID":"0",
+                        "PortType":"String",
+                        "VarName": "file"
+                    }
+                ],
+                "Outputs":[		
+                    {
+                        "PortID":"0",
+                        "PortType": "String",
+                        "VarName": "data"
+                    }
+                    ]
+                },
+            "Connections":{
+                "Inputs":[
+                    
+                ]
+            
+            }
+            },
             {
                 "Name":"ParseToFloat",
                 "FunctionID":"ParseToFloat",
