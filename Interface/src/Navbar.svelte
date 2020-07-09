@@ -26,8 +26,8 @@
 
 </script>
 <div>
-    <Button on:click={newProject}                                               name={"New Project"}>       </Button>
-    <Button on:click={TryToLoadProject}                                         name={"Load Project"}>      </Button>
+    <Button on:click={newProject}                                               name={"New Flow"}>       </Button>
+    <Button on:click={TryToLoadProject}                                         name={"Load Flow"}>      </Button>
     <Button on:click={TryToSaveProject}                                         name={"Save as"}>           </Button>
     <Button on:click={() => {modalHowitWorks_show = true;}}                     name={"How it works"}>      </Button>
     <Button on:click={() => {modal_show = true;}}                               name={"About"}>             </Button>
