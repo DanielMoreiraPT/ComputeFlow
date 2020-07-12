@@ -82,9 +82,6 @@ export class Port {
     //default -> 5 raio interno
     hiboxSize: number = 7.5;
 
-    //TODO and think
-    //add parent -> may be helpful down the road
-    //still checking if i need this below
     Connections ?: [{ InitialX: number, InitialY: number, FinalX: number, FinalY: number, ConnectedPort?:Port | undefined}];
 
     constructor(isInput: boolean, varType: string, varName: string){
