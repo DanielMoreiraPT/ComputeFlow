@@ -1,5 +1,5 @@
 export class Connection {
-    id:string;  //ex: connection1
+    id:string; 
     parentPort: Port;
     parentPortInput:boolean;
     parentNode: Module;
