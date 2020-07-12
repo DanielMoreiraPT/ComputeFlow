@@ -118,8 +118,6 @@ export class Port {
 export class Module {
     id: number;
     name: string;
-    //TODO
-    //default
     functionId: number = 0;
 
     xPos: number;
