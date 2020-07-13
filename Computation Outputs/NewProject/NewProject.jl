@@ -70,13 +70,13 @@ function NewProject_f()
 
 	Average_3_0 = Channel{Float64}(1)
 
-	 @async Task(FileReader_f(FileReader_1_0,Dict{String,Any}("file_name" => "text.txt")))
+	 @async Task(FileReader_f(FileReader_1_0,Dict{String,Any}("file_name" => "Computation Outputs\\NewProject\\Temperatures.txt")))
 
 	 @async Task(ParseToFloat_f(FileReader_1_0,ParseToFloat_2_0,Dict{String,Any}()))
 
 	 @async Task(Average_f(ParseToFloat_2_0,Average_3_0,Dict{String,Any}()))
 
-	 @async Task(WriteToFile_f(Average_3_0,Dict{String,Any}("file_name" => "text.txt")))
+	 @async Task(WriteToFile_f(Average_3_0,Dict{String,Any}("file_name" => "Computation Outputs\\NewProject\\avg.txt")))
 
 
 end

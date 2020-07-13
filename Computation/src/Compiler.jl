@@ -31,11 +31,11 @@ include("JsonReader.jl")
 
 separatorInProjectFile = "\n###################\n"
 
-projectName, modules = JsonReader.upload_modules("Flows/File.json")
+projectName, modules = JsonReader.upload_modules("Flows/Simple.json")
 
 added_modules = Dict()
 
-mkdir("Computation Outputs\\"* projectName)
+# mkdir("Computation Outputs\\"* projectName)
 projectFile = open("Computation Outputs\\"* projectName *"\\" * projectName * ".jl", "w")
 for m in modules
     if ! haskey(added_modules, m.name)
