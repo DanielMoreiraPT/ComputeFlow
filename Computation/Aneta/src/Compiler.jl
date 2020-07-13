@@ -31,7 +31,7 @@ include("JsonReader.jl")
 
 separatorInProjectFile = "\n###################\n"
 
-projectName, modules = JsonReader.upload_modules("Computation/Aneta/Math.json")
+projectName, modules = JsonReader.upload_modules("Computation/Aneta/newProject.json")
 
 added_modules = Dict()
 

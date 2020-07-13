@@ -1,24 +1,11 @@
-using JSON
-
-struct Options_WriteToFile
-    file_name::String
-    Options_WriteToFile(file_name) = new(file_name)
-end
-##########
-function set_options_WriteToFile(options)
-    options = JSON.parse(read(options,String))
-    file_name = get(options,"file_name",missing)
-    Options_WriteToFile(file_name)
-end
-
-
 ############################################
 #   MUTABLE part of module schema.
-function WriteToFile_f(inPort1, options)
-    options = set_options_WriteToFile(options)
+function WriteToFile_f(inPort1, variables)
     text = take!(inPort1)
 
-    open(options.file_name, "w") do f
+    fileName = get(variables,"file_name",missing)
+
+    open(fileName, "w") do f
         write(f, string(text))
     end
 end
@@ -28,7 +15,7 @@ end
 ############################################
 #   Function counting Average of the numbers received by input Channel
 #
-function Average_f(inPort1, outPort1, options)
+function Average_f(inPort1, outPort1, variables)
 
     sum = 0
     numbers = fetch(inPort1)
@@ -46,7 +33,7 @@ end
 ############################################
 #   Function counting mean of the numbers received by input Channel
 #
-function ParseToFloat_f(inPort1, outPort1, options)
+function ParseToFloat_f(inPort1, outPort1, variables)
     text = fetch(inPort1)
 
     splitedText = split(text, r"\n| ",keepempty=false)
@@ -64,43 +51,13 @@ function ParseToFloat_f(inPort1, outPort1, options)
 end
 
 ###################
-"""
-# module FileReader
-
-- Julia version:
-- Author: anunia
-- Date: 2020-04-25
-
-# Examples
-
-```jldoctest
-julia>
-```
-"""
-
-import JSON
-
-
-################################################
-struct Options_FileReader
-    file_name::String
-    Options_FileReader(file_name) = new(file_name)
-end
-
-function set_options_FileReader(options)
-    options = JSON.parse(read(options,String))
-
-    file_name = get(options,"file_name",missing)
-    Options_FileReader("Computation/Aneta/"*file_name)
-end
-
 ############################################
 #   Main function of the module
-function FileReader_f(outPort1, options)
+function FileReader_f(outPort1, variables)
 
-    options = set_options_FileReader(options)
+    fileName = get(variables,"file_name",missing)
 
-    text = read(options.file_name, String)
+    text = read(fileName, String)
 
     put!(outPort1,text)
 end
@@ -116,7 +73,6 @@ function Plot_f(inPort1, outPort1, options)
     y = fetch(inPort1)
 
     plt = plot(y,fmt = :png)
-    # savefig(plt,"plot.png")
 
     put!(outPort1, plt)
 end
@@ -125,23 +81,12 @@ end
 ############################################
 #   Function counting mean of the numbers received by input Channel
 #   Receiving "end" finishes reading the numbers
-struct Options_SavePNG
-    file_name::String
-    Options_SavePNG(file_name) = new(file_name)
-end
-##########
-function set_options_SavePNG(options)
-    options = JSON.parse(read(options,String))
-    file_name = get(options,"file_name",missing)
-    Options_SavePNG(file_name)
-end
-
-function SavePNG_f(inPort1, options)
-    options = set_options_SavePNG(options)
+function SavePNG_f(inPort1, variables)
+    fileName = get(variables,"file_name",missing)
 
     plot = fetch(inPort1)
 
-    savefig(plot, options.file_name)
+    savefig(plot, fileName)
 end
 
 ###################
@@ -154,17 +99,17 @@ function NewProject_f()
 
 	Plot_5_0 = Channel{Plot}(1)
 
-	 @async Task(WriteToFile_f(Average_2_0,"missing"))
+	 @async Task(WriteToFile_f(Average_2_0,Dict{String,Any}()))
 
-	 @async Task(Average_f(ParseToFloat_3_0,Average_2_0,"missing"))
+	 @async Task(Average_f(ParseToFloat_3_0,Average_2_0,Dict{String,Any}()))
 
-	 @async Task(ParseToFloat_f(FileReader_4_0,ParseToFloat_3_0,"missing"))
+	 @async Task(ParseToFloat_f(FileReader_4_0,ParseToFloat_3_0,Dict{String,Any}("file_name" => "Temperatures.txt")))
 
-	 @async Task(FileReader_f(FileReader_4_0,"missing"))
+	 @async Task(FileReader_f(FileReader_4_0,Dict{String,Any}()))
 
-	 @async Task(Plot_f(ParseToFloat_3_0,Plot_5_0,"missing"))
+	 @async Task(Plot_f(ParseToFloat_3_0,Plot_5_0,Dict{String,Any}("file_name" => "histogramSave.png")))
 
-	 @async Task(SavePNG_f(Plot_5_0,"missing"))
+	 @async Task(SavePNG_f(Plot_5_0,missing))
 
 
 end

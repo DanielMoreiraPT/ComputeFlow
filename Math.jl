@@ -15,7 +15,7 @@ end
 #   MUTABLE part of module schema.
 function GetNumber_f(outPort1, variables)
     number = get(variables,"number",0)
-    
+
     println(number)
     put!(outPort1, number)
 
@@ -26,7 +26,7 @@ end
 #   MUTABLE part of module schema.
 function WriteToFile_f(inPort1, variables)
     text = take!(inPort1)
-    
+
     fileName = get(variables,"file_name",missing)
     open(fileName, "w") do f
         write(f, string(text))
@@ -52,3 +52,11 @@ function Math_f()
 
 end
  Math_f()
+
+
+function name(;a, b)
+	println(a)
+	return a +b
+end
+c = name(b = 5, a = 6)
+println(c)

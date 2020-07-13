@@ -61,20 +61,29 @@ module Module_data
     end
 
 
-    function creat_module(data)
+    function creat_module(data, dataDict)
         functionid = get(data,"Id",missing) + 1
         coords = get_coords(get(data, "Coord",missing))
         name = get(data, "Name", missing)
         io = get_IOinfo(get(data,"IO", missing), functionid, name)
         connections = get_connections(get(data, "Connections",missing))
         # options = "Computation/Aneta/Options_files/" * functionid_name * string(functionid) * "_options.json"
-        variables = get(data, "Variables", missing)
+        variables = getVariables(dataDict, functionid)
+        # variables = get(dataDict, "Variables", missing)
 
         module_info = Module_info(functionid, coords, name, io, connections, variables)
 
         return module_info
     end
-
+    function getVariables(dataDict, id)
+        for d in get(dataDict,"Modules",missing)
+            if get(d, "Id", missing) == id
+                println(get(d, "Variables", missing))
+                return  get(d, "Variables", missing)
+            end
+        end
+        return missing
+    end
     function get_connections(dict)
         inputs = []
         for input in get(dict, "Inputs",missing)
