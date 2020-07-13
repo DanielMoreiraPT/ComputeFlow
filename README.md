@@ -17,7 +17,9 @@ _It's goal is to develop software able to provide an intuitive and interactive I
 - António Sousa Pereira (f185@ua.pt)
 - Rui Aguiar (ruilaa@ua.pt)
 
+## How to build
+- npm install
+- npm install --save svelte-icons
 
-npm install
-npm install --save svelte-icons
-npm run dev
+## How to Run
+- npm run dev
