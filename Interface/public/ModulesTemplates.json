@@ -1,237 +1,214 @@
 {
-	"Templates":{
-        "Variables": [
+  "Templates": {
+    "Variables": [
+      {
+        "Name": "String",
+        "Variables": {
+          "all_text": false,
+          "from_the_begging": true,
+          "fe_amount_of_char": 15
+        },
+        "IO": {
+          "Outputs": [
             {
-                "Name":"String",
-                "Variables": {
-                  "all_text": false,
-                  "from_the_begging": true,
-                  "fe_amount_of_char": 15
-                },
-                "IO":{
-                    "Outputs":[		
-                        {
-                            "PortID":"0",
-                            "PortType": "String",
-                            "VarName": "name"
-                        }
-                        ]
-                    },
-                "Connections":{
-                    "Inputs":[
-                        
-                    ]
-                
-                }
+              "PortID": "0",
+              "PortType": "String",
+              "VarName": "name"
             }
-        ],
-        "Functions":[
+          ]
+        },
+        "Connections": {
+          "Inputs": []
+        }
+      }
+    ],
+    "Functions": [
+      {
+        "Name": "FileReader",
+        "Variables": {
+          "file_name": "text.txt"
+        },
+        "FunctionID": "FileReader",
+        "IO": {
+          "Inputs": [
             {
-            "Name":"FileReader",
-            "Variables": {
-                "ola": false,
-                "adeus": true,
-                "ciao": 15
-              },
-            "FunctionID":"FileReader",
-            "IO":{
-                "Inputs":[
-                    {
-                        "PortID":"0",
-                        "PortType":"String",
-                        "VarName": "file"
-                    }
-                ],
-                "Outputs":[		
-                    {
-                        "PortID":"0",
-                        "PortType": "String",
-                        "VarName": "data"
-                    }
-                    ]
-                },
-            "Connections":{
-                "Inputs":[
-                    
-                ]
-            
+              "PortID": "0",
+              "PortType": "String",
+              "VarName": "file"
             }
-            },
+          ],
+          "Outputs": [
             {
-                "Name":"ParseToFloat",
-                "FunctionID":"ParseToFloat",
-                "IO":{
-                    "Inputs":[
-                        {
-                            "PortID":"0",
-                            "PortType":"String",
-                            "VarName": "string"
-                        }
-                    ],
-                    "Outputs":[		
-                        {
-                            "PortID":"0",
-                            "PortType": "Array{Float64,1}",
-                            "VarName": "float"
-                        }
-                        ]
-                    },
-                "Connections":{
-                    "Inputs":[
-                        
-                    ]
-                
-                }
-                },
+              "PortID": "0",
+              "PortType": "String",
+              "VarName": "data"
+            }
+          ]
+        },
+        "Connections": {
+          "Inputs": []
+        }
+      },
+      {
+        "Name": "ParseToFloat",
+        "FunctionID": "ParseToFloat",
+        "Variables": {},
+        "IO": {
+          "Inputs": [
             {
-                "Name":"Average",
-                "FunctionID":"Average",
-                "IO":{
-                    "Inputs":[
-                        {
-                            "PortID":"0",
-                            "PortType":"Array{Float64,1}",
-                            "VarName":"values"
-                        }
-                    ],
-                    "Outputs":[		
-                        {
-                            "PortID":"0",
-                            "PortType": "Float64",
-                            "VarName": "avg"
-                        }
-                        ]
-                    },
-                "Connections":{
-                    "Inputs":[
-                        
-                    ]
-                
-                }
-            },
+              "PortID": "0",
+              "PortType": "String",
+              "VarName": "string"
+            }
+          ],
+          "Outputs": [
             {
-                    "Name":"Mean",
-                    "FunctionID":"Mean",
-                    "IO":{
-                        "Inputs":[
-                            {
-                                "PortID":"0",
-                                "PortType":"Array{Float64,1}",
-                                "VarName":"data"
-                            }
-                        ],
-                        "Outputs":[		
-                            {
-                                "PortID":"0",
-                                "PortType": "Float64",
-                                "VarName": "result"
-                            }
-                            ]
-                        },
-                    "Connections":{
-                        "Inputs":[
-                            
-                        ]
-                    
-                    }
-                },
+              "PortID": "0",
+              "PortType": "Array{Float64,1}",
+              "VarName": "float"
+            }
+          ]
+        },
+        "Connections": {
+          "Inputs": []
+        }
+      },
+      {
+        "Name": "Average",
+        "FunctionID": "Average",
+        "Variables": {},
+        "IO": {
+          "Inputs": [
             {
-                    "Name":"Histogram",
-                    "FunctionID":"Histogram",
-                    "IO":{
-                        "Inputs":[
-                            {
-                                "PortID":"0",
-                                "PortType":"Array{Float64,1}",
-                                "VarName":"data"
-                            }
-                        ],
-                        "Outputs":[		
-                            {
-                                "PortID":"0",
-                                "PortType": "Plot",
-                                "VarName":"plotdata"
-                            }
-                            ]
-                        },
-                    "Connections":{
-                        "Inputs":[
-                            
-                        ]
-                    
-                    }
-                },
+              "PortID": "0",
+              "PortType": "Array{Float64,1}",
+              "VarName": "values"
+            }
+          ],
+          "Outputs": [
             {
-                    "Name":"Plot",
-                    "FunctionID":"Plot",
-                    "IO":{
-                        "Inputs":[
-                            {
-                                "PortID":"0",
-                                "PortType":"Array{Float64,1}",
-                                "VarName":"data"
-                            }
-                        ],
-                        "Outputs":[		
-                            {
-                                "PortID":"0",
-                                "PortType": "Plot",
-                                "VarName":"plotdata"
-                            }
-                            ]
-                        },
-                    "Connections":{
-                        "Inputs":[
-                            
-                        ]
-                    
-                    }
-                },
+              "PortID": "0",
+              "PortType": "Float64",
+              "VarName": "avg"
+            }
+          ]
+        },
+        "Connections": {
+          "Inputs": []
+        }
+      },
+      {
+        "Name": "Mean",
+        "FunctionID": "Mean",
+        "Variables": {},
+        "IO": {
+          "Inputs": [
             {
-                    "Name":"SavePNG",
-                    "FunctionID":"SavePNG",
-                    "IO":{
-                        "Inputs":[
-                            {
-                                "PortID":"0",
-                                "PortType":"Plot",
-                                "VarName":"data"
-                            }
-                        ],
-                        "Outputs":[		
-                            
-                            ]
-                        },
-                    "Connections":{
-                        "Inputs":[
-                            
-                        ]
-                    
-                    }
-                },
+              "PortID": "0",
+              "PortType": "Array{Float64,1}",
+              "VarName": "data"
+            }
+          ],
+          "Outputs": [
             {
-                    "Name":"WriteToFile",
-                    "FunctionID":"WriteToFile",
-                    "IO":{
-                        "Inputs":[
-                            {
-                                "PortID":"0",
-                                "PortType":"Float64",
-                                "VarName":"data"
-                            }
-                        ],
-                        "Outputs":[		
-                            
-                            ]
-                        },
-                    "Connections":{
-                        "Inputs":[
-                            
-                        ]
-                    
-                    }
-                }
-        ]
-    }
-        
+              "PortID": "0",
+              "PortType": "Float64",
+              "VarName": "result"
+            }
+          ]
+        },
+        "Connections": {
+          "Inputs": []
+        }
+      },
+      {
+        "Name": "Histogram",
+        "FunctionID": "Histogram",
+        "Variables": {},
+        "IO": {
+          "Inputs": [
+            {
+              "PortID": "0",
+              "PortType": "Array{Float64,1}",
+              "VarName": "data"
+            }
+          ],
+          "Outputs": [
+            {
+              "PortID": "0",
+              "PortType": "Plot",
+              "VarName": "plotdata"
+            }
+          ]
+        },
+        "Connections": {
+          "Inputs": []
+        }
+      },
+      {
+        "Name": "Plot",
+        "FunctionID": "Plot",
+        "Variables": {},
+        "IO": {
+          "Inputs": [
+            {
+              "PortID": "0",
+              "PortType": "Array{Float64,1}",
+              "VarName": "data"
+            }
+          ],
+          "Outputs": [
+            {
+              "PortID": "0",
+              "PortType": "Plot",
+              "VarName": "plotdata"
+            }
+          ]
+        },
+        "Connections": {
+          "Inputs": []
+        }
+      },
+      {
+        "Name": "SavePNG",
+        "FunctionID": "SavePNG",
+        "Variables": {
+          "file_name": "image.png"
+        },
+        "IO": {
+          "Inputs": [
+            {
+              "PortID": "0",
+              "PortType": "Plot",
+              "VarName": "data"
+            }
+          ],
+          "Outputs": []
+        },
+        "Connections": {
+          "Inputs": []
+        }
+      },
+      {
+        "Name": "WriteToFile",
+        "FunctionID": "WriteToFile",
+        "Variables": {
+          "file_name": "text.txt"
+        },
+        "IO": {
+          "Inputs": [
+            {
+              "PortID": "0",
+              "PortType": "Float64",
+              "VarName": "data"
+            }
+          ],
+          "Outputs": []
+        },
+        "Connections": {
+          "Inputs": []
+        }
+      }
+    ]
+  }
 }
