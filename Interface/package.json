@@ -27,5 +27,8 @@
     "start": "sirv public",
     "start:dev1": "sirv public --dev",
     "start:dev": "electron ."
+  },
+  "dependencies": {
+    "svelte-icons": "^2.1.0"
   }
 }

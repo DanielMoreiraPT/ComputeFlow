@@ -1,4 +1,4 @@
-"""
+ """
 # module JsonReader
 
 - Julia version:
@@ -15,7 +15,7 @@ module JsonReader
     using JSON
     include("Module_data.jl")
 #using Module_data
-#"/home/anunia/Documents/ComputeFlow/Computation/Aneta/test.json"
+#"/home/anunia/Documents/ComputeFlow/Computation/test.json"
     function upload_modules(name)
         modules = []
         projectName = ""
@@ -23,7 +23,7 @@ module JsonReader
             dataDict = JSON.parse(read(jfile,String))
             projectName = get(dataDict,"title",missing)
 
-            dataDictVar = JSON.parse(read("Computation/Aneta/Options_files/$projectName.json",String))
+            dataDictVar = JSON.parse(read("Computation/Options_files/$projectName.json",String))
 
             # println(dataDict)
             for mod in get(dataDict,"Modules",missing)

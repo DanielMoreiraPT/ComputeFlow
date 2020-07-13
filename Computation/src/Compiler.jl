@@ -31,7 +31,7 @@ include("JsonReader.jl")
 
 separatorInProjectFile = "\n###################\n"
 
-projectName, modules = JsonReader.upload_modules("Computation/Aneta/newProject.json")
+projectName, modules = JsonReader.upload_modules("Computation/newProject.json")
 
 added_modules = Dict()
 
@@ -39,7 +39,7 @@ projectFile = open(projectName * ".jl", "w")
 for m in modules
     if ! haskey(added_modules, m.name)
         println(m.name)
-        code = readFile("Computation/Aneta/src/Modules/" * m.name*".jl")
+        code = readFile("Computation/src/Modules/" * m.name*".jl")
         writeFileToProjectFile(projectFile, code, separatorInProjectFile)
         push!(added_modules, m.name => 1)
     end

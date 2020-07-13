@@ -23,6 +23,7 @@
         "Functions":[
             {
             "Name":"FileReader",
+            "FunctionID":"FileReader",
             "IO":{
                 "Inputs":[
                     {
