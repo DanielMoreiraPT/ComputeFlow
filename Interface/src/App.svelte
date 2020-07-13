@@ -54,7 +54,8 @@
         }
         ModuleToBeAdded.functionId=TemplateModule.functionId;
         ModuleToBeAdded.name=TemplateModule.name;
-        
+        ModuleToBeAdded.listVariables=TemplateModule.listVariables;
+
         myAppCanvas.addXModule(ModuleToBeAdded)
         
     }

@@ -1,5 +1,5 @@
 export class Connection {
-    id:string; 
+    id:string;  //ex: connection1
     parentPort: Port;
     parentPortInput:boolean;
     parentNode: Module;
@@ -82,6 +82,9 @@ export class Port {
     //default -> 5 raio interno
     hiboxSize: number = 7.5;
 
+    //TODO and think
+    //add parent -> may be helpful down the road
+    //still checking if i need this below
     Connections ?: [{ InitialX: number, InitialY: number, FinalX: number, FinalY: number, ConnectedPort?:Port | undefined}];
 
     constructor(isInput: boolean, varType: string, varName: string){
@@ -118,6 +121,8 @@ export class Port {
 export class Module {
     id: number;
     name: string;
+    //TODO
+    //default
     functionId: number = 0;
 
     xPos: number;
@@ -131,6 +136,7 @@ export class Module {
     outputList: Port[]=[];
     connectionsInputs: {InternalPort: Port, ExternalPort: Port, ExternalNode: Module, Connection:Connection}[];
     connectionsOutputs: {InternalPort: Port, ExternalPort: Port, ExternalNode: Module, Connection:Connection}[];
+    listVariables?;
 
     constructor(id: number, name: string, xPos: number,yPos: number) {
         this.id = id;
@@ -343,6 +349,7 @@ export class Chart {
                 let module_obj:any = {
                     "Name":this.ModuleList[i].name,
                     "Id":i,
+                    "Variables":{},
                     "Coord":{
                         "CoordX":this.ModuleList[i].xPos,
                         "CoordY":this.ModuleList[i].yPos
@@ -362,6 +369,9 @@ export class Chart {
                     "Outputs":[
                     ]
                     }
+                }
+                if(this.ModuleList[i].listVariables){
+                    module_obj["Variables"]=this.ModuleList[i].listVariables;
                 }
                 let j: number;
                 for( j=0; j<this.ModuleList[i].inputList.length; j++){
@@ -424,7 +434,6 @@ export class Chart {
                     }
                     
                 }
-            
                 obj["Modules"].push(module_obj);
             
                 }
@@ -437,7 +446,7 @@ export class Chart {
 
     loadJSON(data: string):void{
         let json = JSON.parse(data);
-        
+        console.log(json);
         this.ModuleList=[];
         this.FinalConnections=[];
         for(let i=0; i<json.Modules.length; i++){
@@ -460,6 +469,11 @@ export class Chart {
             FlowModuleObject.setModuleHeight();
             FlowModuleObject.setPortCoords();
             
+            if(json.Modules[i].Variables){
+                FlowModuleObject.listVariables=json.Modules[i].Variables;
+            }
+            
+            console.log(FlowModuleObject)
             this.addModule(FlowModuleObject); 
         }
         

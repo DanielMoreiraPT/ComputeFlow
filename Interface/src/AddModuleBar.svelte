@@ -36,7 +36,9 @@ onMount(async () => {
                     let tempPort = new TemplatePort(false, json.Templates.Variables[i].IO.Outputs[j].PortType, json.Templates.Variables[i].IO.Outputs[j].VarName)
                     tempVar.listOutputs.push(tempPort);
                 }
-                //console.log(tempVar)
+                if(json.Templates.Variables[i].Variables){
+                    tempVar.listVariables=json.Templates.Variables[i].Variables;
+                }
                 ModuleVarList.push(tempVar)
             }
             for(i=0; i<json.Templates.Functions.length; i++){
@@ -54,7 +56,9 @@ onMount(async () => {
                     tempVar.listOutputs.push(tempPort);
                 }
                 tempVar.functionId=json.Templates.Functions[i].FunctionID
-                //console.log(tempVar)
+                if(json.Templates.Functions[i].Variables){
+                    tempVar.listVariables=json.Templates.Functions[i].Variables;
+                }
                 ModuleFunctionList.push(tempVar)
             }
             ModuleVarList=ModuleVarList;

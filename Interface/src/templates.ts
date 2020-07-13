@@ -2,6 +2,7 @@ export class TemplateModule {
     name: string;
 
     functionId?: number;
+    listVariables?;
     listInputs:TemplatePort[]=[];
     listOutputs:TemplatePort[]=[];
     constructor(name:  string){

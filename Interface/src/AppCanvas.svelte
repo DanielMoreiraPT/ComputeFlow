@@ -122,6 +122,10 @@
                             FlowModuleObject.setModuleWidth();
                             FlowModuleObject.setModuleHeight();
                             FlowModuleObject.setPortCoords();
+
+                            if(json.Modules[i].Variables){
+                                FlowModuleObject.listVariables=json.Modules[i].Variables;
+                            }
                             ModulesList.push(FlowModuleObject);
 
                             ChartStruc.addModule(FlowModuleObject); 
