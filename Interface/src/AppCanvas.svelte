@@ -8,7 +8,6 @@
     const dispatch = createEventDispatcher();
     
     var fs = require('fs');
-    var dir = '../MyFlowProjects';
 
   
     let ChartStruc: Chart = new Chart("New Project");
@@ -17,13 +16,11 @@
     //need to initialize vars -> it would not work if after loaded, the diagram was not moved
     let Background_dxInitial: number = -3000;
     let Background_dyInitial: number = -3000;
-    //positions where a module may "spawn"
     let Background_dx: number;
     let Background_dy: number;
     let SpawnX: number=-Background_dxInitial+600;
     let SpawnY: number=-Background_dxInitial+600;
 
-    //done
     const handleBackGroundMovement = (e) => {
         Background_dx = e.detail.Background_dx.Background_dx;
         Background_dy = e.detail.Background_dy.Background_dy;
@@ -32,125 +29,29 @@
     }
     function saveAsToFile(filename:string, chart: Chart){
         var json = ChartStruc.toJSON();
-        
-        //create directory with files
-        if (!fs.existsSync(dir)){
-            fs.mkdirSync(dir);
-        }
-        fs.writeFile(filename+'.json', json, (err) => {
-                if(err){
-                    alert("An error ocurred creating the file ")
-                    dispatch('error', {
-                        message: "An error ocurred creating the file "
-                    });
-                }else{
-                    var path = require('path');  
-                    var justfilename = filename.replace(/^.*[\\\/]/, '')
-                    var pathName = filename.replace(justfilename,'')
-                    let realDefaultDir = path.join(__dirname, "../"+dir+"/");
-                    if(realDefaultDir == pathName){
-                        dispatch('fileWasSavedAsOnDefaultDirectory', {
-                            fileSaved: {justfilename},
-                            path: {filename}
-                        });
-                    }else{
-                        dispatch('fileWasSavedAsOutsideDefaultDirectory', {
-                            fileSaved: {justfilename},
-                            path: {filename}
-                        });
-                    }
-                    
-                }
-                            
-            });
-    }
-    //done
-    export function loadFile(ProjectName: string){
-        
-        var path = require('path');  
 
-        var filePath = path.join(dir, ProjectName+'.json');
-        ChartStruc = new Chart(ProjectName);
-        fs.readFile(filePath, function(err,data){
-            if (!err) {
-                let json = JSON.parse(data);
-                let ModulesList=[];
-                //console.log(json)
-                for(let i=0; i<json.Modules.length; i++){
-                    
-                    let inputlist=[];
-                    let outputlist=[];
-                    for(let j=0; j<json.Modules[i].IO.Inputs.length; j++){
-                        let InputObject = new Port(true,json.Modules[i].IO.Inputs[j].PortType , json.Modules[i].IO.Inputs[j].VarName)
-                        inputlist.push(InputObject)
-                    }
-                    for(let h=0; h<json.Modules[i].IO.Outputs.length; h++){
-                        let OutputObject = new Port(false,json.Modules[i].IO.Outputs[h].PortType , json.Modules[i].IO.Outputs[h].VarName)
-                        outputlist.push(OutputObject)
-                    }
+        fs.writeFile(filename, json, (err) => {
+            if(err){
+                alert("An error ocurred creating the file ")
+                dispatch('error', {
+                    message: "An error ocurred creating the file "
+                });
+            }else{
+                alert("File Saved Correctly");
 
-                    let FlowModuleObject = new Module(json.Modules[i].Id, json.Modules[i].Name, json.Modules[i].Coord.CoordX,  json.Modules[i].Coord.CoordY);
-                    FlowModuleObject.functionId=json.Modules[i].FunctionID;
-                    FlowModuleObject.addOutputs(outputlist)
-                    FlowModuleObject.addInputs(inputlist)
-                    FlowModuleObject.setModuleWidth();
-                    FlowModuleObject.setModuleHeight();
-                    FlowModuleObject.setPortCoords();
-                    ModulesList.push(FlowModuleObject);
-
-                    ChartStruc.addModule(FlowModuleObject); 
-
-                }
-                
-                for(let i=0; i<json.Modules.length; i++){
-                    let inputConnectionslist=[];
-                    let outputConnectionslist=[];
-                    for(let j=0; j<json.Modules[i].Connections.Inputs.length; j++){
-                        //correto
-                        let InputObject : Port = ModulesList[i].inputList[json.Modules[i].Connections.Inputs[j].InputPort];
-                        let InputModule : Module = ModulesList[i];
-
-                        let OutputModule : Module = ModulesList[json.Modules[i].Connections.Inputs[j].ModuleID];
-                        let OutputObject : Port = OutputModule.outputList[json.Modules[i].Connections.Inputs[j].ModulePort];
-
-                        let connection = new Connection('connectionX', InputObject, true, InputModule);
-
-                        connection.setConnectedPort(OutputObject, OutputModule);
-
-                        connection.calculateCurve();
-                        
-                        InputModule.addInputConnection(InputObject, OutputObject, OutputModule ,connection);
-                        OutputModule.addOutputConnection(OutputObject, InputObject, InputModule ,connection);
-                        
-                        ChartStruc.addFinalConnection(connection);
-                    }
-                    
-                }
-                ChartStruc=ChartStruc;
-
-                var justfilename = ProjectName
-                //var pathName = filePath.replace(justfilename,'')
-                var pathName = filePath.replace(".json",'')
-                let realpath = path.join(__dirname, "../"+pathName);
-
-
-                //history
-                __HistoryChart.clear();
-
-                dispatch('updateActiveProjectName', {
-                            projectName: {ProjectName},
-                            projectpath: realpath,
-                            state: {ChartStruc}
-                        });
-            } else {
-                console.log(err);
+                let filenameSplited=filename.split('.');
+                let file:string=filenameSplited[0];
+                let ProjectName=file.split('/').pop();
+                let ProjectPath=filename;
+                dispatch('fileWasSavedCorrectly', {
+                    ProjectName: {ProjectName},
+                    ProjectPath: {ProjectPath}
+                });
             }
+                        
         });
-        
-
-       
     }
-    //done
+
     export function addXModule(ModuleToBeAdded: Module){
         __HistoryChart.addState(ChartStruc.toJSON());
 
@@ -166,22 +67,120 @@
     export function saveProject(filename:string){
         saveAsToFile(filename, ChartStruc);
     }
-    //done
     export function trySaveProjectToFile(){
         const {dialog} = require("electron").remote;
         let filename = dialog.showSaveDialogSync()
         if(filename === undefined){
             console.log("filename undefined");
             return;
-        }else{  
-            saveAsToFile(filename, ChartStruc);
+        }else{ 
+            if(filename.split('.').pop()!='json'){
+                alert("Wrong file extension. Try .json");
+            }else{
+                saveAsToFile(filename, ChartStruc);
+            }
         }
+    }
+    export function tryToLoadProject(){
+        const {dialog} = require("electron").remote;
+        let filename = dialog.showSaveDialogSync()
+        if(filename === undefined){
+            console.log("filename undefined");
+            return;
+        }else{  
+            let filenameSplited=filename.split('.');
+            let file:string=filenameSplited[0];
+            let extension:string=filenameSplited[1];
+            if(extension=="json"){
+                var path = require('path');  
+
+                let filePath=filename;
+                let ProjectName=file.split('/').pop();
+                let ProjectPath=filename;
+                ChartStruc = new Chart(file);
+                fs.readFile(filePath, function(err,data){
+                    if (!err) {
+                        let json = JSON.parse(data);
+                        let ModulesList=[];
+                        for(let i=0; i<json.Modules.length; i++){
+                            let inputlist=[];
+                            let outputlist=[];
+                            for(let j=0; j<json.Modules[i].IO.Inputs.length; j++){
+                                let InputObject = new Port(true,json.Modules[i].IO.Inputs[j].PortType , json.Modules[i].IO.Inputs[j].VarName)
+                                inputlist.push(InputObject)
+                            }
+                            for(let h=0; h<json.Modules[i].IO.Outputs.length; h++){
+                                let OutputObject = new Port(false,json.Modules[i].IO.Outputs[h].PortType , json.Modules[i].IO.Outputs[h].VarName)
+                                outputlist.push(OutputObject)
+                            }
+
+                            let FlowModuleObject = new Module(json.Modules[i].Id, json.Modules[i].Name, json.Modules[i].Coord.CoordX,  json.Modules[i].Coord.CoordY);
+                            
+                            FlowModuleObject.functionId=json.Modules[i].FunctionID;
+                            FlowModuleObject.addOutputs(outputlist)
+                            FlowModuleObject.addInputs(inputlist)
+                            FlowModuleObject.setModuleWidth();
+                            FlowModuleObject.setModuleHeight();
+                            FlowModuleObject.setPortCoords();
+                            ModulesList.push(FlowModuleObject);
+
+                            ChartStruc.addModule(FlowModuleObject); 
+
+                        }
+                        
+                        for(let i=0; i<json.Modules.length; i++){
+                            let inputConnectionslist=[];
+                            let outputConnectionslist=[];
+                            for(let j=0; j<json.Modules[i].Connections.Inputs.length; j++){
+                                //correto
+                                let InputObject : Port = ModulesList[i].inputList[json.Modules[i].Connections.Inputs[j].InputPort];
+                                let InputModule : Module = ModulesList[i];
+
+                                let OutputModule : Module = ModulesList[json.Modules[i].Connections.Inputs[j].ModuleID];
+                                let OutputObject : Port = OutputModule.outputList[json.Modules[i].Connections.Inputs[j].ModulePort];
+
+                                let connection = new Connection('connectionX', InputObject, true, InputModule);
+
+                                
+                                connection.setConnectedPort(OutputObject, OutputModule);
+
+                                connection.calculateCurve();
+                                
+                                InputModule.addInputConnection(InputObject, OutputObject, OutputModule ,connection);
+                                OutputModule.addOutputConnection(OutputObject, InputObject, InputModule ,connection);
+                                
+                                ChartStruc.addFinalConnection(connection);
+                            }
+                            
+                        }
+                        ChartStruc=ChartStruc;
+
+
+                        //history
+                        __HistoryChart.clear();
+
+                        dispatch('fileWasLoadedCorrectly', {
+                            ProjectName: {ProjectName},
+                            ProjectPath: {ProjectPath}
+                        });
+
+                    } else {
+                        console.log(err);
+                    } 
+                });
+            }else{
+                alert("Wrong file extension");
+            }
+                }
     }
     export function newProject(){
         ChartStruc= new Chart("New Project");
 
         __HistoryChart.clear();
+
+        dispatch('newProjectInitiated');
     }
+
     let myCanvas;
     export let left: number;
     export let top: number;

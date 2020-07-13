@@ -7,7 +7,7 @@
    
     const dispatch = createEventDispatcher();
     export let ProjectName;
-    
+    export let ProjectPath;
     const Undo = (e) => {
         dispatch('Undo');   
     }
@@ -15,10 +15,9 @@
         dispatch('Redo');   
     }
     const saveProject = (e) => {
-        if(ProjectName == undefined){
-
+        if(!ProjectPath){
             dispatch('ProjectNameNotDefined',{
-                message: "Project Name not defined"
+                message: "Project name not defined"
             });   
         }
         else{

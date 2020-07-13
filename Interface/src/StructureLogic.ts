@@ -1,5 +1,5 @@
 export class Connection {
-    id:string;  //ex: connection1
+    id:string; 
     parentPort: Port;
     parentPortInput:boolean;
     parentNode: Module;
@@ -82,9 +82,6 @@ export class Port {
     //default -> 5 raio interno
     hiboxSize: number = 7.5;
 
-    //TODO and think
-    //add parent -> may be helpful down the road
-    //still checking if i need this below
     Connections ?: [{ InitialX: number, InitialY: number, FinalX: number, FinalY: number, ConnectedPort?:Port | undefined}];
 
     constructor(isInput: boolean, varType: string, varName: string){
@@ -121,8 +118,6 @@ export class Port {
 export class Module {
     id: number;
     name: string;
-    //TODO
-    //default
     functionId: number = 0;
 
     xPos: number;

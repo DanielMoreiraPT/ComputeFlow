@@ -3,15 +3,14 @@
     import { onMount } from 'svelte';   
     import { Module, Port, Connection, Chart } from './StructureLogic';
     import Button from './Button.svelte';
-    import LoadProjectBarv2 from './LoadProjectBarv2.svelte';
     import Navbar from './Navbar.svelte';
     import AddModuleBar from './AddModuleBar.svelte';
     import AppRedoUndoSave from './AppRedoUndoSave.svelte';
-    import ModalAlert from './ModalAlert.svelte';
     import { ChartHistory} from './stores';
     
     
     import ModalWrongTypes from './ModalWrongTypes.svelte';
+    import ModalAlert from './ModalAlert.svelte';
     let ModalWrongTypesshow=false;
     const handleWrongTypes = (e) => {
         ModalWrongTypesshow=true;
@@ -35,19 +34,12 @@
 	$: top = myNavBar ? myNavBar.getBoundingClientRect().bottom : 0;
     $: left = myAddModule ? myAddModule.getBoundingClientRect().right : 0;
     
-    let ModalAlertshow=false
-    let ModalAlertError=false
+    let ModalAlertshow=false;
+    let ModalAlertError=false;
     let Alertmessage;
 
     const handleSaveProject = (e) => {
-        let ProjectName:string = e.detail.name
-        if(ProjectName.length == 0){
-            Alertmessage="Project Name not defined";
-            ModalAlertshow=true;
-            ModalAlertError=true;
-        }else{
-            myAppCanvas.saveProject(ProjectPath)
-        }
+        myAppCanvas.saveProject(ProjectPath)
     }
     const handleAddModule = (e) => {
         let TemplateModule= e.detail.module;
@@ -66,52 +58,36 @@
         myAppCanvas.addXModule(ModuleToBeAdded)
         
     }
-    const handleLoadFile = (e) => {
-        //dont know if i should put it here
-        //save opened project first
-        myAppCanvas.loadFile(e.detail.name);
-    }
-    const handleUpdateActiveProjectName = (e) => {
-        let nameOfProject = e.detail.projectName.ProjectName;
-        let path = e.detail.projectpath;
-        ProjectName = nameOfProject;
-        ProjectPath = path;
-    }
     const handleNewProject = (e) => {
         myAppCanvas.newProject()
     }
-    const handleProjectNameNotDefined = (e) => {
-        
-        Alertmessage=e.detail.message;
-        ModalAlertshow=true;
-    }
-    const handleTrytoSaveProject = (e) => {
-        myAppCanvas.trySaveProjectToFile()
-    }
-    const handleFileWasSavedAsOnDefaultDirectory = (e) => {
-        ProjectName=e.detail.fileSaved.justfilename;
-        ProjectPath=e.detail.path.filename;
-        myLoadProjectBar.addProjectName(ProjectName);
-
-    }
-    const handleFileWasSavedAsOutsideDefaultDirectory = (e) => {
-        ProjectName=e.detail.fileSaved.justfilename;
-        ProjectPath=e.detail.path.filename;
-    }
-    const handleError = (e) => {
-        Alertmessage=e.detail.message;
-        ModalAlertshow=false;
-        ModalAlertError=true;
-    }
     const handleUndo = (e) => {
-        //TODO
         myAppCanvas.undo()
     }
     const handleRedo = (e) => {
-        //TODO
         myAppCanvas.redo()
     }
 
+    const handleProjectNameNotDefined = (e) => {
+        myAppCanvas.trySaveProjectToFile();
+    }
+
+    const handleTrytoSaveProject = (e) => {
+        myAppCanvas.trySaveProjectToFile();
+    }
+    const handleTryToLoadProject = (e) => {
+        myAppCanvas.tryToLoadProject();
+    }
+    const handleNewProjectInitiated = (e) => {
+        ProjectName=undefined;
+        ProjectPath=undefined;
+    }
+    
+    const handleFileWasLoadedCorrectly= (e) => {
+        ProjectName=e.detail.ProjectName.ProjectName;
+        ProjectPath=e.detail.ProjectPath.ProjectPath;
+        
+    }
 </script>
 <div class="grid-container">
     <div class="grid-item title" bind:this={myNavBar}>
@@ -124,6 +100,7 @@
             on:NewProject={handleNewProject}
             on:AddModule={handleAddModule}
             on:TrytoSaveProject={handleTrytoSaveProject}
+            on:TryToLoadProject={handleTryToLoadProject}
             ProjectName={ProjectName} />
     </div> 
     <div class="grid-item zoom">
@@ -131,6 +108,7 @@
     <div class="grid-item redoundo">
         <AppRedoUndoSave
             ProjectName={ProjectName} 
+            ProjectPath={ProjectPath} 
             on:SaveProject={handleSaveProject}
             on:ProjectNameNotDefined={handleProjectNameNotDefined}
             on:Redo={handleRedo}
@@ -142,28 +120,22 @@
             />
 
     </div>
-    <div class="grid-item LoadFile">
-        <LoadProjectBarv2 
-            bind:this={myLoadProjectBar}
-            on:LoadFile={handleLoadFile}
-            ProjectName={ProjectName} 
-            />
-    </div>
+    
     <div class="grid-item canvas" bind:this={canvasArea}>
         <AppCanvas 
             bind:this={myAppCanvas}
             {left}
             {top}
-            on:updateActiveProjectName={handleUpdateActiveProjectName}
-            on:fileWasSavedAsOnDefaultDirectory={handleFileWasSavedAsOnDefaultDirectory}
-            on:fileWasSavedAsOutsideDefaultDirectory={handleFileWasSavedAsOutsideDefaultDirectory}
-            on:error={handleError}
+
+            on:fileWasLoadedCorrectly={handleFileWasLoadedCorrectly}
+            on:fileWasSavedCorrectly={handleFileWasLoadedCorrectly}
+            on:newProjectInitiated={handleNewProjectInitiated}
+
             on:wrongTypes={handleWrongTypes}
             ProjectName={ProjectName} 
             /> 
     </div>
 </div>
-<ModalAlert bind:show={ModalAlertshow} message={Alertmessage} />
 <ModalWrongTypes bind:show={ModalWrongTypesshow} />
 
 <style>
@@ -171,7 +143,7 @@
     display: grid;
     grid-row-gap: 1px;
     background-color: #27948e;
-	grid-auto-rows: 50px minmax(100px, auto)  minmax(100px, auto) minmax(100px, auto);
+	grid-auto-rows: 50px minmax(100px, auto)  minmax(100px, auto);
 	grid-auto-columns: 250px auto auto auto auto;
     height:100%;
     }
@@ -204,18 +176,12 @@
 	overflow: hidden; 
 	position: relative;
     }
-
     .AddModule {
     grid-column: 1 / span 1;
-    grid-row: 2;
+    grid-row: 2/ span 2;
 	overflow-y: scroll; 
     }
-
-    .LoadFile {
-    grid-column: 1 / span 1;
-    grid-row: 3;
-	overflow-y: scroll; 
-    }
+    
     .ProjectNameInput {
     height: 50px;
     }
