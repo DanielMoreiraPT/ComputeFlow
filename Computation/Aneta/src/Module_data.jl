@@ -68,7 +68,7 @@ module Module_data
         io = get_IOinfo(get(data,"IO", missing), functionid, name)
         connections = get_connections(get(data, "Connections",missing))
         # options = "Computation/Aneta/Options_files/" * functionid_name * string(functionid) * "_options.json"
-        variables = getVariables(dataDict, functionid)
+        variables = getVariables(dataDict, functionid-1)
         # variables = get(dataDict, "Variables", missing)
 
         module_info = Module_info(functionid, coords, name, io, connections, variables)
