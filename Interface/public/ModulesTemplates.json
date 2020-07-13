@@ -3,6 +3,11 @@
         "Variables": [
             {
                 "Name":"String",
+                "Variables": {
+                  "all_text": false,
+                  "from_the_begging": true,
+                  "fe_amount_of_char": 15
+                },
                 "IO":{
                     "Outputs":[		
                         {
@@ -23,6 +28,11 @@
         "Functions":[
             {
             "Name":"FileReader",
+            "Variables": {
+                "ola": false,
+                "adeus": true,
+                "ciao": 15
+              },
             "FunctionID":"FileReader",
             "IO":{
                 "Inputs":[
