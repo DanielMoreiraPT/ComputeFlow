@@ -1,7 +1,7 @@
 //reload
 "use strict";
 require("electron-reload")(__dirname);
-  
+
 
 
 
@@ -27,7 +27,7 @@ function createWindow () {
   });
 
   //const childWindow = new  BrowserWindow ({ width: 1600, height: 800, parent: mainWindow, modal: true, show : false});
-  
+
 
 
   // and load the index.html of the app.
@@ -39,7 +39,7 @@ function createWindow () {
   //});
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
 }
 
 

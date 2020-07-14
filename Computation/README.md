@@ -6,3 +6,6 @@ _The goal of this portion is to run the graphs created in the interface._
 - install Julia https://julialang.org/
 - Open Julia within this directory
 - run Compiler.jl
+
+## Packages
+It may be necessary to install packages, the terminal will provide the necessary command just Copy Paste it

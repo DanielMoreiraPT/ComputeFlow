@@ -61,7 +61,7 @@ module Module_data
     end
 
 
-    function creat_module(data, dataDict)
+    function creat_module(data)
         functionid = get(data,"Id",missing) + 1
         coords = get_coords(get(data, "Coord",missing))
         name = get(data, "Name", missing)
@@ -95,7 +95,7 @@ module Module_data
             if moduleid === missing || moduleport === missing || inputport === missing
                 throw(ErrorException("Missing IO information."))
             end
-            push!(inputs, Conect_module_info(moduleid,moduleport,inputport))
+            push!(inputs, Conect_module_info(moduleid, moduleport, inputport))
         end
         outputs = []
         for output in get(dict, "Outputs",missing)
@@ -107,7 +107,7 @@ module Module_data
             if moduleid === missing || moduleport === missing || outputport === missing
                 throw(ErrorException("Missing IO information."))
             end
-            push!(outputs, Conect_module_info(moduleid,moduleport,outputport))
+            push!(outputs, Conect_module_info(moduleid, moduleport, outputport))
         end
         Connections(inputs, outputs)
     end
