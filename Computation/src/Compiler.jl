@@ -12,6 +12,7 @@
 julia>
 ```
 """
+
 # Flows/Simple.json
 function readFile(path)
     open(path, "r") do io
@@ -32,16 +33,20 @@ include("JsonReader.jl")
 
 separatorInProjectFile = "\n###################\n"
 
+# To run on IDE exchange the next two lines, ARGS for Terminal
+# projectName, modules = JsonReader.upload_modules("Flows/Demo.json")
 projectName, modules = JsonReader.upload_modules(ARGS[1])
 
 added_modules = Dict()
 
-mkdir(Computation Outputs\\"* projectName)
-projectFile = open("Computation Outputs\\"* projectName *"\\" * projectName * ".jl", "w")
+# Innicializes the Files
+projectFile = open(projectName * ".jl", "w")
+
 for m in modules
     if ! haskey(added_modules, m.name)
         println(m.name)
-        code = readFile("C:\\Users\\Aneta\\github\\ComputeFlow\\Computation/src/Modules/" * m.name*".jl")
+# This Path defines where it's retriving the Modules used in the Flows
+        code = readFile("C:/Users/Dan/github/ComputeFlow/Computation/src/Modules/" * m.name *".jl")
         writeFileToProjectFile(projectFile, code, separatorInProjectFile)
         push!(added_modules, m.name => 1)
     end
