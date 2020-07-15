@@ -1,34 +1,21 @@
- """
-# module JsonReader
-
-- Julia version:
-- Author: anunia
-- Date: 2020-04-20
-
-# Examples
-
-```jldoctest
-julia>
-```
-"""
 module JsonReader
     using JSON
-    include("Module_data.jl")
+    include("ModuleData.jl")
 #using Module_data
 #"/home/anunia/Documents/ComputeFlow/Computation/test.json"
-    function upload_modules(name)
+    function uploadModules(name)
         modules = []
         projectName = ""
         open(name,"r") do jfile
-            dataDict = JSON.parse(read(jfile,String))
-            projectName = get(dataDict,"title",missing)
+            dataDict = JSON.parse(read(jfile, String))
+            projectName = get(dataDict, "title", missing)
 
 
         # dataDictVar = JSON.parse(read("Computation/Options_files/$projectName.json",String))
 
             # println(dataDict)
-            for mod in get(dataDict,"Modules",missing)
-                push!(modules, Module_data.creat_module(mod))
+            for mod in get(dataDict, "Modules", missing)
+                push!(modules, ModuleData.createModule(mod))
             end
         end
 

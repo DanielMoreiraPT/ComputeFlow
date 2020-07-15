@@ -6,7 +6,7 @@ export class TemplateModule {
     listInputs:TemplatePort[]=[];
     listOutputs:TemplatePort[]=[];
     constructor(name:  string){
-        this.name=name;
+        this.name = name;
     }
 }
 export class TemplatePort {
@@ -18,6 +18,6 @@ export class TemplatePort {
     constructor(isInput: boolean, varType: string, varName: string){
         this.isInput = isInput;
         this.varType = varType;
-        this.varName = varName; 
+        this.varName = varName;
     }
 }

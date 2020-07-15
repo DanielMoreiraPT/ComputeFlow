@@ -1,4 +1,4 @@
-############################################
+################################################################################
 #   Main function of the module
 function FileReaderByLine_f(outPort1, variables)
 

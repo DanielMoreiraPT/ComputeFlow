@@ -1,5 +1,6 @@
-############################################
-#   Functionality: Intakes Array of floats, calculates AVG of those floats, outputs AVG as single float.
+################################################################################
+#   Functionality: Intakes Array of floats, calculates AVG of those floats,
+#   outputs AVG as single float.
 function AverageFloat_f(inPort1, outPort1, variables)
 
     sum = 0

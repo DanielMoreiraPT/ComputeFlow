@@ -1,8 +1,14 @@
-module Module_data
-    export createModule, Module_info
+module ModuleData
+
+# Export of Structs and Functions
+    # Structs to Export
+    export ModuleInfo
+    # Functions to Export
+    export createModule
+
     using JSON
 
-# Stuctures for Data
+# Stucts for Data
     struct Coord
         coordX
         coordY
@@ -11,21 +17,21 @@ module Module_data
         Coord(x,y) = new(x,y)
     end
 
-    struct Port_info
+    struct PortInfo
         port_id
         port_type::String
         channel
         channelName
 
         # Constructors
-        Port_info(id, type) = new(id, type)
-        Port_info(id, type, channel) = new(id, type, channel)
-        Port_info(id, type, channel, channelName) = new(id, type, channel, channelName)
+        PortInfo(id, type) = new(id, type)
+        PortInfo(id, type, channel) = new(id, type, channel)
+        PortInfo(id, type, channel, channelName) = new(id, type, channel, channelName)
     end
 
     struct IOinfo
-        inputs::Array{Port_info, 1}
-        outputs::Array{Port_info, 1}
+        inputs::Array{PortInfo, 1}
+        outputs::Array{PortInfo, 1}
 
         # Constructor
         IOinfo(input_array, output_array) = new(input_array, output_array)
@@ -41,36 +47,38 @@ module Module_data
     end
 
     struct ConnectionInfo
-        inputs::Array{ConnectModuleInfo,1}
-        outputs::Array{ConnectModuleInfo,1}
+        inputs::Array{ConnectModuleInfo, 1}
+        outputs::Array{ConnectModuleInfo, 1}
 
         # Constructor
         ConnectionInfo(inputs, outputs) = new(inputs, outputs)
     end
 
-    struct Module_info
+    struct ModuleInfo
         id
         coords::Coord
+        functionid
         name
         io::IOinfo
         connections
         variables
 
         # Constructors
-        Module_info(id, coords, functionID, io, connections, variables) = new(id, coords, functionID, io, connections, variables)
+        ModuleInfo(id, coords, functionid, name,  io, connections, variables) = new(id, coords, functionid, name, io, connections, variables)
     end
 
     function createModule(data)
-        functionID = get(data,"Id",missing) + 1
-        coords = get_coords(get(data, "Coord",missing))
+        id = get(data,"Id",missing) + 1
+        coords = getCoords(get(data, "Coord",missing))
+        functionid = get(data,"FunctionID", missing)
         name = get(data, "Name", missing)
-        io = get_IOinfo(get(data,"IO", missing), functionID, name)
+        io = getIOinfo(get(data,"IO", missing), id, functionid)
         connections = getConnectionInfo(get(data, "Connections",missing))
-        # options = "Computation/Options_files/" * functionID_name * string(functionID) * "_options.json"
-        #variables = getVariables(dataDict, functionID-1)
+        # options = "Computation/Options_files/" * functionid_name * string(functionid) * "_options.json"
+        #variables = getVariables(dataDict, functionid-1)
         variables = get(data, "Variables", missing)
 
-        module_info = Module_info(functionID, coords, name, io, connections, variables)
+        module_info = ModuleInfo(id, coords, functionid, name, io, connections, variables)
 
         return module_info
     end
@@ -119,7 +127,7 @@ module Module_data
         ConnectionInfo(inputs, outputs)
     end
 
-    function get_IOinfo(dict, functionID, functionID_name)
+    function getIOinfo(dict, id, functionid)
         inputs = []
         for input in get(dict, "Inputs", missing)
             input === missing && throw(ErrorException("Missing IO information.")) #Julia check left side first, if it's false don't check rest
@@ -129,7 +137,7 @@ module Module_data
             if port_id === missing || port_type === missing
                 throw(ErrorException("Missing IO information."))
             end
-            push!(inputs, Port_info(port_id,port_type))
+            push!(inputs, PortInfo(port_id,port_type))
         end
         outputs = []
         for output in get(dict, "Outputs", missing)
@@ -138,17 +146,17 @@ module Module_data
             port_id = get(output, "PortID", missing)
             port_type = get(output, "PortType", missing)
             # channel = Channel{eval(Symbol(port_type))}(1)
-            channelName = "" * functionID_name * "_" * string(functionID) * "_" * string(port_id)
+            channelName = "" * functionid * "_" * string(id) * "_" * string(port_id)
             channel = Channel(1)
             if port_id === missing || port_type === missing
                 throw(ErrorException("Missing IO information."))
             end
-            push!(outputs, Port_info(port_id,port_type, channel, channelName))
+            push!(outputs, PortInfo(port_id,port_type, channel, channelName))
         end
         IOinfo(inputs, outputs)
     end
 
-    function get_coords(coords)
+    function getCoords(coords)
 
         coordX = get(coords, "CoordX", missing)
         coordY = get(coords, "CoordY", missing)

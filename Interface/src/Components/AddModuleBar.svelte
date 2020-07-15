@@ -2,25 +2,25 @@
 import { fade } from 'svelte/transition';
 //TODO -> improvement
 //change templates to public
-import { TemplateModule, TemplatePort} from './templates';
-import { createEventDispatcher} from 'svelte';
+import { TemplateModule, TemplatePort } from './templates';
+import { createEventDispatcher } from 'svelte';
 const dispatch = createEventDispatcher();
-import Button from './Button.svelte';
+import MyButton from './Button.svelte';
 import { onMount } from 'svelte';
 
 
-let ModulesTemplatesList = [];
-let ModuleVarList = [];
-let ModuleFunctionList = [];
+let modulesTemplatesList = [];
+let moduleVarList = [];
+let moduleFunctionList = [];
 function sendModuleInfo(ModuleTemplate: TemplateModule){
     dispatch('AddModule', {
                 module: ModuleTemplate
-            });   
+            });
 }
 
 //read Templates for the Modules --> inside public dr
 var fs = require('fs');
-var path = require('path');  
+var path = require('path');
 var filePath = path.join(__dirname, 'ModulesTemplates.json');
 
 onMount(async () => {
@@ -39,9 +39,9 @@ onMount(async () => {
                 if(json.Templates.Variables[i].Variables){
                     tempVar.listVariables=json.Templates.Variables[i].Variables;
                 }
-                ModuleVarList.push(tempVar)
+                moduleVarList.push(tempVar)
             }
-            for(i=0; i<json.Templates.Functions.length; i++){
+            for(i=0; i<json.Templates.Functions.length; i++) {
                 let tempVar = new TemplateModule(json.Templates.Functions[i].Name);
                 //como é function vai ter inputs e outputs
                 let j: number;
@@ -55,14 +55,14 @@ onMount(async () => {
                     let tempPort = new TemplatePort(false, json.Templates.Functions[i].IO.Outputs[h].PortType, json.Templates.Functions[i].IO.Outputs[h].VarName)
                     tempVar.listOutputs.push(tempPort);
                 }
-                tempVar.functionId=json.Templates.Functions[i].FunctionID
+                tempVar.functionId = json.Templates.Functions[i].FunctionID
                 if(json.Templates.Functions[i].Variables){
                     tempVar.listVariables=json.Templates.Functions[i].Variables;
                 }
-                ModuleFunctionList.push(tempVar)
+                moduleFunctionList.push(tempVar)
             }
-            ModuleVarList=ModuleVarList;
-            ModuleFunctionList=ModuleFunctionList;
+            moduleVarList = moduleVarList;
+            moduleFunctionList = moduleFunctionList;
         } else {
             console.log(err);
         }
@@ -71,23 +71,23 @@ onMount(async () => {
 
 </script>
 
-{#if ModuleVarList.length!=0}
+{#if moduleVarList.length!=0}
     <h4>Variables</h4>
-    {#each ModuleVarList as variable}
-        <Button on:click={e => sendModuleInfo(variable)} name={variable.name}></Button>
+    {#each moduleVarList as variable}
+        <MyButton on:click={e => sendModuleInfo(variable)} name={variable.name}></MyButton>
     {/each}
 {:else}
     <h4>No templates for Variables</h4>
 {/if}
-{#if ModuleFunctionList.length!=0}
+{#if moduleFunctionList.length!=0}
     <h4>Functions</h4>
-    {#each ModuleFunctionList as variable}
-        <Button on:click={e => sendModuleInfo(variable)} name={variable.name}></Button>
+    {#each moduleFunctionList as variable}
+        <MyButton on:click={e => sendModuleInfo(variable)} name={variable.name}></MyButton>
     {/each}
 {:else}
     <h4>No templates for Functions</h4>
 {/if}
-	
+
 <style>
     h1, h4 {
         color:white;

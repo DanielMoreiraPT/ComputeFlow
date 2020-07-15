@@ -1,5 +1,6 @@
-############################################
-#   Functionality: Intakes Array of floats, calculates Median of those floats, outputs AVG as single float.
+################################################################################
+#   Functionality: Intakes Array of floats, calculates Median of those floats,
+#    outputs AVG as single float.
 import Statistics
 
 function Median_f(inPort1, outPort1, variables)

@@ -1,17 +1,17 @@
-<script lang="typescript">	
+<script lang="typescript">
     import Canvas from './Canvas.svelte'
     import { Module, Port, Connection, Chart } from './StructureLogic';
     import Button from './Button.svelte';
     import { createEventDispatcher} from 'svelte';
     import { ChartHistory} from './stores';
-   
+
     const dispatch = createEventDispatcher();
-    
+
     var fs = require('fs');
 
-  
+
     let ChartStruc: Chart = new Chart("NewProject");
-    
+
     let __HistoryChart: ChartHistory = new ChartHistory();
     //need to initialize vars -> it would not work if after loaded, the diagram was not moved
     let Background_dxInitial: number = -3000;
@@ -48,7 +48,7 @@
                     ProjectPath: {ProjectPath}
                 });
             }
-                        
+
         });
     }
 
@@ -63,36 +63,32 @@
         ChartStruc.ModuleList.push(ModuleToBeAdded);
         ChartStruc.ModuleList=ChartStruc.ModuleList;
         let chartToBePassed: Chart = ChartStruc;
-    }   
+    }
     export function saveProject(filename:string){
         saveAsToFile(filename, ChartStruc);
     }
+
+
+    // My Version
     export function trySaveProjectToFile(){
         const {dialog} = require("electron").remote;
-        let filename = dialog.showSaveDialogSync()
-        if(filename === undefined){
-            console.log("filename undefined");
-            return;
-        }else{ 
-            if(filename.split('.').pop()!='json'){
-                alert("Wrong file extension. Try .json");
-            }else{
-                saveAsToFile(filename, ChartStruc);
-            }
-        }
+        let filename = dialog.showSaveDialogSync({filters: [{name:'json', extensions:['json']}]})
+        saveAsToFile(filename, ChartStruc);
     }
+
+    
     export function tryToLoadProject(){
         const {dialog} = require("electron").remote;
         let filename = dialog.showSaveDialogSync()
         if(filename === undefined){
             console.log("filename undefined");
             return;
-        }else{  
+        }else{
             let filenameSplited=filename.split('.');
             let file:string=filenameSplited[0];
             let extension:string=filenameSplited[1];
             if(extension=="json"){
-                var path = require('path');  
+                var path = require('path');
 
                 let filePath=filename;
                 let ProjectName=file.split('/').pop();
@@ -115,7 +111,7 @@
                             }
 
                             let FlowModuleObject = new Module(json.Modules[i].Id, json.Modules[i].Name, json.Modules[i].Coord.CoordX,  json.Modules[i].Coord.CoordY);
-                            
+
                             FlowModuleObject.functionId=json.Modules[i].FunctionID;
                             FlowModuleObject.addOutputs(outputlist)
                             FlowModuleObject.addInputs(inputlist)
@@ -128,10 +124,10 @@
                             }
                             ModulesList.push(FlowModuleObject);
 
-                            ChartStruc.addModule(FlowModuleObject); 
+                            ChartStruc.addModule(FlowModuleObject);
 
                         }
-                        
+
                         for(let i=0; i<json.Modules.length; i++){
                             let inputConnectionslist=[];
                             let outputConnectionslist=[];
@@ -145,17 +141,17 @@
 
                                 let connection = new Connection('connectionX', InputObject, true, InputModule);
 
-                                
+
                                 connection.setConnectedPort(OutputObject, OutputModule);
 
                                 connection.calculateCurve();
-                                
+
                                 InputModule.addInputConnection(InputObject, OutputObject, OutputModule ,connection);
                                 OutputModule.addOutputConnection(OutputObject, InputObject, InputModule ,connection);
-                                
+
                                 ChartStruc.addFinalConnection(connection);
                             }
-                            
+
                         }
                         ChartStruc=ChartStruc;
 
@@ -170,7 +166,7 @@
 
                     } else {
                         console.log(err);
-                    } 
+                    }
                 });
             }else{
                 alert("Wrong file extension");
@@ -188,8 +184,8 @@
     let myCanvas;
     export let left: number;
     export let top: number;
-    
-    
+
+
     export function redo(){
         //console.log("before redo")
         //console.log(__HistoryChart)
@@ -199,9 +195,9 @@
             for(let moduleEntry of ChartStruc.ModuleList){
                 moduleEntry.setPortCoords();
             }ChartStruc.ModuleList=ChartStruc.ModuleList
-        } 
+        }
         ChartStruc=ChartStruc;
-        
+
         //console.log("after redo")
         //console.log(__HistoryChart)
     }
@@ -214,16 +210,16 @@
             for(let moduleEntry of ChartStruc.ModuleList){
                 moduleEntry.setPortCoords();
             }ChartStruc.ModuleList=ChartStruc.ModuleList
-        } 
+        }
         ChartStruc=ChartStruc;
-        
+
         //console.log("after undo")
         //console.log(__HistoryChart)
     }
     export function handleWrongTypes(){
         dispatch("wrongTypes");
     }
-    
+
 </script>
     <Canvas bind:this={myCanvas}
         on:BackgroundMovement={handleBackGroundMovement}

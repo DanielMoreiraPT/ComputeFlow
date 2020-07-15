@@ -1,4 +1,4 @@
-############################################
+################################################################################
 #   Functionality: Intakes any type of data and outputs a file with it.
 function WriteToFile_f(inPort1, variables)
     text = take!(inPort1)

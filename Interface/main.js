@@ -3,17 +3,10 @@
 require("electron-reload")(__dirname);
 
 
-
-
-
-
 // Modules to control application life and create native browser window
 
 const {app, BrowserWindow} = require("electron");
 const path = require("path");
-
-
-
 
 function createWindow () {
   // Create the browser window.
@@ -28,8 +21,6 @@ function createWindow () {
 
   //const childWindow = new  BrowserWindow ({ width: 1600, height: 800, parent: mainWindow, modal: true, show : false});
 
-
-
   // and load the index.html of the app.
   mainWindow.loadFile("public/index.html");
   //childWindow.loadFile("welcome.html");
@@ -41,9 +32,6 @@ function createWindow () {
   // Open the DevTools.
   //mainWindow.webContents.openDevTools();
 }
-
-
-
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
