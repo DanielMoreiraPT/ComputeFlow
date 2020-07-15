@@ -1,8 +1,6 @@
-
 ############################################
-#   Function counting Average of the numbers received by input Channel
-#
-function Average_f(inPort1, outPort1, variables)
+#   Functionality: Intakes Array of floats, calculates AVG of those floats, outputs AVG as single float.
+function AverageFloat_f(inPort1, outPort1, variables)
 
     sum = 0
     numbers = fetch(inPort1)

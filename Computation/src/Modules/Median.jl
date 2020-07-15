@@ -1,10 +1,8 @@
-
 ############################################
-#   Function counting mean of the numbers received by input Channel
-#
+#   Functionality: Intakes Array of floats, calculates Median of those floats, outputs AVG as single float.
 import Statistics
 
-function Mean_f(inPort1, outPort1, variables)
+function Median_f(inPort1, outPort1, variables)
 
     numbers = fetch(inPort1)
 

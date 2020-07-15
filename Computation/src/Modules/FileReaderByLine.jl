@@ -1,11 +1,3 @@
-"""
-# module FileReaderByLine
-
-- Julia version:
-- Author: anunia
-- Date: 2020-04-25
-
-"""
 ############################################
 #   Main function of the module
 function FileReaderByLine_f(outPort1, variables)

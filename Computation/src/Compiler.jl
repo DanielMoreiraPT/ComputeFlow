@@ -19,10 +19,10 @@ function readFile(path)
        read(io)
    end
 end
-function writeFileToProjectFile(path, text, separator)
+
+function writeToProjectFile(path, text, separator)
     write(path, text)
     write(path, separator)
-
 end
 
 import Base.Threads
@@ -39,31 +39,39 @@ projectName, modules = JsonReader.upload_modules(ARGS[1])
 
 added_modules = Dict()
 
-# Innicializes the Files
+# Innicializes the Project File in which the code will be written into
 projectFile = open(projectName * ".jl", "w")
 
+println("Fetching necessary Modules from Modules folder")
 for m in modules
     if ! haskey(added_modules, m.name)
-        println(m.name)
-# This Path defines where it's retriving the Modules used in the Flows
+        println("\t↪ Fetching " * m.FunctionID * " module")
+# This Path defines where it's retriving the Modules used in the Flow
         code = readFile("C:/Users/Dan/github/ComputeFlow/Computation/src/Modules/" * m.name *".jl")
-        writeFileToProjectFile(projectFile, code, separatorInProjectFile)
+        writeToProjectFile(projectFile, code, separatorInProjectFile)
         push!(added_modules, m.name => 1)
     end
 end
+
+# Debugging Code:
+# Checking if all modules have been included in the Project File
 for m in modules
     if ! haskey(added_modules, m.name)
-        println(m.variables)
+        println(m.variables * "Function not found in the Project File, check if Module is present in the Module Folder")
 
     end
 end
 
-writeFileToProjectFile(projectFile, "function $(projectName)_f()", "\n")
+writeToProjectFile(projectFile, "function $(projectName)_f()", "\n")
 
+
+# This function creates the necessary channels for the code to run while also allowing the code to validate Data types.
+writeToProjectFile(projectFile, "\n# Channels necessary for code function, data types included", "\n")
+writeToProjectFile(projectFile, "# If any error indicates any of these lines, most likely Data Validation failed", "\n")
 for m in modules
         for out in m.io.outputs
             createChannel = "\t$(out.channelName) = Channel{$(out.port_type)}(1)\n"
-            writeFileToProjectFile(projectFile, createChannel, "\n")
+            writeToProjectFile(projectFile, createChannel, "\n")
         end
 end
 
@@ -96,10 +104,10 @@ for m in modules
     end
     functionCallString = functionCallString * """$(m.variables)))\n"""
 
-    writeFileToProjectFile(projectFile, functionCallString, "\n")
+    writeToProjectFile(projectFile, functionCallString, "\n")
 
 end
-writeFileToProjectFile(projectFile, "\nend\n $(projectName)_f()", "\n")
+writeToProjectFile(projectFile, "\nend\n $(projectName)_f()", "\n")
 
 println("Im running")
 close(projectFile)

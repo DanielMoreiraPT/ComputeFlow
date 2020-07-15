@@ -1,19 +1,20 @@
 {
   "Templates": {
-    "Variables": [
+    "Variables":
+    [
       {
-        "Name": "String",
+        "Name": "File Reader",
         "Variables": {
-          "all_text": false,
-          "from_the_begging": true,
-          "fe_amount_of_char": 15
+          "file_name": "CHANGE ME"
         },
+        "FunctionID": "FileReader",
         "IO": {
+          "Inputs": [],
           "Outputs": [
             {
               "PortID": "0",
               "PortType": "String",
-              "VarName": "name"
+              "VarName": "Data"
             }
           ]
         },
@@ -24,33 +25,7 @@
     ],
     "Functions": [
       {
-        "Name": "FileReader",
-        "Variables": {
-          "file_name": "Computation Outputs\\NewProject\\Temperatures.txt"
-        },
-        "FunctionID": "FileReader",
-        "IO": {
-          "Inputs": [
-            {
-              "PortID": "0",
-              "PortType": "String",
-              "VarName": "file"
-            }
-          ],
-          "Outputs": [
-            {
-              "PortID": "0",
-              "PortType": "String",
-              "VarName": "data"
-            }
-          ]
-        },
-        "Connections": {
-          "Inputs": []
-        }
-      },
-      {
-        "Name": "ParseToFloat",
+        "Name": "Parse to Float",
         "FunctionID": "ParseToFloat",
         "Variables": {},
         "IO": {
@@ -58,7 +33,7 @@
             {
               "PortID": "0",
               "PortType": "String",
-              "VarName": "string"
+              "VarName": "String"
             }
           ],
           "Outputs": [
@@ -75,21 +50,21 @@
       },
       {
         "Name": "Average",
-        "FunctionID": "Average",
+        "FunctionID": "AverageFloat",
         "Variables": {},
         "IO": {
           "Inputs": [
             {
               "PortID": "0",
               "PortType": "Array{Float64,1}",
-              "VarName": "values"
+              "VarName": "Data"
             }
           ],
           "Outputs": [
             {
               "PortID": "0",
               "PortType": "Float64",
-              "VarName": "avg"
+              "VarName": "AVG"
             }
           ]
         },
@@ -98,22 +73,22 @@
         }
       },
       {
-        "Name": "Mean",
-        "FunctionID": "Mean",
+        "Name": "Median",
+        "FunctionID": "Median",
         "Variables": {},
         "IO": {
           "Inputs": [
             {
               "PortID": "0",
               "PortType": "Array{Float64,1}",
-              "VarName": "data"
+              "VarName": "Data"
             }
           ],
           "Outputs": [
             {
               "PortID": "0",
               "PortType": "Float64",
-              "VarName": "result"
+              "VarName": "Median"
             }
           ]
         },
@@ -130,14 +105,14 @@
             {
               "PortID": "0",
               "PortType": "Array{Float64,1}",
-              "VarName": "data"
+              "VarName": "Data"
             }
           ],
           "Outputs": [
             {
               "PortID": "0",
               "PortType": "Plots.Plot{Plots.GRBackend}",
-              "VarName": "plotdata"
+              "VarName": "Plot Data"
             }
           ]
         },
@@ -154,14 +129,14 @@
             {
               "PortID": "0",
               "PortType": "Array{Float64,1}",
-              "VarName": "data"
+              "VarName": "Data"
             }
           ],
           "Outputs": [
             {
               "PortID": "0",
               "PortType": "Plots.Plot{Plots.GRBackend}",
-              "VarName": "plotdata"
+              "VarName": "Plot Data"
             }
           ]
         },
@@ -170,17 +145,17 @@
         }
       },
       {
-        "Name": "SavePNG",
+        "Name": "Save as PNG",
         "FunctionID": "SavePNG",
         "Variables": {
-          "file_name": "image.png"
+          "file_name": "CHANGE ME"
         },
         "IO": {
           "Inputs": [
             {
               "PortID": "0",
               "PortType": "Plots.Plot{Plots.GRBackend}",
-              "VarName": "data"
+              "VarName": "Data"
             }
           ],
           "Outputs": []
@@ -190,17 +165,17 @@
         }
       },
       {
-        "Name": "WriteToFile",
+        "Name": "Write To File",
         "FunctionID": "WriteToFile",
         "Variables": {
-          "file_name": "text.txt"
+          "file_name": "CHANGE ME"
         },
         "IO": {
           "Inputs": [
             {
               "PortID": "0",
               "PortType": "Float64",
-              "VarName": "data"
+              "VarName": "Data"
             }
           ],
           "Outputs": []
