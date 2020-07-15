@@ -26,7 +26,7 @@
       {
         "Name": "FileReader",
         "Variables": {
-          "file_name": "text.txt"
+          "file_name": "Computation Outputs\\NewProject\\Temperatures.txt"
         },
         "FunctionID": "FileReader",
         "IO": {
