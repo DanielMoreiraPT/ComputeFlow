@@ -1109,6 +1109,8 @@ var app = (function () {
     }
     class Module {
         constructor(id, name, xPos, yPos) {
+            //TODO
+            //default
             this.functionId = 0;
             this.inputList = [];
             this.outputList = [];
@@ -1307,6 +1309,7 @@ var app = (function () {
                     let module_obj = {
                         "Name": this.ModuleList[i].name,
                         "Id": i,
+                        "Variables": {},
                         "Coord": {
                             "CoordX": this.ModuleList[i].xPos,
                             "CoordY": this.ModuleList[i].yPos
@@ -1321,6 +1324,9 @@ var app = (function () {
                             "Outputs": []
                         }
                     };
+                    if (this.ModuleList[i].listVariables) {
+                        module_obj["Variables"] = this.ModuleList[i].listVariables;
+                    }
                     let j;
                     for (j = 0; j < this.ModuleList[i].inputList.length; j++) {
                         let inputPortObj = {
@@ -1372,6 +1378,7 @@ var app = (function () {
         }
         loadJSON(data) {
             let json = JSON.parse(data);
+            console.log(json);
             this.ModuleList = [];
             this.FinalConnections = [];
             for (let i = 0; i < json.Modules.length; i++) {
@@ -1392,6 +1399,10 @@ var app = (function () {
                 FlowModuleObject.setModuleWidth();
                 FlowModuleObject.setModuleHeight();
                 FlowModuleObject.setPortCoords();
+                if (json.Modules[i].Variables) {
+                    FlowModuleObject.listVariables = json.Modules[i].Variables;
+                }
+                console.log(FlowModuleObject);
                 this.addModule(FlowModuleObject);
             }
             for (let i = 0; i < json.Modules.length; i++) {
@@ -4596,7 +4607,7 @@ var app = (function () {
     function instance$8($$self, $$props, $$invalidate) {
     	const dispatch = createEventDispatcher();
     	var fs = require("fs");
-    	let ChartStruc = new Chart("New Project");
+    	let ChartStruc = new Chart("NewProject");
     	let __HistoryChart = new ChartHistory();
 
     	//need to initialize vars -> it would not work if after loaded, the diagram was not moved
@@ -4716,6 +4727,11 @@ var app = (function () {
     							FlowModuleObject.setModuleWidth();
     							FlowModuleObject.setModuleHeight();
     							FlowModuleObject.setPortCoords();
+
+    							if (json.Modules[i].Variables) {
+    								FlowModuleObject.listVariables = json.Modules[i].Variables;
+    							}
+
     							ModulesList.push(FlowModuleObject);
     							ChartStruc.addModule(FlowModuleObject);
     						}
@@ -4758,7 +4774,7 @@ var app = (function () {
     	}
 
     	function newProject() {
-    		$$invalidate(3, ChartStruc = new Chart("New Project"));
+    		$$invalidate(3, ChartStruc = new Chart("NewProject"));
     		__HistoryChart.clear();
     		dispatch("newProjectInitiated");
     	}
@@ -5971,7 +5987,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (67:0) {:else}
+    // (71:0) {:else}
     function create_else_block_1(ctx) {
     	let h4;
 
@@ -5980,7 +5996,7 @@ var app = (function () {
     			h4 = element("h4");
     			h4.textContent = "No templates for Variables";
     			attr_dev(h4, "class", "svelte-1sg1c9b");
-    			add_location(h4, file$b, 67, 4, 2980);
+    			add_location(h4, file$b, 71, 4, 3230);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h4, anchor);
@@ -5997,14 +6013,14 @@ var app = (function () {
     		block,
     		id: create_else_block_1.name,
     		type: "else",
-    		source: "(67:0) {:else}",
+    		source: "(71:0) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (62:0) {#if ModuleVarList.length!=0}
+    // (66:0) {#if ModuleVarList.length!=0}
     function create_if_block_1(ctx) {
     	let h4;
     	let t1;
@@ -6034,7 +6050,7 @@ var app = (function () {
 
     			each_1_anchor = empty();
     			attr_dev(h4, "class", "svelte-1sg1c9b");
-    			add_location(h4, file$b, 62, 4, 2806);
+    			add_location(h4, file$b, 66, 4, 3056);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h4, anchor);
@@ -6106,14 +6122,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(62:0) {#if ModuleVarList.length!=0}",
+    		source: "(66:0) {#if ModuleVarList.length!=0}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (64:4) {#each ModuleVarList as variable}
+    // (68:4) {#each ModuleVarList as variable}
     function create_each_block_1$2(ctx) {
     	let current;
 
@@ -6160,14 +6176,14 @@ var app = (function () {
     		block,
     		id: create_each_block_1$2.name,
     		type: "each",
-    		source: "(64:4) {#each ModuleVarList as variable}",
+    		source: "(68:4) {#each ModuleVarList as variable}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (75:0) {:else}
+    // (79:0) {:else}
     function create_else_block(ctx) {
     	let h4;
 
@@ -6176,7 +6192,7 @@ var app = (function () {
     			h4 = element("h4");
     			h4.textContent = "No templates for Functions";
     			attr_dev(h4, "class", "svelte-1sg1c9b");
-    			add_location(h4, file$b, 75, 4, 3243);
+    			add_location(h4, file$b, 79, 4, 3493);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h4, anchor);
@@ -6193,14 +6209,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(75:0) {:else}",
+    		source: "(79:0) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (70:0) {#if ModuleFunctionList.length!=0}
+    // (74:0) {#if ModuleFunctionList.length!=0}
     function create_if_block$2(ctx) {
     	let h4;
     	let t1;
@@ -6230,7 +6246,7 @@ var app = (function () {
 
     			each_1_anchor = empty();
     			attr_dev(h4, "class", "svelte-1sg1c9b");
-    			add_location(h4, file$b, 70, 4, 3064);
+    			add_location(h4, file$b, 74, 4, 3314);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h4, anchor);
@@ -6302,14 +6318,14 @@ var app = (function () {
     		block,
     		id: create_if_block$2.name,
     		type: "if",
-    		source: "(70:0) {#if ModuleFunctionList.length!=0}",
+    		source: "(74:0) {#if ModuleFunctionList.length!=0}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (72:4) {#each ModuleFunctionList as variable}
+    // (76:4) {#each ModuleFunctionList as variable}
     function create_each_block$2(ctx) {
     	let current;
 
@@ -6356,7 +6372,7 @@ var app = (function () {
     		block,
     		id: create_each_block$2.name,
     		type: "each",
-    		source: "(72:4) {#each ModuleFunctionList as variable}",
+    		source: "(76:4) {#each ModuleFunctionList as variable}",
     		ctx
     	});
 
@@ -6521,7 +6537,10 @@ var app = (function () {
     						tempVar.listOutputs.push(tempPort);
     					}
 
-    					//console.log(tempVar)
+    					if (json.Templates.Variables[i].Variables) {
+    						tempVar.listVariables = json.Templates.Variables[i].Variables;
+    					}
+
     					ModuleVarList.push(tempVar);
     				}
 
@@ -6545,7 +6564,10 @@ var app = (function () {
 
     					tempVar.functionId = json.Templates.Functions[i].FunctionID;
 
-    					//console.log(tempVar)
+    					if (json.Templates.Functions[i].Variables) {
+    						tempVar.listVariables = json.Templates.Functions[i].Variables;
+    					}
+
     					ModuleFunctionList.push(tempVar);
     				}
 
@@ -9014,25 +9036,25 @@ var app = (function () {
     			t6 = space();
     			create_component(modalwrongtypes.$$.fragment);
     			attr_dev(h2, "class", "svelte-1f19yrf");
-    			add_location(h2, file$n, 77, 12, 2877);
+    			add_location(h2, file$n, 78, 12, 2944);
     			set_style(div0, "float", "left");
     			set_style(div0, "padding-left", "50px");
     			attr_dev(div0, "class", "svelte-1f19yrf");
-    			add_location(div0, file$n, 76, 8, 2818);
+    			add_location(div0, file$n, 77, 8, 2885);
     			attr_dev(div1, "class", "grid-item title svelte-1f19yrf");
-    			add_location(div1, file$n, 75, 4, 2758);
+    			add_location(div1, file$n, 76, 4, 2825);
     			attr_dev(div2, "class", "grid-item navbar svelte-1f19yrf");
-    			add_location(div2, file$n, 80, 4, 2933);
+    			add_location(div2, file$n, 81, 4, 3000);
     			attr_dev(div3, "class", "grid-item zoom svelte-1f19yrf");
-    			add_location(div3, file$n, 88, 4, 3268);
+    			add_location(div3, file$n, 89, 4, 3335);
     			attr_dev(div4, "class", "grid-item redoundo svelte-1f19yrf");
-    			add_location(div4, file$n, 90, 4, 3314);
+    			add_location(div4, file$n, 91, 4, 3381);
     			attr_dev(div5, "class", "grid-item AddModule svelte-1f19yrf");
-    			add_location(div5, file$n, 99, 4, 3656);
+    			add_location(div5, file$n, 100, 4, 3723);
     			attr_dev(div6, "class", "grid-item canvas svelte-1f19yrf");
-    			add_location(div6, file$n, 106, 4, 3823);
+    			add_location(div6, file$n, 107, 4, 3890);
     			attr_dev(div7, "class", "grid-container svelte-1f19yrf");
-    			add_location(div7, file$n, 74, 0, 2724);
+    			add_location(div7, file$n, 75, 0, 2791);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -9171,6 +9193,7 @@ var app = (function () {
 
     		ModuleToBeAdded.functionId = TemplateModule.functionId;
     		ModuleToBeAdded.name = TemplateModule.name;
+    		ModuleToBeAdded.listVariables = TemplateModule.listVariables;
     		myAppCanvas.addXModule(ModuleToBeAdded);
     	};
 

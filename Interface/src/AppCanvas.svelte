@@ -10,7 +10,7 @@
     var fs = require('fs');
 
   
-    let ChartStruc: Chart = new Chart("New Project");
+    let ChartStruc: Chart = new Chart("NewProject");
     
     let __HistoryChart: ChartHistory = new ChartHistory();
     //need to initialize vars -> it would not work if after loaded, the diagram was not moved
@@ -178,7 +178,7 @@
                 }
     }
     export function newProject(){
-        ChartStruc= new Chart("New Project");
+        ChartStruc= new Chart("NewProject");
 
         __HistoryChart.clear();
 

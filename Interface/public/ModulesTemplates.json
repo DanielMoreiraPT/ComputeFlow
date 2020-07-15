@@ -1,54 +1,27 @@
 {
   "Templates": {
-    "Variables": [
-      {
-        "Name": "String",
-        "Variables": {
-          "all_text": false,
-          "from_the_begging": true,
-          "fe_amount_of_char": 15
-        },
-        "IO": {
-          "Outputs": [
-            {
-              "PortID": "0",
-              "PortType": "String",
-              "VarName": "name"
-            }
-          ]
-        },
-        "Connections": {
-          "Inputs": []
-        }
+    "Variables": [{
+      "Name": "FileReader",
+      "Variables": {
+        "file_name": "Computation Outputs\\NewProject\\Temperatures.txt"
+      },
+      "FunctionID": "FileReader",
+      "IO": {
+        "Outputs": [
+          {
+            "PortID": "0",
+            "PortType": "String",
+            "VarName": "data"
+          }
+        ]
+      },
+      "Connections": {
+        "Inputs": []
       }
+    }
     ],
     "Functions": [
-      {
-        "Name": "FileReader",
-        "Variables": {
-          "file_name": "text.txt"
-        },
-        "FunctionID": "FileReader",
-        "IO": {
-          "Inputs": [
-            {
-              "PortID": "0",
-              "PortType": "String",
-              "VarName": "file"
-            }
-          ],
-          "Outputs": [
-            {
-              "PortID": "0",
-              "PortType": "String",
-              "VarName": "data"
-            }
-          ]
-        },
-        "Connections": {
-          "Inputs": []
-        }
-      },
+
       {
         "Name": "ParseToFloat",
         "FunctionID": "ParseToFloat",
@@ -173,7 +146,7 @@
         "Name": "SavePNG",
         "FunctionID": "SavePNG",
         "Variables": {
-          "file_name": "image.png"
+          "file_name": "Computation Outputs\\NewProject\\image.png"
         },
         "IO": {
           "Inputs": [

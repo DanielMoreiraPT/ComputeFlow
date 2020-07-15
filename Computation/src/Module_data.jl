@@ -95,7 +95,7 @@ module Module_data
             if moduleid === missing || moduleport === missing || inputport === missing
                 throw(ErrorException("Missing IO information."))
             end
-            push!(inputs, Conect_module_info(moduleid,moduleport,inputport))
+            push!(inputs, Conect_module_info(moduleid, moduleport, inputport))
         end
         outputs = []
         for output in get(dict, "Outputs",missing)
@@ -107,7 +107,7 @@ module Module_data
             if moduleid === missing || moduleport === missing || outputport === missing
                 throw(ErrorException("Missing IO information."))
             end
-            push!(outputs, Conect_module_info(moduleid,moduleport,outputport))
+            push!(outputs, Conect_module_info(moduleid, moduleport, outputport))
         end
         Connections(inputs, outputs)
     end

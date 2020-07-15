@@ -36,8 +36,8 @@ projectName, modules = JsonReader.upload_modules(ARGS[1])
 
 added_modules = Dict()
 
-mkdir("C:\\Users\\Aneta\\github\\ComputeFlow\\Computation Outputs\\"* projectName)
-projectFile = open("C:\\Users\\Aneta\\github\\ComputeFlow\\Computation Outputs\\"* projectName *"\\" * projectName * ".jl", "w")
+mkdir(Computation Outputs\\"* projectName)
+projectFile = open("Computation Outputs\\"* projectName *"\\" * projectName * ".jl", "w")
 for m in modules
     if ! haskey(added_modules, m.name)
         println(m.name)
