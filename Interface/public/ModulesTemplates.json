@@ -1,27 +1,54 @@
 {
   "Templates": {
-    "Variables": [{
-      "Name": "FileReader",
-      "Variables": {
-        "file_name": "Computation Outputs\\NewProject\\Temperatures.txt"
-      },
-      "FunctionID": "FileReader",
-      "IO": {
-        "Outputs": [
-          {
-            "PortID": "0",
-            "PortType": "String",
-            "VarName": "data"
-          }
-        ]
-      },
-      "Connections": {
-        "Inputs": []
+    "Variables": [
+      {
+        "Name": "String",
+        "Variables": {
+          "all_text": false,
+          "from_the_begging": true,
+          "fe_amount_of_char": 15
+        },
+        "IO": {
+          "Outputs": [
+            {
+              "PortID": "0",
+              "PortType": "String",
+              "VarName": "name"
+            }
+          ]
+        },
+        "Connections": {
+          "Inputs": []
+        }
       }
-    }
     ],
     "Functions": [
-
+      {
+        "Name": "FileReader",
+        "Variables": {
+          "file_name": "text.txt"
+        },
+        "FunctionID": "FileReader",
+        "IO": {
+          "Inputs": [
+            {
+              "PortID": "0",
+              "PortType": "String",
+              "VarName": "file"
+            }
+          ],
+          "Outputs": [
+            {
+              "PortID": "0",
+              "PortType": "String",
+              "VarName": "data"
+            }
+          ]
+        },
+        "Connections": {
+          "Inputs": []
+        }
+      },
       {
         "Name": "ParseToFloat",
         "FunctionID": "ParseToFloat",
@@ -102,14 +129,14 @@
           "Inputs": [
             {
               "PortID": "0",
-              "PortType": "Plots.Plot{Plots.GRBackend}",
+              "PortType": "Array{Float64,1}",
               "VarName": "data"
             }
           ],
           "Outputs": [
             {
               "PortID": "0",
-              "PortType": "Plot",
+              "PortType": "Plots.Plot{Plots.GRBackend}",
               "VarName": "plotdata"
             }
           ]
@@ -126,14 +153,14 @@
           "Inputs": [
             {
               "PortID": "0",
-              "PortType": "Plots.Plot{Plots.GRBackend}",
+              "PortType": "Array{Float64,1}",
               "VarName": "data"
             }
           ],
           "Outputs": [
             {
               "PortID": "0",
-              "PortType": "Plot",
+              "PortType": "Plots.Plot{Plots.GRBackend}",
               "VarName": "plotdata"
             }
           ]
@@ -146,13 +173,13 @@
         "Name": "SavePNG",
         "FunctionID": "SavePNG",
         "Variables": {
-          "file_name": "Computation Outputs\\NewProject\\image.png"
+          "file_name": "image.png"
         },
         "IO": {
           "Inputs": [
             {
               "PortID": "0",
-              "PortType": "Plot",
+              "PortType": "Plots.Plot{Plots.GRBackend}",
               "VarName": "data"
             }
           ],
