@@ -129,7 +129,7 @@
           "Inputs": [
             {
               "PortID": "0",
-              "PortType": "Array{Float64,1}",
+              "PortType": "Plots.Plot{Plots.GRBackend}",
               "VarName": "data"
             }
           ],
@@ -153,7 +153,7 @@
           "Inputs": [
             {
               "PortID": "0",
-              "PortType": "Array{Float64,1}",
+              "PortType": "Plots.Plot{Plots.GRBackend}",
               "VarName": "data"
             }
           ],

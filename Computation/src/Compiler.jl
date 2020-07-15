@@ -12,6 +12,7 @@
 julia>
 ```
 """
+# Flows/Simple.json
 function readFile(path)
     open(path, "r") do io
        read(io)
@@ -31,16 +32,16 @@ include("JsonReader.jl")
 
 separatorInProjectFile = "\n###################\n"
 
-projectName, modules = JsonReader.upload_modules("Flows/Simple.json")
+projectName, modules = JsonReader.upload_modules(ARGS[1])
 
 added_modules = Dict()
 
-# mkdir("Computation Outputs\\"* projectName)
-projectFile = open("Computation Outputs\\"* projectName *"\\" * projectName * ".jl", "w")
+mkdir("C:\\Users\\Aneta\\github\\ComputeFlow\\Computation Outputs\\"* projectName)
+projectFile = open("C:\\Users\\Aneta\\github\\ComputeFlow\\Computation Outputs\\"* projectName *"\\" * projectName * ".jl", "w")
 for m in modules
     if ! haskey(added_modules, m.name)
         println(m.name)
-        code = readFile("Computation/src/Modules/" * m.name*".jl")
+        code = readFile("C:\\Users\\Aneta\\github\\ComputeFlow\\Computation/src/Modules/" * m.name*".jl")
         writeFileToProjectFile(projectFile, code, separatorInProjectFile)
         push!(added_modules, m.name => 1)
     end

@@ -61,7 +61,7 @@ module Module_data
     end
 
 
-    function creat_module(data, dataDict)
+    function creat_module(data)
         functionid = get(data,"Id",missing) + 1
         coords = get_coords(get(data, "Coord",missing))
         name = get(data, "Name", missing)

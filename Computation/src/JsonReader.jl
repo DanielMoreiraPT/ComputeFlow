@@ -23,11 +23,11 @@ module JsonReader
             dataDict = JSON.parse(read(jfile,String))
             projectName = get(dataDict,"title",missing)
 
-            dataDictVar = JSON.parse(read("Computation/Options_files/$projectName.json",String))
+            # dataDictVar = JSON.parse(read("Computation/Options_files/$projectName.json",String))
 
             # println(dataDict)
             for mod in get(dataDict,"Modules",missing)
-                push!(modules, Module_data.creat_module(mod,dataDictVar))
+                push!(modules, Module_data.creat_module(mod))
             end
         end
 
