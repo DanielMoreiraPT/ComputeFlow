@@ -2,14 +2,14 @@
 <script lang="typescript">
 	import { Module, Port } from './StructureLogic';
 	import { connections } from './connections';
-    
-    import { createEventDispatcher} from 'svelte'; 	
+
+    import { createEventDispatcher} from 'svelte';
     const dispatch = createEventDispatcher();
-    
+
     //corresponds to the number of the port, of its the 1st, 2nd,...
 	export let portNumber: number;
 	export let port: Port;
-    export let StrucModule: Module;
+  export let StructModule: Module;
 
 	let xPos: number;
 	let yPos: number;
@@ -23,10 +23,10 @@
 	let cyRealValue: number;
 
 	let space: string = ' ';
-    
-    
-    $:xPos = StrucModule.xPos;
-    $:yPos = StrucModule.yPos;
+
+
+    $:xPos = StructModule.xPos;
+    $:yPos = StructModule.yPos;
     $:varType = port.varType;
     $:varName = port.varName;
     $:cx = xPos+15;
@@ -36,9 +36,9 @@
     $:transformValue = 50+(25*portNumber);
     $:cyRealValue = cy+transformValue;
 
-	//console.log(StrucModule)
-	port.xPos=parseInt(StrucModule.xPos)+15;
-	port.yPos=parseInt(StrucModule.yPos)+10+50+(25*portNumber);
+	//console.log(StructModule)
+	port.xPos=parseInt(StructModule.xPos)+15;
+	port.yPos=parseInt(StructModule.yPos)+10+50+(25*portNumber);
 	port.id=portNumber;
 	//console.log("cx: "+port.xPos)
 	//console.log("cyRealValue: "+port.yPos)
@@ -46,7 +46,7 @@
 
 	//console.log("FlowModuleINputv2 -->  port")
 	//console.log(port)
-	
+
 	const handleConnectionStart = (e) => {
 		let {lastX, lastY} = e.detail
 		dispatch('handleConnectionStart', {
@@ -56,7 +56,7 @@
                     yFinal: lastY,
 					port: {port}
                 });
-		
+
     }
 	const handleConnectionDrag = (e) => {
 		let {lastX, lastY, dx, dy} = e.detail
@@ -83,7 +83,7 @@
 
 
 <g class="input-field" transform="translate(0, {transformValue})">
-	<g class="port" 
+	<g class="port"
                 use:connections
 				on:connectionDrag={handleConnectionDrag}
 				on:connectionStart={handleConnectionStart}

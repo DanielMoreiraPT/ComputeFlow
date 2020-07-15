@@ -1,5 +1,6 @@
-############################################
-#   Functionality: Intakes data such as floats or integers and outputs a Histogram of that data.
+################################################################################
+#   Functionality: Intakes data such as floats or integers and outputs a
+#   Histogram of that data.
 using Plots
 using Distributions
 
