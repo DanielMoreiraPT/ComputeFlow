@@ -47,15 +47,30 @@ function AverageFloat_f(inPort1, outPort1, variables)
 end
 
 ################################################################################
-#   Functionality: Intakes any type of data and outputs a file with it.
-function WriteToFile_f(inPort1, variables)
-    text = take!(inPort1)
+#   Functionality: Intakes Array of floats, calculates Median of those floats,
+#    outputs AVG as single float.
+import Statistics
 
-    fileName = get(variables, "file_name", missing)
+function Median_f(inPort1, outPort1, variables)
 
-    open(fileName, "w") do f
-        write(f, string(text))
-    end
+    numbers = fetch(inPort1)
+
+    middle = Statistics.middle(numbers)
+    put!(outPort1, middle)
+end
+
+################################################################################
+#   Functionality: Intakes data such as floats or integers and outputs a
+#   Histogram of that data.
+using Plots
+using Distributions
+
+function Histogram_f(inPort1, outPort1, variables)
+    y = fetch(inPort1)
+
+    plot = histogram(y, fmt = :png)
+
+    put!(outPort1, plot)
 end
 
 ################################################################################
@@ -81,6 +96,18 @@ function SavePNG_f(inPort1, variables)
     savefig(plt, fileName)
 end
 
+################################################################################
+#   Functionality: Intakes any type of data and outputs a file with it.
+function WriteToFile_f(inPort1, variables)
+    text = take!(inPort1)
+
+    fileName = get(variables, "file_name", missing)
+
+    open(fileName, "w") do f
+        write(f, string(text))
+    end
+end
+
 function NewProject_f()
 
 # Channels necessary for code function, data types included
@@ -91,20 +118,47 @@ function NewProject_f()
 
 	AverageFloat_3_0 = Channel{Float64}(1)
 
-	Plot_5_0 = Channel{Plots.Plot{Plots.GRBackend}}(1)
+	Median_4_0 = Channel{Float64}(1)
 
-	@async Task(FileReader_f(FileReader_1_0, Dict{String,Any}("file_name" => "C:\\Users\\Dan\\github\\ComputeFlow\\Computation_Outputs\\Temperatures.txt")))
+	Histogram_5_0 = Channel{Plots.Plot{Plots.GRBackend}}(1)
 
-	@async Task(ParseToFloat_f(FileReader_1_0, ParseToFloat_2_0, Dict{String,Any}()))
+	Plot_6_0 = Channel{Plots.Plot{Plots.GRBackend}}(1)
 
-	@async Task(AverageFloat_f(ParseToFloat_2_0, AverageFloat_3_0, Dict{String,Any}()))
+################################################################################
+# Exchange "CHANGE ME" for either the file name within the same folder or
+# full path to file
 
-	@async Task(WriteToFile_f(AverageFloat_3_0, Dict{String,Any}("file_name" => "C:\\Users\\Dan\\github\\ComputeFlow\\Computation_Outputs\\AVGTemp.txt")))
+	t1 = @async Task(FileReader_f(FileReader_1_0, Dict{String,Any}("file_name" => "Temperatures.txt")))
+	wait(t1)
 
-	@async Task(Plot_f(ParseToFloat_2_0, Plot_5_0, Dict{String,Any}()))
+	t2 = @async Task(ParseToFloat_f(FileReader_1_0, ParseToFloat_2_0, Dict{String,Any}()))
+	wait(t2)
 
-	@async Task(SavePNG_f(Plot_5_0, Dict{String,Any}("file_name" => "C:\\Users\\Dan\\github\\ComputeFlow\\Computation_Outputs\\TempPlot.png")))
+	t3 = @async Task(AverageFloat_f(ParseToFloat_2_0, AverageFloat_3_0, Dict{String,Any}()))
+	wait(t3)
+
+	t4 = @async Task(Median_f(ParseToFloat_2_0, Median_4_0, Dict{String,Any}()))
+	wait(t4)
+
+	t5 = @async Task(Histogram_f(ParseToFloat_2_0, Histogram_5_0, Dict{String,Any}()))
+	wait(t5)
+
+	t6 = @async Task(Plot_f(ParseToFloat_2_0, Plot_6_0, Dict{String,Any}()))
+	wait(t6)
+
+	t7 = @async Task(SavePNG_f(Histogram_5_0, Dict{String,Any}("file_name" => "histogram.png")))
+	wait(t7)
+
+	t8 = @async Task(SavePNG_f(Plot_6_0, Dict{String,Any}("file_name" => "plot.png")))
+	wait(t8)
+
+	t9 = @async Task(WriteToFile_f(Median_4_0, Dict{String,Any}("file_name" => "median.txt")))
+	wait(t9)
+
+	t10 = @async Task(WriteToFile_f(AverageFloat_3_0, Dict{String,Any}("file_name" => "avg.txt")))
+	wait(t10)
 
 
 end
  NewProject_f()
+
