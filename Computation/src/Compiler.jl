@@ -73,10 +73,12 @@ println("\nCreating necessary Tasks\n")
 writeToProjectFile(projectFile, "################################################################################", "\n")
 writeToProjectFile(projectFile, """# Exchange "CHANGE ME" for either the file name within the same folder or""", "\n")
 writeToProjectFile(projectFile, """# full path to file""", "\n\n")
+writeToProjectFile(projectFile, "\ttasks = []","\n\n")
+
 
 for m in modules
     println("\t↪ Creating task for Module: " * m.name)
-    functionCallString = """\tt$(m.id) = @async Task($(m.functionid)_f("""
+    functionCallString = """\tpush!(tasks, @async Task($(m.functionid)_f("""
     i = 0
     for connection in m.connections.inputs
         if i > 0
@@ -102,12 +104,15 @@ for m in modules
     if i > 0
         (functionCallString = functionCallString * """, """)
     end
-    functionCallString = functionCallString * """$(m.variables)))"""
+    functionCallString = functionCallString * """$(m.variables))))"""
 
     writeToProjectFile(projectFile, functionCallString, "\n")
-    writeToProjectFile(projectFile, "\twait(t$(m.id))", "\n\n")
 
 end
+writeToProjectFile(projectFile, "\n\tfor t in tasks","\n")
+writeToProjectFile(projectFile, "\t\twait(t)","\n")
+writeToProjectFile(projectFile, "\tend\n\n","\n")
+
 writeToProjectFile(projectFile, "\nend\n $(projectName)_f()", "\n\n")
 
 println("\nCompilation concluded check your destination folder: "* outputFolder *"\n\n")
