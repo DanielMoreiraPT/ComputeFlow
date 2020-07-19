@@ -1,7 +1,9 @@
 {
   "Templates": {
     "Variables":
-    [  {
+    [  
+    ],
+    "Functions": [{
         "Name": "File Reader",
         "Variables": {
           "file_name": "CHANGE ME"
@@ -20,9 +22,7 @@
         "Connections": {
           "Inputs": []
         }
-      }
-    ],
-    "Functions": [
+      },
       {
         "Name": "Parse to Float",
         "FunctionID": "ParseToFloat",
