@@ -1,5 +1,5 @@
-############################################
-#   MUTABLE part of module schema.
+################################################################################
+#   Functionality: Intakes 2 values, one from each port and outputs the sum.
 function Addition_f(inPort1, inPort2, outPort1, variables)
     number1 = take!(inPort1)
 

@@ -1,73 +1,88 @@
-"""
+import Base.Threads
+import Distributed
 
-# module Compiler
+include("JsonReader.jl")
 
-- Julia version:
-- Author: anunia
-- Date: 2020-04-26
-
-# Examples
-
-```jldoctest
-julia>
-```
-"""
-# Flows/Simple.json
 function readFile(path)
     open(path, "r") do io
        read(io)
    end
 end
-function writeFileToProjectFile(path, text, separator)
+
+function writeToProjectFile(path, text, separator)
     write(path, text)
     write(path, separator)
-
 end
 
-import Base.Threads
-import Distributed
+path = @__DIR__
 
+flowsFolder = split(path, "Computation\\")[1] * "Flows\\"
+# To run on IDE exchange the next two lines, ARGS for Terminal
+# projectName, modules = JsonReader.uploadModules("Flows/Demo.json")
+projectName, modules = JsonReader.uploadModules(flowsFolder * ARGS[1])
 
-include("JsonReader.jl")
+addedModules = Dict()
 
-separatorInProjectFile = "\n###################\n"
+# Innicializes the Project File in which the code will be written into
+outputFolder = split(path, "Computation\\")[1] * "Computation_Outputs\\"
+projectFile = open(outputFolder * ARGS[2] * ".jl", "w")
 
-projectName, modules = JsonReader.upload_modules(ARGS[1])
-
-added_modules = Dict()
-
-mkdir(Computation Outputs\\"* projectName)
-projectFile = open("Computation Outputs\\"* projectName *"\\" * projectName * ".jl", "w")
+writeToProjectFile(projectFile, "#################################IMPORTED MODULES###############################", "\n")
+println("\nFetching necessary Modules from Modules folder\n")
 for m in modules
-    if ! haskey(added_modules, m.name)
-        println(m.name)
-        code = readFile("C:\\Users\\Aneta\\github\\ComputeFlow\\Computation/src/Modules/" * m.name*".jl")
-        writeFileToProjectFile(projectFile, code, separatorInProjectFile)
-        push!(added_modules, m.name => 1)
-    end
-end
-for m in modules
-    if ! haskey(added_modules, m.name)
-        println(m.variables)
-
+    if ! haskey(addedModules, m.name)
+        println("\t↪ Fetching Module: " * m.name)
+        # This Path defines where it's retriving the Modules used in the Flow
+        moduleCode = readFile(path * "/Modules/" * m.functionid * ".jl")
+        writeToProjectFile(projectFile, moduleCode, "\n")
+        push!(addedModules, m.name => 1)
     end
 end
 
-writeFileToProjectFile(projectFile, "function $(projectName)_f()", "\n")
-
+    # Debugging Code:
+    # Checking if all modules have been included in the Project File
 for m in modules
-        for out in m.io.outputs
-            createChannel = "\t$(out.channelName) = Channel{$(out.port_type)}(1)\n"
-            writeFileToProjectFile(projectFile, createChannel, "\n")
-        end
+    if ! haskey(addedModules, m.name)
+        println(m.variables * "Function not found in the Project File, check if Module is present in the Module Folder")
+
+    end
+end
+println("\nStarting Function creation\n")
+writeToProjectFile(projectFile, "function $(projectName)_f()", "\n")
+
+
+    # This function creates the necessary channels for the code to run while also
+    # allowing the code to validate Data types.
+writeToProjectFile(projectFile, "\n# Channels necessary for code function, data types included", "\n")
+writeToProjectFile(projectFile, "# If any error indicates any of these lines, most likely Data Validation failed", "\n")
+
+println("Creating necessary output Channels\n")
+for m in modules
+    if length(m.io.outputs) >= 1
+        println("\t↪ Creating channel for ID: $(m.id)\tModule: " * m.name)
+    end
+    for out in m.io.outputs
+        println("\t\t↪ Port - $(out.port_id)")
+        createChannel = "\t$(out.channelName) = Channel{$(out.port_type)}(1)\n"
+        writeToProjectFile(projectFile, createChannel, "\n")
+    end
 end
 
+println("\nCreating necessary Tasks\n")
+
+writeToProjectFile(projectFile, "################################################################################", "\n")
+writeToProjectFile(projectFile, """# Exchange "CHANGE ME" for either the file name within the same folder or""", "\n")
+writeToProjectFile(projectFile, """# full path to file""", "\n\n")
+writeToProjectFile(projectFile, "\ttasks = []","\n\n")
+
+
 for m in modules
-    functionCallString = """\t @async Task($(m.name)_f("""
+    println("\t↪ Creating task for Module: " * m.name)
+    functionCallString = """\tpush!(tasks, @async Task($(m.functionid)_f("""
     i = 0
     for connection in m.connections.inputs
         if i > 0
-            functionCallString = functionCallString * ""","""
+            functionCallString = functionCallString * """, """
         end
         module_in = connection.module_id
         module_port = connection.module_port
@@ -81,20 +96,24 @@ for m in modules
 
     for out in m.io.outputs
         if i > 0
-            (functionCallString = functionCallString * """,""")
+            (functionCallString = functionCallString * """, """)
         end
         functionCallString *= """$(out.channelName)"""
         i = i + 1
     end
     if i > 0
-        (functionCallString = functionCallString * """,""")
+        (functionCallString = functionCallString * """, """)
     end
-    functionCallString = functionCallString * """$(m.variables)))\n"""
+    functionCallString = functionCallString * """$(m.variables))))"""
 
-    writeFileToProjectFile(projectFile, functionCallString, "\n")
+    writeToProjectFile(projectFile, functionCallString, "\n")
 
 end
-writeFileToProjectFile(projectFile, "\nend\n $(projectName)_f()", "\n")
+writeToProjectFile(projectFile, "\n\tfor t in tasks","\n")
+writeToProjectFile(projectFile, "\t\twait(t)","\n")
+writeToProjectFile(projectFile, "\tend\n\n","\n")
 
-println("Im running")
+writeToProjectFile(projectFile, "\nend\n $(projectName)_f()", "\n\n")
+
+println("\nCompilation concluded check your destination folder: "* outputFolder *"\n\n")
 close(projectFile)

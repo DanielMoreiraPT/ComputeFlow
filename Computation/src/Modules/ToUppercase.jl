@@ -1,18 +1,5 @@
-"""
-# module ToUpercase
-
-- Julia version:
-- Author: anunia
-- Date: 2020-04-26
-
-# Examples
-
-```jldoctest
-julia>
-```
-"""
-
-
+################################################################################
+#   Functionality: Converts text to uppercase
 using JSON
 
 struct Options_ToUppercase

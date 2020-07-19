@@ -1,0 +1,390 @@
+{
+  "title": "NewProject",
+  "Modules": [
+    {
+      "Name": "File Reader",
+      "Id": 0,
+      "Variables": {
+        "file_name": "CHANGE ME"
+      },
+      "Coord": {
+        "CoordX": 3160,
+        "CoordY": 3348
+      },
+      "FunctionID": "FileReader",
+      "IO": {
+        "Inputs": [],
+        "Outputs": [
+          {
+            "PortID": 0,
+            "PortType": "String",
+            "VarName": "Data"
+          }
+        ]
+      },
+      "Connections": {
+        "Inputs": [],
+        "Outputs": [
+          {
+            "ModuleID": 1,
+            "ModulePort": 0,
+            "OutputPort": 0
+          }
+        ]
+      }
+    },
+    {
+      "Name": "Parse to Float",
+      "Id": 1,
+      "Variables": {},
+      "Coord": {
+        "CoordX": 3399,
+        "CoordY": 3347
+      },
+      "FunctionID": "ParseToFloat",
+      "IO": {
+        "Inputs": [
+          {
+            "PortID": 0,
+            "PortType": "String",
+            "VarName": "String"
+          }
+        ],
+        "Outputs": [
+          {
+            "PortID": 0,
+            "PortType": "Array{Float64,1}",
+            "VarName": "float"
+          }
+        ]
+      },
+      "Connections": {
+        "Inputs": [
+          {
+            "ModuleID": 0,
+            "ModulePort": 0,
+            "InputPort": 0
+          }
+        ],
+        "Outputs": [
+          {
+            "ModuleID": 3,
+            "ModulePort": 0,
+            "OutputPort": 0
+          },
+          {
+            "ModuleID": 2,
+            "ModulePort": 0,
+            "OutputPort": 0
+          },
+          {
+            "ModuleID": 5,
+            "ModulePort": 0,
+            "OutputPort": 0
+          },
+          {
+            "ModuleID": 4,
+            "ModulePort": 0,
+            "OutputPort": 0
+          }
+        ]
+      }
+    },
+    {
+      "Name": "Average",
+      "Id": 2,
+      "Variables": {},
+      "Coord": {
+        "CoordX": 3766,
+        "CoordY": 3260
+      },
+      "FunctionID": "AverageFloat",
+      "IO": {
+        "Inputs": [
+          {
+            "PortID": 0,
+            "PortType": "Array{Float64,1}",
+            "VarName": "Data"
+          }
+        ],
+        "Outputs": [
+          {
+            "PortID": 0,
+            "PortType": "Float64",
+            "VarName": "AVG"
+          }
+        ]
+      },
+      "Connections": {
+        "Inputs": [
+          {
+            "ModuleID": 1,
+            "ModulePort": 0,
+            "InputPort": 0
+          }
+        ],
+        "Outputs": [
+          {
+            "ModuleID": 9,
+            "ModulePort": 0,
+            "OutputPort": 0
+          }
+        ]
+      }
+    },
+    {
+      "Name": "Median",
+      "Id": 3,
+      "Variables": {},
+      "Coord": {
+        "CoordX": 3760,
+        "CoordY": 3171
+      },
+      "FunctionID": "Median",
+      "IO": {
+        "Inputs": [
+          {
+            "PortID": 0,
+            "PortType": "Array{Float64,1}",
+            "VarName": "Data"
+          }
+        ],
+        "Outputs": [
+          {
+            "PortID": 0,
+            "PortType": "Float64",
+            "VarName": "Median"
+          }
+        ]
+      },
+      "Connections": {
+        "Inputs": [
+          {
+            "ModuleID": 1,
+            "ModulePort": 0,
+            "InputPort": 0
+          }
+        ],
+        "Outputs": [
+          {
+            "ModuleID": 8,
+            "ModulePort": 0,
+            "OutputPort": 0
+          }
+        ]
+      }
+    },
+    {
+      "Name": "Histogram",
+      "Id": 4,
+      "Variables": {},
+      "Coord": {
+        "CoordX": 3780,
+        "CoordY": 3440
+      },
+      "FunctionID": "Histogram",
+      "IO": {
+        "Inputs": [
+          {
+            "PortID": 0,
+            "PortType": "Array{Float64,1}",
+            "VarName": "Data"
+          }
+        ],
+        "Outputs": [
+          {
+            "PortID": 0,
+            "PortType": "Plots.Plot{Plots.GRBackend}",
+            "VarName": "Plot Data"
+          }
+        ]
+      },
+      "Connections": {
+        "Inputs": [
+          {
+            "ModuleID": 1,
+            "ModulePort": 0,
+            "InputPort": 0
+          }
+        ],
+        "Outputs": [
+          {
+            "ModuleID": 6,
+            "ModulePort": 0,
+            "OutputPort": 0
+          }
+        ]
+      }
+    },
+    {
+      "Name": "Plot",
+      "Id": 5,
+      "Variables": {},
+      "Coord": {
+        "CoordX": 3772,
+        "CoordY": 3344
+      },
+      "FunctionID": "Plot",
+      "IO": {
+        "Inputs": [
+          {
+            "PortID": 0,
+            "PortType": "Array{Float64,1}",
+            "VarName": "Data"
+          }
+        ],
+        "Outputs": [
+          {
+            "PortID": 0,
+            "PortType": "Plots.Plot{Plots.GRBackend}",
+            "VarName": "Plot Data"
+          }
+        ]
+      },
+      "Connections": {
+        "Inputs": [
+          {
+            "ModuleID": 1,
+            "ModulePort": 0,
+            "InputPort": 0
+          }
+        ],
+        "Outputs": [
+          {
+            "ModuleID": 7,
+            "ModulePort": 0,
+            "OutputPort": 0
+          }
+        ]
+      }
+    },
+    {
+      "Name": "Save as PNG",
+      "Id": 6,
+      "Variables": {
+        "file_name": "CHANGE ME"
+      },
+      "Coord": {
+        "CoordX": 4343,
+        "CoordY": 3444
+      },
+      "FunctionID": "SavePNG",
+      "IO": {
+        "Inputs": [
+          {
+            "PortID": 0,
+            "PortType": "Plots.Plot{Plots.GRBackend}",
+            "VarName": "Data"
+          }
+        ],
+        "Outputs": []
+      },
+      "Connections": {
+        "Inputs": [
+          {
+            "ModuleID": 4,
+            "ModulePort": 0,
+            "InputPort": 0
+          }
+        ],
+        "Outputs": []
+      }
+    },
+    {
+      "Name": "Save as PNG",
+      "Id": 7,
+      "Variables": {
+        "file_name": "CHANGE ME"
+      },
+      "Coord": {
+        "CoordX": 4337,
+        "CoordY": 3348
+      },
+      "FunctionID": "SavePNG",
+      "IO": {
+        "Inputs": [
+          {
+            "PortID": 0,
+            "PortType": "Plots.Plot{Plots.GRBackend}",
+            "VarName": "Data"
+          }
+        ],
+        "Outputs": []
+      },
+      "Connections": {
+        "Inputs": [
+          {
+            "ModuleID": 5,
+            "ModulePort": 0,
+            "InputPort": 0
+          }
+        ],
+        "Outputs": []
+      }
+    },
+    {
+      "Name": "Write To File",
+      "Id": 8,
+      "Variables": {
+        "file_name": "CHANGE ME"
+      },
+      "Coord": {
+        "CoordX": 4154,
+        "CoordY": 3167
+      },
+      "FunctionID": "WriteToFile",
+      "IO": {
+        "Inputs": [
+          {
+            "PortID": 0,
+            "PortType": "Float64",
+            "VarName": "Data"
+          }
+        ],
+        "Outputs": []
+      },
+      "Connections": {
+        "Inputs": [
+          {
+            "ModuleID": 3,
+            "ModulePort": 0,
+            "InputPort": 0
+          }
+        ],
+        "Outputs": []
+      }
+    },
+    {
+      "Name": "Write To File",
+      "Id": 9,
+      "Variables": {
+        "file_name": "CHANGE ME"
+      },
+      "Coord": {
+        "CoordX": 4156,
+        "CoordY": 3255
+      },
+      "FunctionID": "WriteToFile",
+      "IO": {
+        "Inputs": [
+          {
+            "PortID": 0,
+            "PortType": "Float64",
+            "VarName": "Data"
+          }
+        ],
+        "Outputs": []
+      },
+      "Connections": {
+        "Inputs": [
+          {
+            "ModuleID": 2,
+            "ModulePort": 0,
+            "InputPort": 0
+          }
+        ],
+        "Outputs": []
+      }
+    }
+  ]
+}

@@ -23,7 +23,7 @@ const opts = {
 };
 
 export default {
-  input: "src/main.ts",
+  input: "src/Components/main.ts",
   output: {
     sourcemap: true,
     format: "iife",
