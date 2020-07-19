@@ -27,7 +27,7 @@ addedModules = Dict()
 outputFolder = split(path, "Computation\\")[1] * "Computation_Outputs\\"
 projectFile = open(outputFolder * ARGS[2] * ".jl", "w")
 
-writeToProjectFile(projectFile, "#################################IMPORTED MODULES###############################", "\n")
+writeToProjectFile(projectFile, "################################ IMPORTED MODULES ##############################", "\n")
 println("\nFetching necessary Modules from Modules folder\n")
 for m in modules
     if ! haskey(addedModules, m.name)

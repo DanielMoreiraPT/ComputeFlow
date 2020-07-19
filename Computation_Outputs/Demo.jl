@@ -128,7 +128,7 @@ function NewProject_f()
 # Exchange "CHANGE ME" for either the file name within the same folder or
 # full path to file
 
-	t1 = @async Task(FileReader_f(FileReader_1_0, Dict{String,Any}("file_name" => "Temperatures.txt")))
+	t1 = @async Task(FileReader_f(FileReader_1_0, Dict{String,Any}("file_name" => "CHANGE ME")))
 	wait(t1)
 
 	t2 = @async Task(ParseToFloat_f(FileReader_1_0, ParseToFloat_2_0, Dict{String,Any}()))
@@ -146,16 +146,16 @@ function NewProject_f()
 	t6 = @async Task(Plot_f(ParseToFloat_2_0, Plot_6_0, Dict{String,Any}()))
 	wait(t6)
 
-	t7 = @async Task(SavePNG_f(Histogram_5_0, Dict{String,Any}("file_name" => "histogram.png")))
+	t7 = @async Task(SavePNG_f(Histogram_5_0, Dict{String,Any}("file_name" => "CHANGE ME")))
 	wait(t7)
 
-	t8 = @async Task(SavePNG_f(Plot_6_0, Dict{String,Any}("file_name" => "plot.png")))
+	t8 = @async Task(SavePNG_f(Plot_6_0, Dict{String,Any}("file_name" => "CHANGE ME")))
 	wait(t8)
 
-	t9 = @async Task(WriteToFile_f(Median_4_0, Dict{String,Any}("file_name" => "median.txt")))
+	t9 = @async Task(WriteToFile_f(Median_4_0, Dict{String,Any}("file_name" => "CHANGE ME")))
 	wait(t9)
 
-	t10 = @async Task(WriteToFile_f(AverageFloat_3_0, Dict{String,Any}("file_name" => "avg.txt")))
+	t10 = @async Task(WriteToFile_f(AverageFloat_3_0, Dict{String,Any}("file_name" => "CHANGE ME")))
 	wait(t10)
 
 

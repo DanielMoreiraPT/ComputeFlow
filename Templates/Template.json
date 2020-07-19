@@ -1,72 +1,49 @@
 {
-	"title": "title",
-	"Modules":[
-  		{
-          "Id":"this one is going upalways and the lowest one has the primary coords (ancoor point)-> probably has a default value on the svg",
-          "Coord":{
-              "CoordX":"X",
-              "CoordY":"Y"
-          },
-					"Variables":{
-							"variableName1" : 1,
-							"variableName2" : "text",
-							"variableNameN" : true
-
-					},
-          "Name":"12 -> we need to have a seperated file which is also sent with the info from each function",
-          "IO":{
-              "Inputs":[
-                  {
-                      "PortID":"1",
-                      "PortType": "String"
-                  },
-                  {
-                      "PortID":"2",
-                      "PortType": "Integer"
-                  }
-              ],
-              "Outputs":[
-                  {
-                      "PortID":"1",
-                      "PortType": "String"
-                  },
-                  {
-                      "PortID":"2",
-                      "PortType": "Integer"
-                  }
-              ]
-
-            },
-          "Connections":{
-            "Inputs":[
-                {
-                "ModuleID":"26",
-                "ModulePort":"23 -> this one is supposed to have the number related to the module's port connected to this one",
-                "InputPort":"1"
-                 },
-                {
-                "ModuleID":"2",
-                "ModulePort":"12",
-                "InputPort":"2"
-              }
-            ],
-
-                "Outputs" : [
-                {
-                        "ModuleID":"26",
-                        "ModulePort":"23 -> this one is supposed to have the number related to the module's port connected to this one",
-                        "OutputPort":"1"
-                },
-                {
-                        "ModuleID":"6",
-                        "ModulePort":"3",
-                        "OutputPort":"3"
-                    }
-                ]
-
-            }
-
-        }
-
+  "title": "Title",
+  "Modules": [
+    {
+      "Name": "Module name for UI",
+      "Id": 0,
+      "Variables": {
+        "variable1": "variable1 value"
+      },
+      "Coord": {
+        "CoordX": 0,
+        "CoordY": 0
+      },
+      "FunctionID": "Module name for Compiler",
+      "IO": {
+        "Inputs": [
+          {
+            "PortID": 0,
+            "PortType": "Data Type Validation",
+            "VarName": "Variable Name for UI"
+          }
+        ],
+        "Outputs": [
+          {
+            "PortID": 0,
+            "PortType": "Data Type Validation",
+            "VarName": "Variable Name for UI"
+          }
+        ]
+      },
+      "Connections": {
+        "Inputs": [
+          {
+            "ModuleID": 1,
+            "ModulePort": 0,
+            "OutputPort": 0
+          }
+        ],
+        "Outputs": [
+          {
+            "ModuleID": 1,
+            "ModulePort": 0,
+            "OutputPort": 0
+          }
+        ]
+      }
+    }
   ]
 }
